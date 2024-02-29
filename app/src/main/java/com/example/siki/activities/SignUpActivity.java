@@ -1,4 +1,4 @@
-package com.example.siki;
+package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
+import com.example.siki.R;
 
 import java.util.Calendar;
 

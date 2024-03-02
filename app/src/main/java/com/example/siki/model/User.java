@@ -37,4 +37,13 @@ public class User {
     public void setSdt(String sdt) {
         this.sdt = sdt;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", sdt='" + sdt + '\'' +
+                '}';
+    }
 }

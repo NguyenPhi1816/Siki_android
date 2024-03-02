@@ -40,4 +40,13 @@ public class ProductPrice {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public String toString() {
+        return "ProductPrice{" +
+                "id=" + id +
+                ", price=" + price +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

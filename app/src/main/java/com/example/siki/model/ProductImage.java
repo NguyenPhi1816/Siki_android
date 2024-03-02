@@ -47,4 +47,14 @@ public class ProductImage {
     public void setDefault(boolean aDefault) {
         isDefault = aDefault;
     }
+
+    @Override
+    public String toString() {
+        return "ProductImage{" +
+                "id=" + id +
+                ", product=" + product +
+                ", path='" + path + '\'' +
+                ", isDefault=" + isDefault +
+                '}';
+    }
 }

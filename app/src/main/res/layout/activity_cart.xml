@@ -43,7 +43,6 @@
                 android:text="Tat ca 3 san pham"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
             <Button
                 android:id="@+id/delete_total_carts"
                 android:layout_width="wrap_content"
@@ -61,8 +60,8 @@
            android:background="@color/black"
            >
        </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cart_recycle"
+        <ListView
+            android:id="@+id/cart_listview"
             android:layout_width="match_parent"
             android:layout_height="580dp"/>
 

@@ -5,15 +5,25 @@ public class Product {
     private String name;
     private String imagePath;
     private ProductPrice productPrice;
+    private Store store;
 
     public Product() {
     }
 
-    public Product(Long id, String name, String imagePath, ProductPrice productPrice) {
+    public Product(Long id, String name, String imagePath, ProductPrice productPrice, Store store) {
         this.id = id;
         this.name = name;
         this.imagePath = imagePath;
         this.productPrice = productPrice;
+        this.store = store;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 
     public Long getId() {

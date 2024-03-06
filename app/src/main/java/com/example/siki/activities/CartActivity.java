@@ -7,33 +7,48 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import com.example.siki.Adapter.ShopAdapter;
 import com.example.siki.R;
 import com.example.siki.Adapter.CartAdapter;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
 import com.example.siki.model.ProductPrice;
+import com.example.siki.model.Store;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CartActivity extends AppCompatActivity {
     private List<Cart> cartList ;
-    private ListView cartListView;
-    private CartAdapter cartAdapter ;
+    private ListView cart_listview;
+    private ShopAdapter shopAdapter ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         cartList = new ArrayList<>();
-        cartListView = findViewById(R.id.cart_listview);
+
+        cart_listview = findViewById(R.id.cart_listview);
         createCartList();
-        cartAdapter = new CartAdapter(cartList);
-        cartListView.setAdapter(cartAdapter);
+        Map<Store, List<Product>> storeProductMap = cartList.stream()
+                .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore(),
+                        Collectors.mapping(Cart::getProduct, Collectors.toList())));
+        shopAdapter = new ShopAdapter(storeProductMap);
+        cart_listview.setAdapter(shopAdapter);
     }
 
     private void createCartList() {
         // Todo: get data from api
         ProductPrice productPrice = new ProductPrice();
+        Store store1 = new Store();
+        store1.setName("The gioi di dong");
+
+        Store store2 = new Store();
+        store2.setName("Apple");
+
+
         productPrice.setPrice(120.000);
         Product product1 = new Product();
         product1.setName("Sam sung1");
@@ -41,9 +56,19 @@ public class CartActivity extends AppCompatActivity {
         Product product2 = new Product();
         product2.setName("Sam sung2");
         product2.setProductPrice(productPrice);
+        product1.setStore(store1);
+        product2.setStore(store1);
+
         Product product3 = new Product();
         product3.setName("Sam sung3");
         product3.setProductPrice(productPrice);
+
+        Product product4 = new Product();
+        product4.setName("Apple 1");
+        product4.setProductPrice(productPrice);
+
+        product3.setStore(store2);
+        product4.setStore(store2);
 
         Cart cart1 = new Cart();
         cart1.setId(1L);

@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.ListView;
-
 import com.example.siki.Adapter.ShopAdapter;
 import com.example.siki.R;
+
 import com.example.siki.Adapter.CartAdapter;
+import com.example.siki.R;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
 import com.example.siki.model.ProductPrice;

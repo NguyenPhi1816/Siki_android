@@ -28,6 +28,7 @@
                 android:text="Quản trị sản phẩm"
                 android:textColor="@android:color/white"
                 android:textSize="28sp"
+                android:paddingTop="6dp"
                 />
         </LinearLayout>
         <LinearLayout
@@ -48,28 +49,33 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mã giá sản phẩm"
+                android:hint="Giá sản phẩm"
                 android:id="@+id/giaSp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Mô tả sản phẩm"
-                android:id="@+id/moTaSp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Số lượng sản phẩm"
-                android:id="@+id/soLuongSp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Mã cửa hàng"
-                android:id="@+id/maCuaHang"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tình trạng sản phẩm"
-                android:id="@+id/tinhTrangSp"/>
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:id="@+id/ivHinh"/>
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Mô tả sản phẩm"-->
+<!--                android:id="@+id/moTaSp"/>-->
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Số lượng sản phẩm"-->
+<!--                android:id="@+id/soLuongSp"/>-->
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Mã cửa hàng"-->
+<!--                android:id="@+id/maCuaHang"/>-->
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Tình trạng sản phẩm"-->
+<!--                android:id="@+id/tinhTrangSp"/>-->
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

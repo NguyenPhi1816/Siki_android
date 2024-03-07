@@ -35,7 +35,7 @@ public class StatisticalAdapter extends ArrayAdapter<StatisticalModel> {
         TextView value = convertView.findViewById(R.id.tvValue);
 
         if (data !=null) {
-            title.setText(String.format("Tháng %s", data.getTitle()));
+            title.setText(data.getTitle());
             value.setText(String.format("Bán được %s sản phẩm", String.valueOf(data.getQuantity())));
         }
         return convertView;

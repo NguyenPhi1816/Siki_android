@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="57dp"
         android:background="@color/main_color"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/login_to_home_btn"
@@ -22,12 +21,13 @@
             android:background="@android:color/transparent"
             android:drawableLeft="@drawable/ic_chevron_left" />
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:gravity="center"
             android:layout_marginLeft="5dp"
+            android:gravity="center"
             android:text="Thống kê sản phẩm bán được"
             android:textColor="#FFFFFF"
             android:textSize="22dp" />
@@ -58,53 +58,81 @@
             android:textStyle="bold" />
     </RadioGroup>
 
-    <TextView
-        android:id="@+id/product_name"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Product"
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:textAlignment="center"/>
-    <LinearLayout
-        android:id="@+id/layout_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <ListView
-            android:id="@+id/listStatistical"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/btnShow_chart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Biểu đồ"
-            android:padding="10sp"
-            android:layout_gravity="center"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="70sp"
+                android:layout_height="70sp"
+                android:layout_gravity="center"
+                android:src="@drawable/samsung" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SamSum"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tvProductSold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Text"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/layout_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/listStatistical"
+                    android:layout_width="match_parent"
+                    android:layout_height="250sp" />
+
+                <Button
+                    android:id="@+id/btnShow_chart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10sp"
+                    android:text="Biểu đồ" />
+
+            </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/layout_chart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+            <LinearLayout
+                android:id="@+id/layout_chart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/lineChart"
-            android:layout_width="match_parent"
-            android:layout_height="523dp"
-            android:layout_gravity="center" />
-        <Button
-            android:id="@+id/btnShow_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Danh sách"
-            android:padding="10sp"/>
-    </LinearLayout>
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="523dp"
+                    android:layout_gravity="center" />
+
+                <Button
+                    android:id="@+id/btnShow_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10sp"
+                    android:text="Danh sách" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

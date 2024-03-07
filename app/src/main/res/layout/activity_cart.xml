@@ -64,7 +64,6 @@
             android:id="@+id/cart_listview"
             android:layout_width="match_parent"
             android:layout_height="580dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"

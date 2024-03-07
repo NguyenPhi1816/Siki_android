@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.example.siki.Adapter.StatisticalAdapter;
 import com.example.siki.R;
@@ -28,6 +29,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductSellChartActivity extends AppCompatActivity {
 
@@ -37,6 +39,7 @@ public class ProductSellChartActivity extends AppCompatActivity {
     ListView listViewStatistical;
     Button btnshowChart, btnShowList;
     LinearLayout layout_list, layout_chart;
+    TextView tvSold;
 
     private List<String> xValue = new ArrayList<>();
     @Override
@@ -101,15 +104,22 @@ public class ProductSellChartActivity extends AppCompatActivity {
         btnShowList = findViewById(R.id.btnShow_list);
         layout_list = findViewById(R.id.layout_list);
         layout_chart = findViewById(R.id.layout_chart);
+        tvSold = findViewById(R.id.tvProductSold);
     }
 
     private void statisticalDataMonth() {
         adapter = new StatisticalAdapter(this,product_month_data());
         listViewStatistical.setAdapter(adapter);
+        AtomicInteger sum = new AtomicInteger();
+        product_month_data().forEach(o-> sum.addAndGet(o.getQuantity()));
+        tvSold.setText(String.format("Thống kê được %s sản phẩm",String.valueOf(sum)));
     }
     private void statisticalDataYear() {
         adapter = new StatisticalAdapter(this, product_year_data());
         listViewStatistical.setAdapter(adapter);
+        AtomicInteger sum = new AtomicInteger();
+        product_year_data().forEach(o-> sum.addAndGet(o.getQuantity()));
+        tvSold.setText(String.format("Thống kê được %s sản phẩm",String.valueOf(sum)));
     }
 
     private void ChartSettingMonthData() {
@@ -183,10 +193,10 @@ public class ProductSellChartActivity extends AppCompatActivity {
 
     private List<StatisticalModel> product_year_data() {
         List<StatisticalModel> data = new ArrayList<>();
-        data.add(new StatisticalModel("2020",400));
-        data.add(new StatisticalModel("2021",324));
-        data.add(new StatisticalModel("2022",1234));
-        data.add(new StatisticalModel("2023",900));
+        data.add(new StatisticalModel("Năm 2020",400));
+        data.add(new StatisticalModel("Năm 2021",324));
+        data.add(new StatisticalModel("Năm 2022",1234));
+        data.add(new StatisticalModel("Năm 2023",900));
         return data;
     }
 
@@ -205,12 +215,12 @@ public class ProductSellChartActivity extends AppCompatActivity {
 
     private List<StatisticalModel> product_month_data() {
         List<StatisticalModel> data = new ArrayList<>();
-        data.add(new StatisticalModel("11-2023",31));
-        data.add(new StatisticalModel("12-2023",25));
-        data.add(new StatisticalModel("1-2024",11));
-        data.add(new StatisticalModel("2-2024",8));
-        data.add(new StatisticalModel("3-2024",43));
-        data.add(new StatisticalModel("4-2024",21));
+        data.add(new StatisticalModel("Tháng 11-2023",31));
+        data.add(new StatisticalModel("Tháng 12-2023",25));
+        data.add(new StatisticalModel("Tháng 1-2024",11));
+        data.add(new StatisticalModel("Tháng 2-2024",8));
+        data.add(new StatisticalModel("Tháng 3-2024",43));
+        data.add(new StatisticalModel("Tháng 4-2024",21));
         return data;
     }
 

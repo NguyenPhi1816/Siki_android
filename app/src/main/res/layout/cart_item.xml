@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
     <CheckBox
         android:id="@+id/cart_cb"
@@ -12,9 +11,9 @@
         android:id="@+id/cart_image"
         android:src="@drawable/samsung"
         android:layout_width="60dp"
-        android:layout_height="70dp"/>
+        android:layout_height="match_parent"/>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginLeft="15dp"
@@ -36,29 +35,35 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <Button
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:textSize="15sp"
+                android:id="@+id/btn_cart_minus"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
                 android:background="@android:color/transparent"
-                app:strokeColor="@color/green"
+                android:drawableLeft="@drawable/ic_minus"
+                />
+            <TextView
+                android:id="@+id/tv_cart_quantity"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="1"
+                />
+            <Button
+                android:id="@+id/btn_cart_add"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/baseline_add_24"
-               />
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="33dp"
-                android:layout_height="28dp"
-                android:background="@android:color/transparent"
-                android:textSize="15sp"
-                app:strokeColor="@color/green"
-                app:strokeWidth="2dp" />
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="33dp"
-                android:layout_height="28dp"
-                android:textSize="15sp"
-                android:background="@android:color/transparent"
-                app:strokeColor="@color/green"
-                app:strokeWidth="2dp" />
+                />
         </LinearLayout>
     </LinearLayout>
+    <Button
+        android:layout_marginLeft="20dp"
+        android:id="@+id/delete_total_carts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:drawableRight="@drawable/ic_trash"
+        android:textColor="@color/black" />
 </LinearLayout>

@@ -1,3 +1,4 @@
+/*
 package com.example.siki.Adapter;
 
 import android.view.View;
@@ -54,7 +55,7 @@ public class ShopAdapter extends BaseAdapter {
         if (convertView == null) {
             viewStore = View.inflate(parent.getContext(), R.layout.store_item, null);
     } else viewStore = convertView;
-    Map.Entry<Store, List<Product>> store = (Map.Entry<Store, List<Product>>) getItem(position);
+        Map.Entry<Store, List<Product>> store = (Map.Entry<Store, List<Product>>) getItem(position);
 
         ((CheckBox) viewStore.findViewById(R.id.cb_shopId)).setChecked(false);
         ((CheckBox) viewStore.findViewById(R.id.cb_shopId)).setText(store.getKey().getName());
@@ -65,3 +66,4 @@ public class ShopAdapter extends BaseAdapter {
         return viewStore;
     }
 }
+*/

@@ -1,16 +1,14 @@
 package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.ListView;
-import com.example.siki.Adapter.ShopAdapter;
+import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.R;
 
-import com.example.siki.Adapter.CartAdapter;
-import com.example.siki.R;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
 import com.example.siki.model.ProductPrice;
@@ -24,20 +22,23 @@ import java.util.stream.Collectors;
 public class CartActivity extends AppCompatActivity {
     private List<Cart> cartList ;
     private ListView cart_listview;
-    private ShopAdapter shopAdapter ;
+
+    private RecyclerView storeRecycle;
+
+    private StoreRecycleAdapter storeAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         cartList = new ArrayList<>();
-
-        cart_listview = findViewById(R.id.cart_listview);
+        storeRecycle = findViewById(R.id.cart_recycleView);
         createCartList();
         Map<Store, List<Product>> storeProductMap = cartList.stream()
                 .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore(),
                         Collectors.mapping(Cart::getProduct, Collectors.toList())));
-        shopAdapter = new ShopAdapter(storeProductMap);
-        cart_listview.setAdapter(shopAdapter);
+        storeAdapter = new StoreRecycleAdapter(storeProductMap);
+        storeRecycle.setAdapter(storeAdapter);
+        storeRecycle.setLayoutManager(new GridLayoutManager(this, 1));
     }
 
     private void createCartList() {

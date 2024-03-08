@@ -58,7 +58,6 @@
         </LinearLayout>
     </LinearLayout>
     <Button
-        android:layout_marginLeft="20dp"
         android:id="@+id/delete_total_carts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

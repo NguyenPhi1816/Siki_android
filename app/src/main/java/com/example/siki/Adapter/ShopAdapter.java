@@ -1,3 +1,4 @@
+/*
 package com.example.siki.Adapter;
 
 import android.view.View;
@@ -5,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,8 +33,10 @@ public class ShopAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         int start = 0 ;
+
         for (Map.Entry<Store, List<Product>> entry : stores.entrySet()) {
             if (start == position) {
+                System.out.println(entry);
                 return entry;
             }
             start++;
@@ -50,14 +54,16 @@ public class ShopAdapter extends BaseAdapter {
         View viewStore;
         if (convertView == null) {
             viewStore = View.inflate(parent.getContext(), R.layout.store_item, null);
-        } else viewStore = convertView;
+    } else viewStore = convertView;
         Map.Entry<Store, List<Product>> store = (Map.Entry<Store, List<Product>>) getItem(position);
+
         ((CheckBox) viewStore.findViewById(R.id.cb_shopId)).setChecked(false);
         ((CheckBox) viewStore.findViewById(R.id.cb_shopId)).setText(store.getKey().getName());
-
-        CartAdapter cartAdapter = new CartAdapter(store.getValue());
-        ((ListView)  viewStore.findViewById(R.id.cart_listview)).setAdapter(cartAdapter);
-        // list view
+        System.out.println(store.getValue());
+        List<Product>productList = store.getValue();
+        CartAdapter cartAdapter = new CartAdapter(productList);
+        ((ListView)  viewStore.findViewById(R.id.lv_shopItem)).setAdapter(cartAdapter);
         return viewStore;
     }
 }
+*/

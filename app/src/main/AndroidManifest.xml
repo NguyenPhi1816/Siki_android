@@ -15,6 +15,7 @@
         android:theme="@style/Theme.Siki"
         tools:targetApi="31" >
         <activity
+<<<<<<< HEAD
             android:name=".activities.ProductDetailActivity"
             android:exported="true" />
         <activity
@@ -27,6 +28,16 @@
             android:name=".activities.CartActivity"
             android:exported="true" >
         </activity>
+=======
+            android:name=".activities.ProductSellChartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ProductActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.CartActivity"
+            android:exported="true"></activity>
+>>>>>>> 6f0ca9cb4f22d171e9720bf11bb01b1b830ff6bd
         <activity
             android:name=".activities.SignUpActivity"
             android:exported="false" />

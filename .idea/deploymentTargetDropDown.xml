@@ -5,12 +5,15 @@
       <entry key="CartActivity">
         <State />
       </entry>
+<<<<<<< HEAD
       <entry key="ProductActivity">
         <State />
       </entry>
       <entry key="ProductFormActivity">
         <State />
       </entry>
+=======
+>>>>>>> 6f0ca9cb4f22d171e9720bf11bb01b1b830ff6bd
       <entry key="app">
         <State />
       </entry>

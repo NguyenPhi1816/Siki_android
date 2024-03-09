@@ -1,6 +1,8 @@
 package com.example.siki.model;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private Long id;
     private String name;
     private String imagePath;

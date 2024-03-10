@@ -1,8 +1,9 @@
 package com.example.siki.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class ProductPrice {
+public class ProductPrice implements Serializable {
     private Long id;
     private Double price;
 

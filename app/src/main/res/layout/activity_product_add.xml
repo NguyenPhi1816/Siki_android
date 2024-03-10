@@ -27,11 +27,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Thông tin sản phẩm"
+                android:text="Thêm sản phẩm"
                 android:textColor="@android:color/white"
                 android:textSize="28sp"
                 android:layout_marginTop="4dp"
-                android:layout_marginLeft="-4dp"
                 />
 
         </LinearLayout>
@@ -41,7 +40,6 @@
             android:orientation="vertical"
             >
             <EditText
-                android:enabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Mã sản phẩm"
@@ -70,8 +68,8 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chỉnh sửa"
-                android:id="@+id/btnSua"
+                android:text="Thêm"
+                android:id="@+id/btnThem"
                 />
         </LinearLayout>
 

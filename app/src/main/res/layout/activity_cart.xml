@@ -17,16 +17,17 @@
                 android:id="@+id/login_to_home_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/ic_chevron_left" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="60dp"
+                android:layout_gravity="center"
                 android:text="Gio hang"
+                android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="24dp" />
         </LinearLayout>
@@ -37,7 +38,7 @@
             android:orientation="horizontal"
             android:paddingRight="16dp">
             <CheckBox
-                android:id="@+id/cart_total"
+                android:id="@+id/cb_cart_total"
                 android:text="Tat ca 3 san pham"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -74,17 +75,20 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+
                 android:layout_height="wrap_content">
                 <TextView
+                    android:textColor="@color/redcart"
                     android:text="200.000 dong"
+                    android:textSize="24dp"
+                    android:id="@+id/tv_cart_totalPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <Button
                     android:layout_marginLeft="200dp"
                     android:layout_width="wrap_content"
-
                     android:layout_height="40dp"
                     android:text="Mua hang(2)"
                     android:background="#F0739D"

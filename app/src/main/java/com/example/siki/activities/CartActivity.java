@@ -5,7 +5,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.R;
 
@@ -21,9 +24,11 @@ import java.util.stream.Collectors;
 
 public class CartActivity extends AppCompatActivity {
     private List<Cart> cartList ;
-    private ListView cart_listview;
-
+    private TextView tv_cart_totalPrice;
+    private CheckBox cb_cart_total;
     private RecyclerView storeRecycle;
+
+    private String cartMessage = "Tất cả %d sản phẩm";
 
     private StoreRecycleAdapter storeAdapter;
     @Override
@@ -31,14 +36,28 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         cartList = new ArrayList<>();
-        storeRecycle = findViewById(R.id.cart_recycleView);
+        setControl();
         createCartList();
         Map<Store, List<Product>> storeProductMap = cartList.stream()
                 .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore(),
                         Collectors.mapping(Cart::getProduct, Collectors.toList())));
+        tv_cart_totalPrice.setText(getTotal()+"");
+        cb_cart_total.setText(String.format(cartMessage, storeProductMap.size()));
         storeAdapter = new StoreRecycleAdapter(storeProductMap);
         storeRecycle.setAdapter(storeAdapter);
         storeRecycle.setLayoutManager(new GridLayoutManager(this, 1));
+    }
+
+    private double getTotal() {
+        double totalPrice = 0 ;
+        if (cartList.size() > 0) {
+            for (Cart cart: cartList) {
+                if (cart.getProduct() != null) {
+                    totalPrice+=cart.getProduct().getProductPrice().getPrice()  ;
+                }
+            }
+        }
+        return totalPrice;
     }
 
     private void createCartList() {
@@ -100,5 +119,11 @@ public class CartActivity extends AppCompatActivity {
         cartList.add(cart2);
         cartList.add(cart3);
         cartList.add(cart4);
+    }
+
+    private void setControl () {
+        cb_cart_total = findViewById(R.id.cb_cart_total);
+        storeRecycle = findViewById(R.id.cart_recycleView);
+        tv_cart_totalPrice = findViewById(R.id.tv_cart_totalPrice);
     }
 }

@@ -6,14 +6,25 @@ public class Cart {
     private User user;
     private int quantity;
 
+    private boolean isChosen;
+
     public Cart() {
     }
 
-    public Cart(Long id, Product product, User user, int quantity) {
+    public Cart(Long id, Product product, User user, int quantity, boolean isChosen) {
         this.id = id;
         this.product = product;
         this.user = user;
         this.quantity = quantity;
+        this.isChosen = isChosen;
+    }
+
+    public boolean isChosen() {
+        return isChosen;
+    }
+
+    public void setChosen(boolean chosen) {
+        isChosen = chosen;
     }
 
     public Long getId() {

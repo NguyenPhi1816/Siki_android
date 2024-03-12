@@ -34,12 +34,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ProductSellChartActivity extends AppCompatActivity {
 
     LineChart mplineChart;
-    RadioButton rdThang, rdNam;
     StatisticalAdapter adapter;
     ListView listViewStatistical;
     Button btnshowChart, btnShowList;
     LinearLayout layout_list, layout_chart;
-    TextView tvSold;
+    TextView tvSold, tvThangSelected, tvNamSelected, tvThangClicker, tvNamClicker;
 
     private List<String> xValue = new ArrayList<>();
     @Override
@@ -52,31 +51,33 @@ public class ProductSellChartActivity extends AppCompatActivity {
     }
 
     private void SetDefaul() {
+        ChartSetting();
         ChartSettingMonthData();
         addDataMonth();
         statisticalDataMonth();
         layout_chart.setVisibility(View.GONE);
+        tvNamSelected.setBackgroundColor(Color.WHITE);
     }
 
     private void SetEvent() {
-        rdThang.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        tvThangClicker.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    ChartSettingMonthData();
-                    addDataMonth();
-                    statisticalDataMonth();
-                }
+            public void onClick(View v) {
+                ChartSettingMonthData();
+                addDataMonth();
+                statisticalDataMonth();
+                tvThangSelected.setBackgroundColor(getColor(R.color.main_color));
+                tvNamSelected.setBackgroundColor(Color.WHITE);
             }
         });
-        rdNam.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        tvNamClicker.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    ChartSettingYearData();
-                    addDataYear();
-                    statisticalDataYear();
-                }
+            public void onClick(View v) {
+                ChartSettingYearData();
+                addDataYear();
+                statisticalDataYear();
+                tvNamSelected.setBackgroundColor(getColor(R.color.main_color));
+                tvThangSelected.setBackgroundColor(Color.WHITE);
             }
         });
         btnshowChart.setOnClickListener(new View.OnClickListener() {
@@ -97,14 +98,16 @@ public class ProductSellChartActivity extends AppCompatActivity {
 
     private void SetControl() {
         mplineChart = findViewById(R.id.lineChart);
-        rdThang = findViewById(R.id.rdThang);
-        rdNam = findViewById(R.id.rdNam);
         listViewStatistical = findViewById(R.id.listStatistical);
         btnshowChart = findViewById(R.id.btnShow_chart);
         btnShowList = findViewById(R.id.btnShow_list);
         layout_list = findViewById(R.id.layout_list);
         layout_chart = findViewById(R.id.layout_chart);
         tvSold = findViewById(R.id.tvProductSold);
+        tvThangSelected = findViewById(R.id.thangSelected);
+        tvNamSelected = findViewById(R.id.namSelected);
+        tvThangClicker = findViewById(R.id.tvThangClicker);
+        tvNamClicker = findViewById(R.id.tvNamClicker);
     }
 
     private void statisticalDataMonth() {
@@ -122,14 +125,7 @@ public class ProductSellChartActivity extends AppCompatActivity {
         tvSold.setText(String.format("Thống kê được %s sản phẩm",String.valueOf(sum)));
     }
 
-    private void ChartSettingMonthData() {
-        xValue = Arrays.asList("11-2023", "12-2023", "1-2024","2-2024","3-2024","4-2024");
-        XAxis xAxis = mplineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xValue));
-        xAxis.setLabelCount(4);
-        xAxis.setGranularity(1f);
-
+    private void ChartSetting() {
         YAxis yAxis = mplineChart.getAxisRight();
         yAxis.setEnabled(false);
 
@@ -149,7 +145,15 @@ public class ProductSellChartActivity extends AppCompatActivity {
         mplineChart.setDrawBorders(true);
         mplineChart.setBorderColor(Color.RED);
         mplineChart.setBorderWidth(5);
+    }
 
+    private void ChartSettingMonthData() {
+        xValue = Arrays.asList("11-2023", "12-2023", "1-2024","2-2024","3-2024","4-2024");
+        XAxis xAxis = mplineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xValue));
+        xAxis.setLabelCount(4);
+        xAxis.setGranularity(1f);
     }
 
     private void ChartSettingYearData() {
@@ -159,26 +163,6 @@ public class ProductSellChartActivity extends AppCompatActivity {
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xValue));
         xAxis.setLabelCount(4);
         xAxis.setGranularity(1f);
-
-        YAxis yAxis = mplineChart.getAxisRight();
-        yAxis.setEnabled(false);
-
-        Legend legend = mplineChart.getLegend();
-
-        List<LegendEntry> legendEntries = new ArrayList<>();
-        LegendEntry legendEntry = new LegendEntry();
-        legendEntry.label = "Product 1";
-        legendEntry.formColor = Color.BLUE;
-
-        legendEntries.add(legendEntry);
-        legend.setCustom(legendEntries);
-        legend.setTextSize(15);
-        legend.setFormSize(15);
-
-        mplineChart.setDrawGridBackground(true);
-        mplineChart.setDrawBorders(true);
-        mplineChart.setBorderColor(Color.RED);
-        mplineChart.setBorderWidth(5);
     }
 
     private ArrayList<Entry> product_year_data_chart() {

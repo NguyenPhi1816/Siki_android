@@ -3,20 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginBottom="10sp">
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+    android:layout_marginBottom="20sp"
+    android:gravity="center"
+    android:background="@color/gray">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tieu de"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
-    <TextView
-        android:id="@+id/tvValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="So luong san pham"
-        android:textSize="12sp"/>
-
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_margin="5sp"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tieu de"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:paddingLeft="15sp"/>
+        <TextView
+            android:id="@+id/tvValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="So luong san pham"
+            android:textSize="12sp"
+            android:paddingLeft="15sp"
+            android:paddingTop="5sp"/>
+    </LinearLayout>
 </LinearLayout>

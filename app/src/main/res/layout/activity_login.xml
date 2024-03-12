@@ -45,12 +45,26 @@
                 android:hint="Email"
                 android:id="@+id/email"
                 android:layout_marginBottom="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/redcart"
+                android:textSize="12dp"
+                android:id="@+id/email_error_message"
+                />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Mật khẩu"
                 android:id="@+id/password"
                 android:layout_marginBottom="20dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/redcart"
+                android:textSize="12dp"
+                android:id="@+id/pass_error_message"
+                />
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,7 +73,9 @@
                 android:text="Đăng nhập"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/submit_btn"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

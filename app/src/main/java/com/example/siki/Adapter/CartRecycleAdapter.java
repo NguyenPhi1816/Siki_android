@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,9 +39,11 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
     @Override
     public void onBindViewHolder(@NonNull CartHolder holder, int position) {
         Product product = productList.get(position);
+        // Todo: set isChosen of cart
+        holder.cartCheckbox.setChecked(true);
         holder.cartImage.setImageResource(R.drawable.samsung);
         holder.productName.setText(product.getName());
-        holder.productPrice.setText(product.getProductPrice().getPrice()+"");
+        holder.productPrice.setText(product.getProductPrice().getPrice()+" d");
     }
 
     @Override
@@ -52,8 +55,11 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
 
         ImageView cartImage;
         TextView productName, productPrice;
+
+        CheckBox cartCheckbox;
         public CartHolder(@NonNull View itemView) {
             super(itemView);
+            cartCheckbox = itemView.findViewById(R.id.cb_cart);
             cartImage = itemView.findViewById(R.id.cart_image);
             productName = itemView.findViewById(R.id.cart_name);
             productPrice = itemView.findViewById(R.id.cart_price);

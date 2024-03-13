@@ -3,7 +3,6 @@ package com.example.siki.Adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.siki.R;
-import com.example.siki.activities.ProductAddActivity;
 import com.example.siki.activities.ProductDetailActivity;
 import com.example.siki.activities.ProductListActivity;
 import com.example.siki.database.DatabaseProduct;
@@ -77,7 +75,7 @@ public class ProductAdapter extends BaseAdapter {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.setContentView(R.layout.dialog_confirm);
+                dialog.setContentView(R.layout.dialog_delete);
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 dialog.setCancelable(false);
 

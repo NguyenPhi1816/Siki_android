@@ -42,7 +42,7 @@ public class CartActivity extends AppCompatActivity {
                 .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore(),
                         Collectors.mapping(Cart::getProduct, Collectors.toList())));
         tv_cart_totalPrice.setText(getTotal()+"");
-        cb_cart_total.setText(String.format(cartMessage, storeProductMap.size()));
+        cb_cart_total.setText(String.format(cartMessage, cartList.size()));
         storeAdapter = new StoreRecycleAdapter(storeProductMap);
         storeRecycle.setAdapter(storeAdapter);
         storeRecycle.setLayoutManager(new GridLayoutManager(this, 1));
@@ -115,10 +115,22 @@ public class CartActivity extends AppCompatActivity {
         cart4.setQuantity(1);
         cart4.setProduct(product4);
 
+        Cart cart5 = new Cart();
+        cart5.setId(5L);
+        cart5.setQuantity(1);
+        cart5.setProduct(product3);
+
+        Cart cart6 = new Cart();
+        cart6.setId(6L);
+        cart6.setQuantity(1);
+        cart6.setProduct(product4);
+
         cartList.add(cart1);
         cartList.add(cart2);
         cartList.add(cart3);
         cartList.add(cart4);
+        cartList.add(cart5);
+        cartList.add(cart6);
     }
 
     private void setControl () {

@@ -31,33 +31,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Đăng nhập bằng email"
+                android:text="Đăng nhập bằng số điện thoại"
                 android:textSize="24sp"
                 android:textStyle="bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Nhập email và mật khẩu tài khoản Siki"/>
+                android:text="Nhập số điện thoại và mật khẩu tài khoản Siki"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Email"
-                android:id="@+id/email"
+                android:hint="Số điện thoại"
+                android:id="@+id/phone_number"
                 android:layout_marginBottom="10dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="@color/redcart"
                 android:textSize="12dp"
-                android:id="@+id/email_error_message"
+                android:id="@+id/phone_number_error_message"
                 />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Mật khẩu"
                 android:id="@+id/password"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="20dp"
+                android:inputType="textPassword"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

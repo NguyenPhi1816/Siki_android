@@ -2,9 +2,12 @@ package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,6 +18,7 @@ import com.example.siki.model.Product;
 import com.example.siki.model.ProductPrice;
 
 public class ProductDetailActivity extends AppCompatActivity {
+
     EditText edtTenSp, edtMaSp, edtGiaSp, edtAnhSp;
     Button btnBack, btnSua;
     DatabaseProduct databaseProduct;
@@ -52,21 +56,41 @@ public class ProductDetailActivity extends AppCompatActivity {
                 ProductDetailActivity.this.startActivity(activityChangeIntent);
             }
         });
-
+        Dialog dialog = new Dialog(this);
         btnSua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Product product = new Product();
-                ProductPrice productPrice = new ProductPrice();
-                productPrice.setPrice(Double.parseDouble(edtGiaSp.getText().toString()));
-                product.setId(Long.parseLong(edtMaSp.getText().toString()));
-                product.setImagePath(edtAnhSp.getText().toString());
-                product.setName(edtTenSp.getText().toString());
-                product.setProductPrice(productPrice);
-                databaseProduct.updateProduct(product);
-                Intent intent = new Intent(ProductDetailActivity.this, ProductListActivity.class);
-                startActivity(intent);
-                Toast.makeText(ProductDetailActivity.this, "Chỉnh sửa thành công", Toast.LENGTH_LONG).show();
+                dialog.setContentView(R.layout.dialog_update);
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog.setCancelable(false);
+
+                Button btnYes = dialog.findViewById(R.id.btnYes);
+                btnYes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Product product = new Product();
+                        ProductPrice productPrice = new ProductPrice();
+                        productPrice.setPrice(Double.parseDouble(edtGiaSp.getText().toString()));
+                        product.setId(Long.parseLong(edtMaSp.getText().toString()));
+                        product.setImagePath(edtAnhSp.getText().toString());
+                        product.setName(edtTenSp.getText().toString());
+                        product.setProductPrice(productPrice);
+                        databaseProduct.updateProduct(product);
+                        Intent intent = new Intent(ProductDetailActivity.this, ProductListActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(ProductDetailActivity.this, "Chỉnh sửa thành công", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                Button btnNo = dialog.findViewById(R.id.btnNo);
+                btnNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
             }
         });
     }

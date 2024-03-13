@@ -23,6 +23,7 @@ public class DatabaseProduct extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table tbProduct(id text, name text, imagePath text, productPrice text)";
+        sql += "create table tbUser(id text, firstName text, lastName text, address text, phoneNumber text, gender text, dateOfBirth text, avatar text, email text)";
         db.execSQL(sql);
     }
 

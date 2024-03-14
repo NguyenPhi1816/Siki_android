@@ -34,7 +34,6 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
     @Override
     public void onBindViewHolder(@NonNull StoreHolder holder, int position) {
         Map.Entry<Store, List<Product>> store = (Map.Entry<Store, List<Product>>) getItem(position);
-        // Todo: ?????????????????
         holder.cb_shopId.setChecked(true);
         holder.cb_shopId.setText(store.getKey().getName());
         List<Product>productList = store.getValue();

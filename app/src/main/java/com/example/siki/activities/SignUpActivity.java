@@ -25,9 +25,18 @@ import com.example.siki.model.User;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
+    private static final String EMAIL_REGEX =
+            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private static final Pattern pattern = Pattern.compile(EMAIL_REGEX);
+    private static final String DATE_FORMAT = "dd-MM-yyyy";
     private EditText firstNameEditText;
     private EditText lastNameEditText;
     private EditText addressEditText;
@@ -40,9 +49,15 @@ public class SignUpActivity extends AppCompatActivity {
     private Button showDatePickerButton;
     private Button signUpButton;
     private Button signUpToLoginButton;
-    private TextView signUpError;
     private Button signUpToMain;
     private TextView firstNameErrorMessage;
+    private TextView lastNameErrorMessage;
+    private TextView addressErrorMessage;
+    private TextView phoneNumberErrorMessage;
+    private TextView emailErrorMessage;
+    private TextView passwordErrorMessage;
+    private TextView confirmPasswordErrorMessage;
+    private TextView dateOfBirthErrorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +75,24 @@ public class SignUpActivity extends AppCompatActivity {
         showDatePickerButton = findViewById(R.id.show_date_picker_btn);
         signUpButton = findViewById(R.id.sign_up_btn);
         signUpToLoginButton = findViewById(R.id.sign_up_to_login_btn);
-        signUpError = findViewById(R.id.sign_up_error);
         signUpToMain = findViewById(R.id.sign_up_to_main);
         firstNameErrorMessage = findViewById(R.id.first_name_error_message);
+        lastNameErrorMessage = findViewById(R.id.last_name_error_message);
+        addressErrorMessage = findViewById(R.id.address_error_message);
+        phoneNumberErrorMessage = findViewById(R.id.phone_number_error_message);
+        emailErrorMessage = findViewById(R.id.email_error_message);
+        passwordErrorMessage = findViewById(R.id.password_error_message);
+        confirmPasswordErrorMessage = findViewById(R.id.confirm_password_error_message);
+        dateOfBirthErrorMessage = findViewById(R.id.date_of_birth_error_message);
+
+        firstNameErrorMessage.setVisibility(View.GONE);
+        lastNameErrorMessage.setVisibility(View.GONE);
+        addressErrorMessage.setVisibility(View.GONE);
+        phoneNumberErrorMessage.setVisibility(View.GONE);
+        emailErrorMessage.setVisibility(View.GONE);
+        passwordErrorMessage.setVisibility(View.GONE);
+        confirmPasswordErrorMessage.setVisibility(View.GONE);
+        dateOfBirthErrorMessage.setVisibility(View.GONE);
 
         signUpToMain.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -75,6 +105,61 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 editTextValidator(hasFocus, firstNameErrorMessage, firstNameEditText.getText().toString().isEmpty(), "Vui lòng nhập thông tin này");
+            }
+        });
+
+        lastNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editTextValidator(hasFocus, lastNameErrorMessage, lastNameEditText.getText().toString().isEmpty(), "Vui lòng nhập thông tin này");
+            }
+        });
+
+        addressEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editTextValidator(hasFocus, addressErrorMessage, addressEditText.getText().toString().isEmpty(), "Vui lòng nhập thông tin này");
+            }
+        });
+
+        phoneNumberEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                final String phoneNumberStr = phoneNumberEditText.getText().toString();
+                final boolean condition = phoneNumberStr.length() != 10 || !phoneNumberStr.startsWith("0");
+                        editTextValidator(hasFocus, phoneNumberErrorMessage, condition, "Số điện thoại không đúng");
+            }
+        });
+
+        emailEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                final String email = emailEditText.getText().toString();
+                final boolean condition = email.isEmpty() || !isValidEmail(email);
+                editTextValidator(hasFocus, emailErrorMessage, condition, "Địa chỉ email không đúng");
+            }
+        });
+
+        passwordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editTextValidator(hasFocus, passwordErrorMessage, passwordEditText.getText().toString().isEmpty(), "Vui lòng nhập mật khẩu");
+            }
+        });
+
+        confirmPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editTextValidator(hasFocus, confirmPasswordErrorMessage, confirmPasswordEditText.getText().toString().isEmpty(), "Vui lòng nhập lại mật khẩu");
+            }
+        });
+
+        dateOfBirthEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                final String dateOfBirth = dateOfBirthEditText.getText().toString();
+                final boolean condition = dateOfBirth.isEmpty() || !isValidDate(dateOfBirth);
+                editTextValidator(hasFocus, dateOfBirthErrorMessage, condition, "Vui lòng nhập một ngày (dd/MM/yyyy)");
             }
         });
 
@@ -103,10 +188,12 @@ public class SignUpActivity extends AppCompatActivity {
         if (!hasFocus) {
             if (condition) {
                 tw.setText(message);
+                tw.setVisibility(View.VISIBLE);
             }
         }
         if (hasFocus) {
             tw.setText("");
+            tw.setVisibility(View.GONE);
         }
     }
 
@@ -146,21 +233,35 @@ public class SignUpActivity extends AppCompatActivity {
         RadioButton selectedGenderRadioButton = findViewById(selectedGenderId);
         String selectedGender = selectedGenderRadioButton.getText().toString();
 
-        if (password.equals(confirmPassword)){
-            System.out.println("Hello world");
-            final User retreivedUser = insertUserToDB(firstName, lastName, address, phoneNumber, selectedGender, dateOfBirth, email);
-            if(retreivedUser != null) {
-                final Account retreivedAccount = insertAccountToDB(phoneNumber, password);
-                if(retreivedAccount != null) {
-                    Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+        boolean isValidInfor = true;
+        isValidInfor = !firstName.isEmpty();
+        isValidInfor = !lastName.isEmpty();
+        isValidInfor = !address.isEmpty();
+        isValidInfor = phoneNumber.length() == 10 && phoneNumber.startsWith("0");
+        isValidInfor = !email.isEmpty() && isValidEmail(email);
+        isValidInfor = !password.isEmpty();
+        isValidInfor = !confirmPassword.isEmpty();
+        isValidInfor = !dateOfBirth.isEmpty() && isValidDate(dateOfBirth);
+
+        if(isValidInfor) {
+            if (password.equals(confirmPassword)){
+                System.out.println("Hello world");
+                final User retreivedUser = insertUserToDB(firstName, lastName, address, phoneNumber, selectedGender, dateOfBirth, email);
+                if(retreivedUser != null) {
+                    final Account retreivedAccount = insertAccountToDB(phoneNumber, password);
+                    if(retreivedAccount != null) {
+                        Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Có lỗi xảy ra trong quá trình đăng ký tài khoản", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(this, "Có lỗi xảy ra trong quá trình đăng ký tài khoản", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Có lỗi xảy ra trong quá trình đăng ký thông tin người dùng", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "Có lỗi xảy ra trong quá trình đăng ký thông tin người dùng", Toast.LENGTH_SHORT).show();
+                confirmPasswordErrorMessage.setText("Mật khẩu nhập lại chưa chính xác.");
             }
         } else {
-            signUpError.setText("Mật khẩu nhập lại chưa chính xác.");
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin.", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -255,5 +356,23 @@ public class SignUpActivity extends AppCompatActivity {
         String hashedPassword = BCrypt.hashpw(plainTextPassword, salt);
 
         return hashedPassword;
+    }
+
+    public static boolean isValidEmail(String email) {
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    public static boolean isValidDate(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        sdf.setLenient(false); // Không linh hoạt, phải khớp chính xác với định dạng
+        try {
+            Date date = sdf.parse(dateString);
+            // Kiểm tra xem ngày được parse có giống với chuỗi đầu vào không
+            return dateString.equals(sdf.format(date));
+        } catch (ParseException e) {
+            // Nếu parse thất bại, chuỗi không phù hợp định dạng
+            return false;
+        }
     }
 }

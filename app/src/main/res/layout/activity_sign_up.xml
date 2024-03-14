@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:hint="Nhập họ"
                 android:id="@+id/first_name"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="4dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -52,41 +52,81 @@
                 android:layout_height="match_parent"
                 android:hint="Nhập tên"
                 android:id="@+id/last_name"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="4dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/redcart"
+                android:textSize="12dp"
+                android:id="@+id/last_name_error_message"
+                />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Nhập địa chỉ"
                 android:id="@+id/address"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="4dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/redcart"
+                android:textSize="12dp"
+                android:id="@+id/address_error_message"
+                />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Nhập số điện thoại"
                 android:id="@+id/phone_number"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="4dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/redcart"
+                android:textSize="12dp"
+                android:id="@+id/phone_number_error_message"
+                />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Nhập email"
                 android:id="@+id/email"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="4dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/redcart"
+                android:textSize="12dp"
+                android:id="@+id/email_error_message"
+                />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Nhập mật khẩu"
                 android:id="@+id/password"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="4dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/redcart"
+                android:textSize="12dp"
+                android:id="@+id/password_error_message"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Nhập lại mật khẩu"
                 android:id="@+id/confirm_password"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="4dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/redcart"
+                android:textSize="12dp"
+                android:id="@+id/confirm_password_error_message"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="4dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -103,7 +143,8 @@
                         android:id="@+id/maleRadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nam" />
+                        android:text="Nam"
+                        android:checked="true"/>
 
                     <RadioButton
                         android:id="@+id/femaleRadioButton"
@@ -138,11 +179,12 @@
                     android:text="Chọn"/>
             </LinearLayout>
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20px"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textColor="@color/redcart"
-                android:id="@+id/sign_up_error"/>
+                android:textSize="12dp"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/date_of_birth_error_message"/>
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

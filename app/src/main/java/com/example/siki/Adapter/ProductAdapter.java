@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.example.siki.R;
 import com.example.siki.activities.ProductDetailActivity;
 import com.example.siki.activities.ProductListActivity;
-import com.example.siki.database.DatabaseProduct;
+import com.example.siki.database.ProductDatabase;
 import com.example.siki.model.Product;
 import com.squareup.picasso.Picasso;
 
@@ -23,7 +23,6 @@ import java.util.List;
 public class ProductAdapter extends BaseAdapter {
     private Context context;
     private List<Product> productList;
-    DatabaseProduct databaseProduct;
 
     public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
@@ -69,7 +68,8 @@ public class ProductAdapter extends BaseAdapter {
                 context.startActivity(intent);
             }
         });
-        databaseProduct = new DatabaseProduct(context);
+        ProductDatabase productDatabase = new ProductDatabase(context);
+        productDatabase.open();
         Button btnDelete = productView.findViewById(R.id.btnDelete);
         Dialog dialog = new Dialog(context);
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +85,7 @@ public class ProductAdapter extends BaseAdapter {
                     public void onClick(View view) {
                         Product sp = new Product();
                         sp.setId(product.getId());
-                        databaseProduct.deleteProduct(sp);
+                        productDatabase.deleteProduct(sp);
                         dialog.dismiss();
                         Intent intent = new Intent(context, ProductListActivity.class);
                         context.startActivity(intent);
@@ -104,7 +104,6 @@ public class ProductAdapter extends BaseAdapter {
                 dialog.show();
             }
         });
-
         return productView;
     }
 

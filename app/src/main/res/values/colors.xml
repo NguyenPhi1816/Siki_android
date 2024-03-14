@@ -6,6 +6,6 @@
     <color name="main_color">#F0739D</color>
     <color name="grey">#A9A9A9</color>
     <color name="redcart">#DF0000</color>
-
+    <color name="border">#CACACA</color>
     <color name="gray">#A8A4A4</color>
 </resources>

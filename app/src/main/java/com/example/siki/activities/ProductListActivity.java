@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import com.example.siki.R;
 import com.example.siki.Adapter.ProductAdapter;
-import com.example.siki.database.DatabaseProduct;
+import com.example.siki.database.ProductDatabase;
 import com.example.siki.model.Product;
 
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ public class ProductListActivity extends AppCompatActivity {
     private List<Product> productList = new ArrayList<>();
     private ListView listViewProduct;
     private ProductAdapter productAdapter;
-    DatabaseProduct databaseProduct;
     Button btnThem, btnBack;
 
     @Override
@@ -33,7 +32,6 @@ public class ProductListActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        databaseProduct = new DatabaseProduct(this);
         productAdapter = new ProductAdapter(this, productList);
         listViewProduct = findViewById(R.id.product_lv);
         listViewProduct.setAdapter(productAdapter);
@@ -53,7 +51,9 @@ public class ProductListActivity extends AppCompatActivity {
 
     private void readDb() {
         productList.clear();
-        productList.addAll(databaseProduct.readDb());
+        ProductDatabase productDatabase = new ProductDatabase(this);
+        productDatabase.open();
+        productList.addAll(productDatabase.readDb());
         productAdapter.notifyDataSetChanged();
     }
 

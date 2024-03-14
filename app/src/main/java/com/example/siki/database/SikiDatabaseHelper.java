@@ -31,6 +31,7 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
     private void createTables (SQLiteDatabase db) {
         db.execSQL(createUserTable());
         db.execSQL(createAccountTable());
+        db.execSQL(createProductTable());
     }
 
     // Define methods to create each table
@@ -55,5 +56,9 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
                 "Password TEXT, " +
                 "UserRoleId INTEGER, " +
                 "Status TEXT);";
+    }
+
+    private String createProductTable() {
+        return "create table if not exists Product(id integer, name text, imagePath text, productPrice double)";
     }
 }

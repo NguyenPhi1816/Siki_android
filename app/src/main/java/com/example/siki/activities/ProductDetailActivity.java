@@ -3,7 +3,6 @@ package com.example.siki.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.siki.R;
-import com.example.siki.database.DatabaseProduct;
+import com.example.siki.database.ProductDatabase;
 import com.example.siki.model.Product;
 import com.example.siki.model.ProductPrice;
 
@@ -21,7 +20,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     EditText edtTenSp, edtMaSp, edtGiaSp, edtAnhSp;
     Button btnBack, btnSua;
-    DatabaseProduct databaseProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +31,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        databaseProduct = new DatabaseProduct(this);
+        ProductDatabase productDatabase = new ProductDatabase(this);
+        productDatabase.open();
         Product product = (Product) getIntent().getSerializableExtra("product");
         if (product != null) {
             if (product.getProductPrice() != null) {
@@ -75,7 +74,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         product.setImagePath(edtAnhSp.getText().toString());
                         product.setName(edtTenSp.getText().toString());
                         product.setProductPrice(productPrice);
-                        databaseProduct.updateProduct(product);
+                        productDatabase.updateProduct(product);
                         Intent intent = new Intent(ProductDetailActivity.this, ProductListActivity.class);
                         startActivity(intent);
                         Toast.makeText(ProductDetailActivity.this, "Chỉnh sửa thành công", Toast.LENGTH_LONG).show();

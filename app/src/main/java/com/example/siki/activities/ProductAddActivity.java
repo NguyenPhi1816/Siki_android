@@ -16,7 +16,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.siki.R;
+import com.example.siki.database.CategoryDatabase;
 import com.example.siki.database.ProductDatabase;
+import com.example.siki.model.Category;
 import com.example.siki.model.Product;
 import com.example.siki.model.ProductPrice;
 
@@ -31,11 +33,18 @@ public class ProductAddActivity extends AppCompatActivity {
     Button btnBack, btnThem;
 
     private void khoiTao() {
-        listLoaiSp.add("Điện thoại");
-        listLoaiSp.add("Laptop");
-        listLoaiSp.add("PC");
-        listLoaiSp.add("Vật dụng cá nhân");
-        listLoaiSp.add("Đồ nội thất");
+        CategoryDatabase categoryDatabase = new CategoryDatabase(this);
+        categoryDatabase.open();
+        Category category1 = new Category(1L, "Điện thoại", "Đây là điện thoại");
+        Category category2 = new Category(2L, "PC", "Đây là PC");
+        Category category3 = new Category(3L, "Laptop", "Đây là Laptop");
+        categoryDatabase.addCategory(category1);
+        categoryDatabase.addCategory(category2);
+        categoryDatabase.addCategory(category3);
+        List<Category> categoryList = categoryDatabase.readDb();
+        for(Category a : categoryList) {
+            listLoaiSp.add(a.getName());
+        }
 
     }
 

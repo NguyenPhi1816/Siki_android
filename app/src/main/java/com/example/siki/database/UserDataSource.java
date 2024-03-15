@@ -67,6 +67,29 @@ public class UserDataSource {
         return user;
     }
 
+    @SuppressLint("Range")
+    public User getUserPhoneNumber(String phoneNumber) {
+        User user = null;
+        try (Cursor cursor = db.query("User", null, "PhoneNumber=?", new String[]{phoneNumber}, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                user = new User();
+                user.setId(cursor.getInt(cursor.getColumnIndex("Id")));
+                user.setFirstName(cursor.getString(cursor.getColumnIndex("FirstName")));
+                user.setLastName(cursor.getString(cursor.getColumnIndex("LastName")));
+                user.setAddress(cursor.getString(cursor.getColumnIndex("Address")));
+                user.setPhoneNumber(cursor.getString(cursor.getColumnIndex("PhoneNumber")));
+                user.setGender(cursor.getString(cursor.getColumnIndex("Gender")));
+                user.setDateOfBirth(cursor.getString(cursor.getColumnIndex("DateOfBirth")));
+                user.setAvatar(cursor.getString(cursor.getColumnIndex("Avatar")));
+                user.setEmail(cursor.getString(cursor.getColumnIndex("Email")));
+            }
+        } catch (Exception e) {
+            // Handle any exceptions
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public int updateUser(User user) {
         int rowsAffected = -1;
         try {

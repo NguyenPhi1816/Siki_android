@@ -2,7 +2,14 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+<<<<<<< HEAD
       <entry key="ProductActivity">
+=======
+      <entry key="CartActivity">
+        <State />
+      </entry>
+      <entry key="PaymentActivity">
+>>>>>>> 97977e99879406b23662d72b515e264ed7a0d6a4
         <State />
       </entry>
     </value>

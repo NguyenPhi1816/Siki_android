@@ -24,20 +24,20 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_gravity="center"
-            android:text="Thanh toan"
+            android:text="Thanh toán"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="24dp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp"
         android:orientation="vertical"
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="15dp"
             >
             <ImageView
                 android:layout_width="wrap_content"
@@ -47,11 +47,12 @@
             <TextView
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
-                android:text="Dia chi nhan hang"
+                android:text="Địa chỉ nhận hàng"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
         <LinearLayout
+            android:paddingHorizontal="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -77,20 +78,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_shopItem"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:background="@color/grey"
-            android:layout_marginTop="5dp"
-            android:layout_height="1dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:background="@color/grey"
-            android:layout_marginTop="5dp"
-            android:layout_height="1dp"/>
-
+            android:layout_height="550dp"
+        />
         <TextView
             android:layout_width="match_parent"
             android:background="@color/grey"
@@ -115,27 +104,33 @@
             android:layout_height="1dp"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end"
             android:orientation="horizontal"
-            android:paddingVertical="10dp"
             >
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_gravity="bottom"
-               android:layout_height="match_parent">
                <LinearLayout
                    android:layout_width="wrap_content"
-                   android:layout_height="match_parent">
+                   android:orientation="vertical"
+                   android:layout_height="wrap_content">
                    <TextView
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
-                       android:text="Tong thanh toan"/>
+                       android:text="Tổng thanh toán"/>
+                   <TextView
+                       android:id="@+id/tv_payment_total"
+                       android:textColor="@color/main_color"
+                       android:textSize="20sp"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:text="1000000"/>
                </LinearLayout>
                <Button
+                   android:layout_gravity="end"
+                   android:gravity="center"
+                   android:background="@color/main_color"
                    android:layout_width="wrap_content"
-                   android:text="Thanh toan"
+                   android:text="Thanh toán"
                    android:layout_height="match_parent"/>
            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

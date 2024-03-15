@@ -12,11 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
 import com.example.siki.model.Cart;
+import com.example.siki.utils.PriceFormatter;
 
 import java.util.List;
 
 public class PaymentRecycleAdapter extends RecyclerView.Adapter<PaymentRecycleAdapter.PaymentHolder> {
     private List<Cart> cartList;
+
+    private final String quantityFormat = "x    %d";
 
     public PaymentRecycleAdapter(List<Cart> cartList) {
         this.cartList = cartList;
@@ -32,13 +35,17 @@ public class PaymentRecycleAdapter extends RecyclerView.Adapter<PaymentRecycleAd
     @Override
     public void onBindViewHolder(@NonNull PaymentHolder holder, int position) {
         Cart cart = cartList.get(position);
-        /*holder.payment_product_image.setImageResource(R.drawable.samsung);
-        double totalPrice = cart.getProduct().getProductPrice().getPrice() * cart.getQuantity();
-        holder.payment_product_price.setText(cart.getProduct().getProductPrice().getPrice() + "");
+        holder.payment_product_image.setImageResource(R.drawable.samsung);
+        double productPrice = cart.getProduct().getProductPrice().getPrice();
+        String productPriceString = PriceFormatter.formatDouble(productPrice);
+        double totalPrice = productPrice * cart.getQuantity();
+        String totalPriceString = PriceFormatter.formatDouble(totalPrice);
+
         holder.payment_store_name.setText(cart.getProduct().getStore().getName());
-        holder.payment_product_quantity.setText(cart.getQuantity());
+        holder.payment_product_price.setText(productPriceString);
+        holder.payment_product_quantity.setText(String.format(quantityFormat, cart.getQuantity()));
         holder.payment_product_name.setText(cart.getProduct().getName());
-        holder.payment_totalPrice.setText(totalPrice+"");*/
+        holder.payment_totalPrice.setText(totalPriceString);
     }
 
     @Override

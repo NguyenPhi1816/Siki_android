@@ -32,6 +32,7 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createUserTable());
         db.execSQL(createAccountTable());
         db.execSQL(createProductTable());
+        db.execSQL(createCartTable());
     }
 
     // Define methods to create each table
@@ -60,5 +61,17 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
 
     private String createProductTable() {
         return "create table if not exists Product(id integer, name text, imagePath text, productPrice double)";
+    }
+
+    private String createCartTable() {
+        return "CREATE TABLE IF NOT EXISTS Cart (\n" +
+                "    id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "    user_id BIGINT,\n" +
+                "    product_id BIGINT,\n" +
+                "    quantity INTEGER,\n" +
+                "    is_selected BOOLEAN,\n" +
+                "    FOREIGN KEY (user_id) REFERENCES User(Id),\n" +
+                "    FOREIGN KEY (product_id) REFERENCES Product(Id)\n" +
+                ");\n";
     }
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.siki.R;
@@ -19,6 +20,7 @@ import com.example.siki.model.ProductPrice;
 public class ProductDetailActivity extends AppCompatActivity {
 
     EditText edtTenSp, edtMaSp, edtGiaSp, edtAnhSp;
+    TextView tvLoaiSp;
     Button btnBack, btnSua;
 
     @Override
@@ -102,5 +104,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         btnSua = findViewById(R.id.btnSua);
         btnBack = findViewById(R.id.btnBack);
+        tvLoaiSp = findViewById(R.id.tvLoaiSp);
     }
 }

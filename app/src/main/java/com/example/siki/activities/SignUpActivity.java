@@ -233,30 +233,40 @@ public class SignUpActivity extends AppCompatActivity {
         RadioButton selectedGenderRadioButton = findViewById(selectedGenderId);
         String selectedGender = selectedGenderRadioButton.getText().toString();
 
-        boolean isValidInfor = true;
-        isValidInfor = !firstName.isEmpty();
-        isValidInfor = !lastName.isEmpty();
-        isValidInfor = !address.isEmpty();
-        isValidInfor = phoneNumber.length() == 10 && phoneNumber.startsWith("0");
-        isValidInfor = !email.isEmpty() && isValidEmail(email);
-        isValidInfor = !password.isEmpty();
-        isValidInfor = !confirmPassword.isEmpty();
-        isValidInfor = !dateOfBirth.isEmpty() && isValidDate(dateOfBirth);
+        boolean isValidInfor = !firstName.isEmpty()
+                                && !lastName.isEmpty()
+                                && !address.isEmpty()
+                                && phoneNumber.length() == 10 && phoneNumber.startsWith("0")
+                                && !email.isEmpty() && isValidEmail(email)
+                                && !password.isEmpty()
+                                && !confirmPassword.isEmpty()
+                                && !dateOfBirth.isEmpty() && isValidDate(dateOfBirth);
 
         if(isValidInfor) {
             if (password.equals(confirmPassword)){
-                System.out.println("Hello world");
-                final User retreivedUser = insertUserToDB(firstName, lastName, address, phoneNumber, selectedGender, dateOfBirth, email);
-                if(retreivedUser != null) {
-                    final Account retreivedAccount = insertAccountToDB(phoneNumber, password);
-                    if(retreivedAccount != null) {
-                        Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Có lỗi xảy ra trong quá trình đăng ký tài khoản", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(this, "Có lỗi xảy ra trong quá trình đăng ký thông tin người dùng", Toast.LENGTH_SHORT).show();
-                }
+                // Create a new user
+                User newUser = new User();
+                newUser.setFirstName(firstName);
+                newUser.setLastName(lastName);
+                newUser.setAddress(address);
+                newUser.setPhoneNumber(phoneNumber);
+                newUser.setGender(selectedGender);
+                newUser.setDateOfBirth(dateOfBirth);
+                newUser.setAvatar(null);
+                newUser.setEmail(email);
+
+                // Create a new Account
+                final String hashedPassword = hashPassword(password);
+                Account newAccount = new Account();
+                newAccount.setPhoneNumber(phoneNumber);
+                newAccount.setPassword(hashedPassword);
+                newAccount.setUserRoleId(Role.USER.ordinal());
+                newAccount.setStatus(String.valueOf(AccountStatus.ACTIVE));
+
+                Intent intent = new Intent(this, OtpActivity.class);
+                intent.putExtra("newUser", newUser);
+                intent.putExtra("newAccount", newAccount);
+                startActivity(intent);
             } else {
                 confirmPasswordErrorMessage.setText("Mật khẩu nhập lại chưa chính xác.");
             }
@@ -265,87 +275,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     };
 
-    public User insertUserToDB (String firstName,
-                                String lastName,
-                                String address,
-                                String phoneNumber,
-                                String gender,
-                                String dateOfBirth,
-                                String email) {
-        Context context = this; // Provide your Android context here
 
-        // Create a new user
-        User newUser = new User();
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
-        newUser.setAddress(address);
-        newUser.setPhoneNumber(phoneNumber);
-        newUser.setGender(gender);
-        newUser.setDateOfBirth(dateOfBirth);
-        newUser.setAvatar(null);
-        newUser.setEmail(email);
-
-        // Initialize UserDataSource
-        UserDataSource userDataSource = new UserDataSource(context);
-        userDataSource.open();
-
-        // Insert the new user into the database
-        long userId = userDataSource.insertUser(newUser);
-        System.out.println("New user ID: " + userId);
-
-        // Retrieve the user from the database using the ID
-        User retrievedUser = userDataSource.getUserById((int) userId);
-        if (retrievedUser != null) {
-            System.out.println("Retrieved user: " + retrievedUser.toString());
-        } else {
-            System.out.println("User not found");
-        }
-
-        // Close the database connection
-        userDataSource.close();
-        return retrievedUser;
-    }
-
-    public Account insertAccountToDB (String phoneNumber, String password) {
-        Context context = this; // Provide your Android context here
-
-        final String hashedPassword = hashPassword(password);
-
-
-        // Create a new Account
-        Account newAccount = new Account();
-        newAccount.setPhoneNumber(phoneNumber);
-        newAccount.setPassword(hashedPassword);
-        newAccount.setUserRoleId(Role.USER.ordinal());
-        newAccount.setStatus(String.valueOf(AccountStatus.ACTIVE));
-
-        // Initialize AccountDataSource
-        AccountDataSource accountDataSource = new AccountDataSource(context);
-        accountDataSource.open();
-
-        // Insert the new account into the database
-        long insertedId = accountDataSource.insertAccount(newAccount);
-        if (insertedId != -1) {
-            System.out.println("Account inserted successfully with ID: " + insertedId);
-
-            // Retrieve the account from the database using the phone number
-            String phoneNumberToRetrieve = "1234567890";
-            Account retrievedAccount = accountDataSource.getAccountByPhoneNumber(phoneNumberToRetrieve);
-            if (retrievedAccount != null) {
-                System.out.println("Retrieved Account: " + retrievedAccount.toString());
-            } else {
-                System.out.println("Account not found.");
-            }
-            accountDataSource.close();
-            return retrievedAccount;
-        } else {
-            System.out.println("Failed to insert account into the database.");
-        }
-
-        // Close the database connection
-        accountDataSource.close();
-        return null;
-    }
 
     // Method to hash a password
     public static String hashPassword(String plainTextPassword) {
@@ -367,11 +297,9 @@ public class SignUpActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         sdf.setLenient(false); // Không linh hoạt, phải khớp chính xác với định dạng
         try {
-            Date date = sdf.parse(dateString);
-            // Kiểm tra xem ngày được parse có giống với chuỗi đầu vào không
-            return dateString.equals(sdf.format(date));
+            sdf.parse(dateString);
+            return true;
         } catch (ParseException e) {
-            // Nếu parse thất bại, chuỗi không phù hợp định dạng
             return false;
         }
     }

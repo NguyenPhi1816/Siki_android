@@ -1,6 +1,8 @@
 package com.example.siki.model;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable {
     private String phoneNumber;
     private String password;
     private int userRoleId;

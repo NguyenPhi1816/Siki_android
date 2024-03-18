@@ -17,6 +17,7 @@ import com.example.siki.database.SikiDatabaseHelper;
 import com.example.siki.database.UserDataSource;
 import com.example.siki.model.Account;
 import com.example.siki.model.User;
+import com.example.siki.variable.GlobalVariable;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -25,79 +26,38 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private TextView phone_number_error_message;
     private TextView pass_error_message;
-
-    public Account getAccountByCredentials (String phoneNumber, String password) {
-        Context context = this;
-        AccountDataSource accountDataSource = new AccountDataSource(context);
-        accountDataSource.open();
-        Account retrievedAccount = accountDataSource.getAccountByPhoneNumber(phoneNumber);
-        if (retrievedAccount != null) {
-            if (!checkPassword(password, retrievedAccount.getPassword())) {
-                pass_error_message.setText("Mật khẩu không đúng");
-                accountDataSource.close();
-                return null;
-            }
-            System.out.println("Retrieved Account: " + retrievedAccount.toString());
-        } else {
-            phone_number_error_message.setText("Số điện thoại không đúng.");
-            System.out.println("Account not found.");
-        }
-        accountDataSource.close();
-        return retrievedAccount;
-    }
-
-    // Method to check if a password matches the hashed password
-    public static boolean checkPassword(String plainTextPassword, String hashedPassword) {
-        // Check if the provided password matches the hashed password
-        return BCrypt.checkpw(plainTextPassword, hashedPassword);
-    }
+    private Button loginToHomeBtn;
+    private Button createNewAccountBtn;
+    private Button submitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         phoneNumber = (EditText) findViewById(R.id.phone_number);
         password = (EditText) findViewById(R.id.password);
         phone_number_error_message = (TextView) findViewById(R.id.phone_number_error_message);
         pass_error_message = (TextView) findViewById(R.id.pass_error_message);
+        loginToHomeBtn = (Button) findViewById(R.id.login_to_home_btn);
+        createNewAccountBtn = (Button) findViewById(R.id.create_new_account_btn);
+        submitBtn = (Button) findViewById(R.id.submit_btn);
 
-
-        final Button LoginToHomeBtn = (Button) findViewById(R.id.login_to_home_btn);
-        LoginToHomeBtn.setOnClickListener(new View.OnClickListener() {
+        loginToHomeBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent activityChangeIntent = new Intent(LoginActivity.this, MainActivity.class);
-                LoginActivity.this.startActivity(activityChangeIntent);
+                navigateToHome();
             }
         });
 
-        final Button CreateNewAccountBtn = (Button) findViewById(R.id.create_new_account_btn);
-        CreateNewAccountBtn.setOnClickListener(new View.OnClickListener() {
+        createNewAccountBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent activityChangeIntent = new Intent(LoginActivity.this, SignUpActivity.class);
-                LoginActivity.this.startActivity(activityChangeIntent);
+                navigateToSignUp();
             }
         });
 
-        final Button SubmitButton = (Button) findViewById(R.id.submit_btn);
-        SubmitButton.setOnClickListener(new View.OnClickListener() {
+        submitBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String phoneNumber_str = phoneNumber.getText().toString();
-                String pass_str = password.getText().toString();
-
-                if (phoneNumber_str.isEmpty()) {
-                    phone_number_error_message.setText("Vui lòng nhập số điện thoại.");
-                }
-
-                if (pass_str.isEmpty()) {
-                    pass_error_message.setText("Vui lòng nhập mật khẩu.");
-                }
-
-                if (!phoneNumber_str.isEmpty() && !pass_str.isEmpty()){
-                    Account account = getAccountByCredentials(phoneNumber_str, pass_str);
-                    if (account != null) {
-                        Toast.makeText(LoginActivity.this,  "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                login();
             }
         });
 
@@ -118,5 +78,80 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void navigateToHome() {
+        Intent activityChangeIntent = new Intent(LoginActivity.this, MainActivity.class);
+        LoginActivity.this.startActivity(activityChangeIntent);
+    }
+
+    public void navigateToSignUp() {
+        Intent activityChangeIntent = new Intent(LoginActivity.this, SignUpActivity.class);
+        LoginActivity.this.startActivity(activityChangeIntent);
+    }
+
+    public void login() {
+        String phoneNumber_str = phoneNumber.getText().toString();
+        String pass_str = password.getText().toString();
+
+        if (phoneNumber_str.isEmpty()) {
+            phone_number_error_message.setText("Vui lòng nhập số điện thoại.");
+        }
+
+        if (pass_str.isEmpty()) {
+            pass_error_message.setText("Vui lòng nhập mật khẩu.");
+        }
+
+        if (!phoneNumber_str.isEmpty() && !pass_str.isEmpty()){
+            Account account = getAccountByCredentials(phoneNumber_str, pass_str);
+            if (account != null) {
+                User authUser = getUserByPhoneNumber(account.getPhoneNumber());
+                if (authUser != null) {
+                    GlobalVariable globalVariable = (GlobalVariable) getApplication();
+                    globalVariable.setAuthUser(authUser);
+                    globalVariable.setLoggedIn(true);
+                    Toast.makeText(LoginActivity.this,  "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    Intent activityChangeIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(activityChangeIntent);
+                } else {
+                    Toast.makeText(LoginActivity.this,  "Có lỗi xảy ra trong quá trình đăng nhập", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(LoginActivity.this,  "Có lỗi xảy ra trong quá trình đăng nhập", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public Account getAccountByCredentials (String phoneNumber, String password) {
+        Context context = this;
+        AccountDataSource accountDataSource = new AccountDataSource(context);
+        accountDataSource.open();
+        Account retrievedAccount = accountDataSource.getAccountByPhoneNumber(phoneNumber);
+        if (retrievedAccount != null) {
+            if (!checkPassword(password, retrievedAccount.getPassword())) {
+                pass_error_message.setText("Mật khẩu không đúng");
+                accountDataSource.close();
+                return null;
+            }
+            System.out.println("Retrieved Account: " + retrievedAccount.toString());
+        } else {
+            phone_number_error_message.setText("Số điện thoại không đúng.");
+            System.out.println("Account not found.");
+        }
+        accountDataSource.close();
+        return retrievedAccount;
+    };
+
+    public User getUserByPhoneNumber (String phoneNumber) {
+        Context context = this;
+        UserDataSource userDataSource = new UserDataSource(context);
+        userDataSource.open();
+        User retrievedUser = userDataSource.getUserPhoneNumber(phoneNumber);
+        userDataSource.close();
+        return retrievedUser;
+    }
+
+    public static boolean checkPassword(String plainTextPassword, String hashedPassword) {
+        return BCrypt.checkpw(plainTextPassword, hashedPassword);
     }
 }

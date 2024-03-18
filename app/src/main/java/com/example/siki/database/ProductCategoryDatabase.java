@@ -62,7 +62,7 @@ public class ProductCategoryDatabase {
     }
 
     private boolean findByProduct() {
-
+        return false;
     }
 
     public int deleteProductCategory(ProductCategory productCategory) {

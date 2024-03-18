@@ -58,12 +58,14 @@
            android:background="@color/black"
            >
        </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cart_recycleView"
-            android:paddingHorizontal="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="650dp"/>
-        <LinearLayout
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cart_recycleView"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:paddingHorizontal="10dp" />
+
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/black"

@@ -7,9 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Product;
 import com.example.siki.model.ProductPrice;
+import com.example.siki.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ProductDatabase {
     private SQLiteDatabase db;
@@ -43,6 +45,23 @@ public class ProductDatabase {
             } while (cursor.moveToNext());
         }
         return listProduct;
+    }
+    public Product findById(Long productId) {
+        Product product = null;
+        try (Cursor cursor = db.query("Product", null, "id=?", new String[]{String.valueOf(productId)}, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                product = new Product();
+                product.setId(cursor.getLong(0));
+                product.setName(cursor.getString(1));
+                product.setImagePath(cursor.getString(2));
+                ProductPrice productPrice = new ProductPrice();
+                productPrice.setPrice(cursor.getDouble(3));
+                product.setProductPrice(productPrice);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return product;
     }
 
     public long addProduct(Product product) {

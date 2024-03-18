@@ -12,10 +12,14 @@ import android.widget.TextView;
 import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.R;
 
+import com.example.siki.database.CartDatasource;
+import com.example.siki.database.ProductDatabase;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
 import com.example.siki.model.ProductPrice;
 import com.example.siki.model.Store;
+import com.example.siki.model.User;
+import com.example.siki.variable.GlobalVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +27,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CartActivity extends AppCompatActivity {
-    private List<Cart> cartList ;
+    private List<Cart> cartList = new ArrayList<>();
     private TextView tv_cart_totalPrice;
     private CheckBox cb_cart_total;
     private RecyclerView storeRecycle;
+
+    private GlobalVariable globalVariable = new GlobalVariable();
 
     private String cartMessage = "Tất cả %d sản phẩm";
 
@@ -35,9 +41,7 @@ public class CartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        cartList = new ArrayList<>();
         setControl();
-        createCartList();
         Map<Store, List<Product>> storeProductMap = cartList.stream()
                 .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore(),
                         Collectors.mapping(Cart::getProduct, Collectors.toList())));
@@ -48,6 +52,29 @@ public class CartActivity extends AppCompatActivity {
         storeRecycle.setLayoutManager(new GridLayoutManager(this, 1));
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        readDb();
+    }
+
+    private void readDb() {
+       if (globalVariable.getAuthUser() != null) {
+           User currentUser = globalVariable.getAuthUser();
+           cartList.clear();
+           CartDatasource cartDatasource = new CartDatasource(this);
+           cartDatasource.open();
+           cartList.addAll(cartDatasource.findByUser(currentUser.getId()));
+           storeAdapter.notifyDataSetChanged();
+       }
+    }
+
+    private void setControl () {
+        cb_cart_total = findViewById(R.id.cb_cart_total);
+        storeRecycle = findViewById(R.id.cart_recycleView);
+        tv_cart_totalPrice = findViewById(R.id.tv_cart_totalPrice);
+    }
     private double getTotal() {
         double totalPrice = 0 ;
         if (cartList.size() > 0) {
@@ -60,7 +87,8 @@ public class CartActivity extends AppCompatActivity {
         return totalPrice;
     }
 
-    private void createCartList() {
+    // fake data
+     /* private void createCartList() {
         // Todo: get data from api
         ProductPrice productPrice = new ProductPrice();
         Store store1 = new Store();
@@ -131,11 +159,5 @@ public class CartActivity extends AppCompatActivity {
         cartList.add(cart4);
         cartList.add(cart5);
         cartList.add(cart6);
-    }
-
-    private void setControl () {
-        cb_cart_total = findViewById(R.id.cb_cart_total);
-        storeRecycle = findViewById(R.id.cart_recycleView);
-        tv_cart_totalPrice = findViewById(R.id.tv_cart_totalPrice);
-    }
+    }*/
 }

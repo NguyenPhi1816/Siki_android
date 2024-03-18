@@ -68,10 +68,10 @@ public class ProductDatabase {
         long id = -1;
         try {
             ContentValues values = new ContentValues();
-            values.put("id", product.getId());
-            values.put("name", product.getName());
-            values.put("imagePath", product.getImagePath());
-            values.put("productPrice", product.getProductPrice().getPrice());
+            values.put("Id", product.getId());
+            values.put("Name", product.getName());
+            values.put("ImagePath", product.getImagePath());
+            values.put("ProductPrice", product.getProductPrice().getPrice());
 
             id = db.insert("Product", null, values);
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class ProductDatabase {
     public int deleteProduct(Product product) {
         int rowsAffected = -1;
         try {
-            rowsAffected = db.delete("Product", "id=?", new String[]{String.valueOf(product.getId())});
+            rowsAffected = db.delete("Product", "Id=?", new String[]{String.valueOf(product.getId())});
         } catch (Exception e) {
             // Handle any exceptions
             e.printStackTrace();
@@ -96,12 +96,12 @@ public class ProductDatabase {
         int rowsAffected = -1;
         try {
             ContentValues values = new ContentValues();
-            values.put("id", product.getId());
-            values.put("name", product.getName());
-            values.put("imagePath", product.getImagePath());
-            values.put("productPrice", product.getProductPrice().getPrice());
+            values.put("Id", product.getId());
+            values.put("Name", product.getName());
+            values.put("ImagePath", product.getImagePath());
+            values.put("ProductPrice", product.getProductPrice().getPrice());
 
-            rowsAffected = db.update("Product", values, "id=?", new String[]{String.valueOf(product.getId())});
+            rowsAffected = db.update("Product", values, "Id=?", new String[]{String.valueOf(product.getId())});
         } catch (Exception e) {
             // Handle any exceptions
             e.printStackTrace();

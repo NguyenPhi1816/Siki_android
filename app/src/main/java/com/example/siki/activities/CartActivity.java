@@ -42,12 +42,12 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         setControl();
-        Map<Store, List<Product>> storeProductMap = cartList.stream()
+        Map<Store, List<Cart>> storeProductMap = cartList.stream()
                 .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore(),
-                        Collectors.mapping(Cart::getProduct, Collectors.toList())));
+                        Collectors.toList()));
         tv_cart_totalPrice.setText(getTotal()+"");
         cb_cart_total.setText(String.format(cartMessage, cartList.size()));
-        storeAdapter = new StoreRecycleAdapter(storeProductMap);
+        storeAdapter = new StoreRecycleAdapter(storeProductMap, this);
         storeRecycle.setAdapter(storeAdapter);
         storeRecycle.setLayoutManager(new GridLayoutManager(this, 1));
     }

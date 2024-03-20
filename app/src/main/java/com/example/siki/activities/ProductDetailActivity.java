@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class ProductDetailActivity extends AppCompatActivity {
     Spinner spLoaiSp;
-    EditText edtTenSp, edtMaSp, edtGiaSp, edtAnhSp, edtLoaiSp;
+    EditText edtTenSp, edtMaSp, edtGiaSp, edtAnhSp, edtLoaiSp, edtSoLuongSp;
     TextView tvLoaiSp;
     Button btnBack, btnSua;
 
@@ -85,10 +85,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
         Product product = (Product) getIntent().getSerializableExtra("product");
         if (product != null) {
-            edtGiaSp.setText(product.getPrice().toString());
-            edtMaSp.setText(product.getId().toString());
+            edtGiaSp.setText(product.getPrice()+"");
+            edtMaSp.setText(product.getId()+"");
             edtTenSp.setText(product.getName());
             edtAnhSp.setText(product.getImagePath());
+            edtSoLuongSp.setText(product.getQuantity()+"");
             List<String> list = productCategoryDatabase.findNameCategoryByProductId(product.getId());
             StringBuilder rs = new StringBuilder();
             for (int i = 0; i < list.size(); i++) {
@@ -123,6 +124,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         product.setId(Long.parseLong(edtMaSp.getText().toString()));
                         product.setImagePath(edtAnhSp.getText().toString());
                         product.setName(edtTenSp.getText().toString());
+                        product.setQuantity(Integer.parseInt(edtSoLuongSp.getText().toString()));
                         productDatabase.updateProduct(product);
 
                         if (!selectedItems.isEmpty()) {
@@ -164,6 +166,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         edtAnhSp = findViewById(R.id.anhSP);
         edtMaSp = findViewById(R.id.maSp);
         edtLoaiSp = findViewById(R.id.loaiSp);
+        edtSoLuongSp = findViewById(R.id.soLuongSp);
 
         btnSua = findViewById(R.id.btnSua);
         btnBack = findViewById(R.id.btnBack);

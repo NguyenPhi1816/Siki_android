@@ -21,6 +21,7 @@
                 android:id="@+id/btnBack"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:paddingLeft="30dp"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/ic_chevron_left" />
 
@@ -67,6 +68,8 @@
                 android:layout_height="wrap_content"
                 android:text="Chỉnh sửa"
                 android:id="@+id/btnSua"
+                android:background="@color/main_color"
+                android:textColor="@color/white"
                 />
         </LinearLayout>
 

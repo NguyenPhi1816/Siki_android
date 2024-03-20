@@ -15,6 +15,7 @@
             <Button
                 android:id="@+id/btnBack"
                 android:layout_weight="1"
+                android:paddingLeft="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
@@ -26,6 +27,8 @@
                 android:layout_height="wrap_content"
                 android:background="#F0739D"
                 android:text="Danh sách loại sản phẩm"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="25dp"
                 android:gravity="center"
                 android:textColor="@android:color/white"
                 android:textSize="26dp"
@@ -35,7 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_marginLeft="-10dp"
+                android:layout_marginLeft="15dp"
+                android:drawableTint="@color/white"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/baseline_add_24"/>
         </LinearLayout>

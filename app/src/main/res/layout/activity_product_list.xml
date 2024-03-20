@@ -17,6 +17,7 @@
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:paddingLeft="30dp"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/ic_chevron_left" />
 
@@ -35,6 +36,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:paddingLeft="25dp"
+                android:drawableTint="@color/white"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/baseline_add_24"/>
         </LinearLayout>

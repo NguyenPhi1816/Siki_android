@@ -42,6 +42,21 @@ public class ProductDatabase {
         cursor.close();
         return listProduct;
     }
+    public Product findById(Long productId) {
+        Product product = null;
+        try (Cursor cursor = db.query("Product", null, "id=?", new String[]{String.valueOf(productId)}, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                product = new Product();
+                product.setId(cursor.getLong(0));
+                product.setName(cursor.getString(1));
+                product.setImagePath(cursor.getString(2));
+                product.setPrice(cursor.getDouble(3));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return product;
+    }
 
     public long addProduct(Product product) {
         long id = -1;

@@ -70,7 +70,7 @@ public class ProductCategoryDatabase {
         return id;
     }
 
-    private boolean isIdExists(int id) {
+    public boolean isIdExists(int id) {
         try {
             Cursor cursor = db.query("ProductCategory", null, "Id=?", new String[]{String.valueOf(id)}, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {

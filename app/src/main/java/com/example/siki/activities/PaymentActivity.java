@@ -1,21 +1,25 @@
 package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.siki.Adapter.PaymentRecycleAdapter;
 import com.example.siki.R;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
 import com.example.siki.model.Store;
+import com.example.siki.utils.PriceFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentActivity extends AppCompatActivity {
     private List<Cart> cartList ;
+    private TextView paymentTotal;
     private RecyclerView paymentRecycle;
     private PaymentRecycleAdapter paymentRecycleAdapter;
     @Override
@@ -23,10 +27,12 @@ public class PaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
         cartList = new ArrayList<>();
+        setControl();
         createCartList();
+        paymentTotal.setText(getTotalPricePayment());
         paymentRecycleAdapter = new PaymentRecycleAdapter(cartList);
         paymentRecycle.setAdapter(paymentRecycleAdapter);
-        /*paymentRecycle.setLayoutManager(new GridLayoutManager(this, 1));*/
+        paymentRecycle.setLayoutManager(new GridLayoutManager(this, 1));
     }
     private void createCartList() {
         // Todo: get data from api
@@ -86,6 +92,21 @@ public class PaymentActivity extends AppCompatActivity {
         cartList.add(cart2);
         cartList.add(cart3);
         cartList.add(cart4);
+    }
+
+    private String getTotalPricePayment() {
+        if (cartList.size() > 0) {
+            double total = cartList.stream()
+                    .mapToDouble(cart -> cart.getProduct().getPrice())
+                    .reduce(0.0, (accumulator, price) -> accumulator + price);
+            return PriceFormatter.formatDouble(total);
+        }
+        return "";
+    }
+
+    private void setControl () {
+        paymentRecycle = findViewById(R.id.rv_shopItem);
+        paymentTotal = findViewById(R.id.tv_payment_total);
     }
 
 }

@@ -56,6 +56,7 @@ public class ProductAdapter extends BaseAdapter {
         Product product = productList.get(position);
         ((TextView) productView.findViewById(R.id.productName)).setText(String.format("Tên SP: %s", product.getName()));
         ((TextView) productView.findViewById(R.id.productPrice)).setText(String.format("Giá SP: %s", product.getPrice()));
+        ((TextView) productView.findViewById(R.id.productQuantity)).setText(String.format("Số lượng SP: %s", product.getQuantity()));
 
 
         ImageView myView = productView.findViewById(R.id.productImage);

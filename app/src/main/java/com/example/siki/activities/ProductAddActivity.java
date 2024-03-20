@@ -16,34 +16,26 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.siki.R;
+import com.example.siki.database.CategoryDatabase;
+import com.example.siki.database.ProductCategoryDatabase;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.model.Product;
-import com.example.siki.model.ProductPrice;
+import com.example.siki.model.ProductCategory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProductAddActivity extends AppCompatActivity {
-    EditText edtTenSp, edtMaSp, edtGiaSp, edtAnhSp;
+    EditText edtTenSp, edtGiaSp, edtAnhSp;
     TextView tvLoaiSp;
     Spinner spLoaiSp;
-    List<String> listLoaiSp = new ArrayList<>();
     Button btnBack, btnThem;
-
-    private void khoiTao() {
-        listLoaiSp.add("Điện thoại");
-        listLoaiSp.add("Laptop");
-        listLoaiSp.add("PC");
-        listLoaiSp.add("Vật dụng cá nhân");
-        listLoaiSp.add("Đồ nội thất");
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_add);
-        khoiTao();
         setControl();
         setEvent();
 
@@ -52,6 +44,12 @@ public class ProductAddActivity extends AppCompatActivity {
     private void setEvent() {
         ProductDatabase productDatabase = new ProductDatabase(this);
         productDatabase.open();
+        CategoryDatabase categoryDatabase = new CategoryDatabase(this);
+        categoryDatabase.open();
+        ProductCategoryDatabase productCategoryDatabase = new ProductCategoryDatabase(this);
+        productCategoryDatabase.open();
+        Map<Long, String> listCategory = categoryDatabase.getAllCategory();
+        List<String> listLoaiSp = new ArrayList<>(listCategory.values()) ;
         ArrayAdapter<String> loaiSpAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, listLoaiSp);
         loaiSpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -106,13 +104,25 @@ public class ProductAddActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Product product = new Product();
-                        ProductPrice productPrice = new ProductPrice();
-                        productPrice.setPrice(Double.parseDouble(edtGiaSp.getText().toString()));
-                        product.setId(Long.parseLong(edtMaSp.getText().toString()));
+                        product.setPrice(Double.parseDouble(edtGiaSp.getText().toString()));
                         product.setImagePath(edtAnhSp.getText().toString());
                         product.setName(edtTenSp.getText().toString());
-                        product.setProductPrice(productPrice);
-                        productDatabase.addProduct(product);
+                        Long id = productDatabase.addProduct(product);
+
+                        for (String item : selectedItems) {
+                            ProductCategory productCategory = new ProductCategory();
+                            productCategory.setProductId(id);
+                            for (Map.Entry<Long, String> entry : listCategory.entrySet()) {
+                                if (entry.getValue().equals(item)) {
+                                    productCategory.setCategoryId(entry.getKey());
+                                }
+                            }
+                            productCategoryDatabase.addProductCategory(productCategory);
+                        }
+
+
+
+
                         Intent intent = new Intent(ProductAddActivity.this, ProductListActivity.class);
                         startActivity(intent);
                         Toast.makeText(ProductAddActivity.this, "Thêm sản phẩm thành công", Toast.LENGTH_LONG).show();
@@ -136,7 +146,6 @@ public class ProductAddActivity extends AppCompatActivity {
         edtTenSp = findViewById(R.id.tenSp);
         edtGiaSp = findViewById(R.id.giaSp);
         edtAnhSp = findViewById(R.id.anhSP);
-        edtMaSp = findViewById(R.id.maSp);
 
         btnThem = findViewById(R.id.btnThem);
         btnBack = findViewById(R.id.btnBack);

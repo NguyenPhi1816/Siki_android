@@ -6,26 +6,32 @@ public class Product implements Serializable {
     private Long id;
     private String name;
     private String imagePath;
-    private ProductPrice productPrice;
+    private Double price;
+    private int quantity;
     private Store store;
 
     public Product() {
     }
 
-    public Product(Long id, String name, String imagePath, ProductPrice productPrice, Store store) {
+    public Product(Long id, String name, String imagePath, Double price, int quantity, Store store) {
         this.id = id;
         this.name = name;
         this.imagePath = imagePath;
-        this.productPrice = productPrice;
+        this.price = price;
+        this.quantity = quantity;
         this.store = store;
     }
 
-    public Store getStore() {
-        return store;
-    }
-
-    public void setStore(Store store) {
-        this.store = store;
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", productPrice=" + price +
+                ", quantity=" + quantity +
+                ", store=" + store +
+                '}';
     }
 
     public Long getId() {
@@ -52,21 +58,27 @@ public class Product implements Serializable {
         this.imagePath = imagePath;
     }
 
-    public ProductPrice getProductPrice() {
-        return productPrice;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setProductPrice(ProductPrice productPrice) {
-        this.productPrice = productPrice;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", imagePath='" + imagePath + '\'' +
-                ", productPrice=" + productPrice +
-                '}';
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 }

@@ -42,11 +42,6 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mã sản phẩm"
-                android:id="@+id/maSp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:hint="Tên sản phẩm"
                 android:id="@+id/tenSp"/>
             <EditText

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Product;
-import com.example.siki.model.ProductPrice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,36 +35,51 @@ public class ProductDatabase {
                 product.setId(cursor.getLong(0));
                 product.setName(cursor.getString(1));
                 product.setImagePath(cursor.getString(2));
-                ProductPrice productPrice = new ProductPrice();
-                productPrice.setPrice(cursor.getDouble(3));
-                product.setProductPrice(productPrice);
+                product.setPrice(cursor.getDouble(3));
                 listProduct.add(product);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return listProduct;
+    }
+    public Product findById(Long productId) {
+        Product product = null;
+        try (Cursor cursor = db.query("Product", null, "id=?", new String[]{String.valueOf(productId)}, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                product = new Product();
+                product.setId(cursor.getLong(0));
+                product.setName(cursor.getString(1));
+                product.setImagePath(cursor.getString(2));
+                product.setPrice(cursor.getDouble(3));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return product;
     }
 
     public long addProduct(Product product) {
         long id = -1;
         try {
             ContentValues values = new ContentValues();
-            values.put("id", product.getId());
-            values.put("name", product.getName());
-            values.put("imagePath", product.getImagePath());
-            values.put("productPrice", product.getProductPrice().getPrice());
+            values.put("Id", product.getId());
+            values.put("Name", product.getName());
+            values.put("ImagePath", product.getImagePath());
+            values.put("ProductPrice", product.getPrice());
 
             id = db.insert("Product", null, values);
         } catch (Exception e) {
             // Handle any exceptions
             e.printStackTrace();
         }
+        System.out.println(id);
         return id;
     }
 
     public int deleteProduct(Product product) {
         int rowsAffected = -1;
         try {
-            rowsAffected = db.delete("Product", "id=?", new String[]{String.valueOf(product.getId())});
+            rowsAffected = db.delete("Product", "Id=?", new String[]{String.valueOf(product.getId())});
         } catch (Exception e) {
             // Handle any exceptions
             e.printStackTrace();
@@ -77,12 +91,11 @@ public class ProductDatabase {
         int rowsAffected = -1;
         try {
             ContentValues values = new ContentValues();
-            values.put("id", product.getId());
-            values.put("name", product.getName());
-            values.put("imagePath", product.getImagePath());
-            values.put("productPrice", product.getProductPrice().getPrice());
+            values.put("Name", product.getName());
+            values.put("ImagePath", product.getImagePath());
+            values.put("ProductPrice", product.getPrice());
 
-            rowsAffected = db.update("Product", values, "id=?", new String[]{String.valueOf(product.getId())});
+            rowsAffected = db.update("Product", values, "Id=?", new String[]{String.valueOf(product.getId())});
         } catch (Exception e) {
             // Handle any exceptions
             e.printStackTrace();

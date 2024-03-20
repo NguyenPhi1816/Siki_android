@@ -6,16 +6,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.R;
 
+import com.example.siki.database.CartDatasource;
+import com.example.siki.database.ProductDatabase;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
-import com.example.siki.model.ProductPrice;
 import com.example.siki.model.Store;
+import com.example.siki.model.User;
+import com.example.siki.variable.GlobalVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +25,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CartActivity extends AppCompatActivity {
-    private List<Cart> cartList ;
+    private List<Cart> cartList = new ArrayList<>();
     private TextView tv_cart_totalPrice;
     private CheckBox cb_cart_total;
     private RecyclerView storeRecycle;
+
+    private GlobalVariable globalVariable = new GlobalVariable();
 
     private String cartMessage = "Tất cả %d sản phẩm";
 
@@ -35,50 +39,70 @@ public class CartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        cartList = new ArrayList<>();
         setControl();
-        createCartList();
-        Map<Store, List<Product>> storeProductMap = cartList.stream()
+        Map<Store, List<Cart>> storeProductMap = cartList.stream()
                 .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore(),
-                        Collectors.mapping(Cart::getProduct, Collectors.toList())));
+                        Collectors.toList()));
         tv_cart_totalPrice.setText(getTotal()+"");
         cb_cart_total.setText(String.format(cartMessage, cartList.size()));
-        storeAdapter = new StoreRecycleAdapter(storeProductMap);
+        storeAdapter = new StoreRecycleAdapter(storeProductMap, this);
         storeRecycle.setAdapter(storeAdapter);
         storeRecycle.setLayoutManager(new GridLayoutManager(this, 1));
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        readDb();
+    }
+
+    private void readDb() {
+       if (globalVariable.getAuthUser() != null) {
+           User currentUser = globalVariable.getAuthUser();
+           cartList.clear();
+           CartDatasource cartDatasource = new CartDatasource(this);
+           cartDatasource.open();
+           cartList.addAll(cartDatasource.findByUser(currentUser.getId()));
+           storeAdapter.notifyDataSetChanged();
+       }
+    }
+
+    private void setControl () {
+        cb_cart_total = findViewById(R.id.cb_cart_total);
+        storeRecycle = findViewById(R.id.cart_recycleView);
+        tv_cart_totalPrice = findViewById(R.id.tv_cart_totalPrice);
+    }
     private double getTotal() {
         double totalPrice = 0 ;
         if (cartList.size() > 0) {
             for (Cart cart: cartList) {
                 if (cart.getProduct() != null) {
-                    totalPrice+=cart.getProduct().getProductPrice().getPrice()  ;
+                    totalPrice+=cart.getProduct().getPrice()  ;
                 }
             }
         }
         return totalPrice;
     }
 
-    private void createCartList() {
+    // fake data
+     /* private void createCartList() {
         // Todo: get data from api
-        ProductPrice productPrice = new ProductPrice();
         Store store1 = new Store();
         store1.setName("The gioi di dong");
 
         Store store2 = new Store();
         store2.setName("Apple");
-        productPrice.setPrice(120.000);
 
 
         Product product1 = new Product();
         product1.setName("Sam sung1");
-        product1.setProductPrice(productPrice);
+        product1.setPrice(120.0);
 
 
         Product product2 = new Product();
         product2.setName("Sam sung2");
-        product2.setProductPrice(productPrice);
+        product2.setPrice(120.0);
 
 
         product1.setStore(store1);
@@ -86,11 +110,11 @@ public class CartActivity extends AppCompatActivity {
 
         Product product3 = new Product();
         product3.setName("Sam sung3");
-        product3.setProductPrice(productPrice);
+        product3.setPrice(120.0);
 
         Product product4 = new Product();
         product4.setName("Apple 1");
-        product4.setProductPrice(productPrice);
+        product4.setPrice(120.0);
 
         product3.setStore(store2);
         product4.setStore(store2);
@@ -131,11 +155,5 @@ public class CartActivity extends AppCompatActivity {
         cartList.add(cart4);
         cartList.add(cart5);
         cartList.add(cart6);
-    }
-
-    private void setControl () {
-        cb_cart_total = findViewById(R.id.cb_cart_total);
-        storeRecycle = findViewById(R.id.cart_recycleView);
-        tv_cart_totalPrice = findViewById(R.id.tv_cart_totalPrice);
-    }
+    }*/
 }

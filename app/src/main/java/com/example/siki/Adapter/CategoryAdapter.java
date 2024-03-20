@@ -12,68 +12,68 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.siki.R;
+import com.example.siki.activities.CategoryDetailActivity;
+import com.example.siki.activities.CategoryListActivity;
 import com.example.siki.activities.ProductDetailActivity;
 import com.example.siki.activities.ProductListActivity;
-import com.example.siki.database.ProductCategoryDatabase;
+import com.example.siki.database.CategoryDatabase;
 import com.example.siki.database.ProductDatabase;
+import com.example.siki.model.Category;
 import com.example.siki.model.Product;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ProductAdapter extends BaseAdapter {
+public class CategoryAdapter extends BaseAdapter {
     private Context context;
-    private List<Product> productList;
+    private List<Category> categoryList;
 
-    public ProductAdapter(Context context, List<Product> productList) {
+    public CategoryAdapter(Context context, List<Category> categoryList) {
         this.context = context;
-        this.productList = productList;
+        this.categoryList = categoryList;
     }
 
     @Override
     public int getCount() {
-        return productList.size();
+        return categoryList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return productList.get(i);
+        return categoryList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return productList.get(i).getId();
+        return categoryList.get(i).getId();
     }
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
-        View productView;
+        View categoryView;
         if (view == null) {
-            productView = View.inflate(viewGroup.getContext(), R.layout.product_item, null);
-        } else productView = view;
+            categoryView = View.inflate(viewGroup.getContext(), R.layout.category_item, null);
+        } else categoryView = view;
 
         //Bind sữ liệu phần tử vào View
-        Product product = productList.get(position);
-        ((TextView) productView.findViewById(R.id.productName)).setText(String.format("Tên SP: %s", product.getName()));
-        ((TextView) productView.findViewById(R.id.productPrice)).setText(String.format("Giá SP: %s", product.getPrice()));
+        Category category = categoryList.get(position);
+        ((TextView) categoryView.findViewById(R.id.categoryId)).setText(String.format("Id: %s", category.getId()));
+        ((TextView) categoryView.findViewById(R.id.categoryName)).setText(String.format("Tên loại: %s", category.getName()));
+        ((TextView) categoryView.findViewById(R.id.categoryDescription)).setText(String.format("Mô tả: %s", category.getDescription()));
 
-        ImageView myView = productView.findViewById(R.id.productImage);
-        Picasso.get().load(product.getImagePath()).into(myView);
 
-        Button btnEdit = productView.findViewById(R.id.btnEdit);
+        Button btnEdit = categoryView.findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ProductDetailActivity.class);
-                intent.putExtra("product", product);
+                Intent intent = new Intent(context, CategoryDetailActivity.class);
+                intent.putExtra("category", category);
                 context.startActivity(intent);
             }
         });
-        ProductDatabase productDatabase = new ProductDatabase(context);
-        productDatabase.open();
-        ProductCategoryDatabase productCategoryDatabase = new ProductCategoryDatabase(context);
-        productCategoryDatabase.open();
-        Button btnDelete = productView.findViewById(R.id.btnDelete);
+        CategoryDatabase categoryDatabase = new CategoryDatabase(context);
+        categoryDatabase.open();
+        Button btnDelete = categoryView.findViewById(R.id.btnDelete);
         Dialog dialog = new Dialog(context);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,12 +86,11 @@ public class ProductAdapter extends BaseAdapter {
                 btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Product sp = new Product();
-                        sp.setId(product.getId());
-                        productDatabase.deleteProduct(sp);
-                        productCategoryDatabase.deleteByProductId(product.getId());
+                        Category ca = new Category();
+                        ca.setId(category.getId());
+                        categoryDatabase.deleteProduct(ca);
                         dialog.dismiss();
-                        Intent intent = new Intent(context, ProductListActivity.class);
+                        Intent intent = new Intent(context, CategoryListActivity.class);
                         context.startActivity(intent);
                         Toast.makeText(context, "Xóa thành công", Toast.LENGTH_LONG).show();
                     }
@@ -108,7 +107,7 @@ public class ProductAdapter extends BaseAdapter {
                 dialog.show();
             }
         });
-        return productView;
+        return categoryView;
     }
 
 

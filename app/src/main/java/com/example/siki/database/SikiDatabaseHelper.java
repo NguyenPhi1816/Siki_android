@@ -32,6 +32,10 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createUserTable());
         db.execSQL(createAccountTable());
         db.execSQL(createProductTable());
+        db.execSQL(createCartTable());
+        db.execSQL(createCategoryTable());
+        db.execSQL(createProductCategoryTable());
+
     }
 
     // Define methods to create each table
@@ -59,6 +63,32 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
     }
 
     private String createProductTable() {
-        return "create table if not exists Product(id integer, name text, imagePath text, productPrice double)";
+        return "create table if not exists Product(Id integer primary key autoincrement, Name text, ImagePath text, ProductPrice double)";
+    }
+
+    private String createCategoryTable() {
+        return "CREATE TABLE IF NOT EXISTS Category (" +
+                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "Name TEXT," +
+                "Description TEXT)";
+    }
+
+    private String createProductCategoryTable() {
+        return "CREATE TABLE IF NOT EXISTS ProductCategory (" +
+                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "ProductId INTEGER," +
+                "CategoryId INTEGER)";
+    }
+
+    private String createCartTable() {
+        return "CREATE TABLE IF NOT EXISTS Cart (\n" +
+                "    id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "    user_id BIGINT,\n" +
+                "    product_id BIGINT,\n" +
+                "    quantity INTEGER,\n" +
+                "    is_selected BOOLEAN,\n" +
+                "    FOREIGN KEY (user_id) REFERENCES User(Id),\n" +
+                "    FOREIGN KEY (product_id) REFERENCES Product(Id)\n" +
+                ");\n";
     }
 }

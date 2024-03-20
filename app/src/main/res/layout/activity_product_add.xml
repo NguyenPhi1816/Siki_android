@@ -22,12 +22,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
+                android:paddingLeft="30dp"
                 android:drawableLeft="@drawable/ic_chevron_left" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Thêm sản phẩm"
+                android:paddingLeft="25dp"
                 android:textColor="@android:color/white"
                 android:textSize="28sp"
                 android:layout_marginTop="4dp"
@@ -48,7 +50,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Giá sản phẩm"
+                android:inputType="number"
                 android:id="@+id/giaSp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Số lượng sản phẩm"
+                android:inputType="number"
+                android:id="@+id/soLuongSp"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,6 +101,8 @@
                 android:layout_height="wrap_content"
                 android:text="Thêm"
                 android:id="@+id/btnThem"
+                android:textColor="@color/white"
+                android:background="@color/main_color"
                 />
         </LinearLayout>
 

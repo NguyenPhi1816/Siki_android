@@ -57,6 +57,7 @@ public class ProductAdapter extends BaseAdapter {
         ((TextView) productView.findViewById(R.id.productName)).setText(String.format("Tên SP: %s", product.getName()));
         ((TextView) productView.findViewById(R.id.productPrice)).setText(String.format("Giá SP: %s", product.getPrice()));
 
+
         ImageView myView = productView.findViewById(R.id.productImage);
         Picasso.get().load(product.getImagePath()).into(myView);
 

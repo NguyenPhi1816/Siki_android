@@ -21,6 +21,7 @@
                 android:id="@+id/btnBack"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:paddingLeft="30dp"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/ic_chevron_left" />
 
@@ -28,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Thêm loại sản phẩm"
+                android:paddingLeft="5dp"
                 android:textColor="@android:color/white"
                 android:textSize="28sp"
                 android:layout_marginTop="4dp"
@@ -60,6 +62,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Thêm"
+                android:background="@color/main_color"
+                android:textColor="@color/white"
                 android:id="@+id/btnThem"
                 />
         </LinearLayout>

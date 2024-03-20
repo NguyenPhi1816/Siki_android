@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Product;
+import com.example.siki.model.Store;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class ProductDatabase {
                 product.setName(cursor.getString(1));
                 product.setImagePath(cursor.getString(2));
                 product.setPrice(cursor.getDouble(3));
+                product.setQuantity(cursor.getInt(4));
                 listProduct.add(product);
             } while (cursor.moveToNext());
         }
@@ -51,6 +53,10 @@ public class ProductDatabase {
                 product.setName(cursor.getString(1));
                 product.setImagePath(cursor.getString(2));
                 product.setPrice(cursor.getDouble(3));
+                product.setQuantity(cursor.getInt(4));
+//                Store store = new Store();
+//                store.setId(cursor.getLong(5));
+//                product.setStore(store);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,6 +72,8 @@ public class ProductDatabase {
             values.put("Name", product.getName());
             values.put("ImagePath", product.getImagePath());
             values.put("ProductPrice", product.getPrice());
+            values.put("Quantity", product.getQuantity());
+//            values.put("StoreId", product.getStore().getId());
 
             id = db.insert("Product", null, values);
         } catch (Exception e) {
@@ -94,6 +102,8 @@ public class ProductDatabase {
             values.put("Name", product.getName());
             values.put("ImagePath", product.getImagePath());
             values.put("ProductPrice", product.getPrice());
+            values.put("Quantity", product.getQuantity());
+//            values.put("StoreId", product.getStore().getId());
 
             rowsAffected = db.update("Product", values, "Id=?", new String[]{String.valueOf(product.getId())});
         } catch (Exception e) {

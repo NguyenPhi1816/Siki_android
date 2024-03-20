@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductAddActivity extends AppCompatActivity {
-    EditText edtTenSp, edtGiaSp, edtAnhSp;
+    EditText edtTenSp, edtGiaSp, edtAnhSp, edtSoLuongSp;
     TextView tvLoaiSp;
     Spinner spLoaiSp;
     Button btnBack, btnThem;
@@ -107,6 +107,7 @@ public class ProductAddActivity extends AppCompatActivity {
                         product.setPrice(Double.parseDouble(edtGiaSp.getText().toString()));
                         product.setImagePath(edtAnhSp.getText().toString());
                         product.setName(edtTenSp.getText().toString());
+                        product.setQuantity(Integer.parseInt(edtSoLuongSp.getText().toString()));
                         Long id = productDatabase.addProduct(product);
 
                         for (String item : selectedItems) {
@@ -146,6 +147,7 @@ public class ProductAddActivity extends AppCompatActivity {
         edtTenSp = findViewById(R.id.tenSp);
         edtGiaSp = findViewById(R.id.giaSp);
         edtAnhSp = findViewById(R.id.anhSP);
+        edtSoLuongSp = findViewById(R.id.soLuongSp);
 
         btnThem = findViewById(R.id.btnThem);
         btnBack = findViewById(R.id.btnBack);

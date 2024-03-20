@@ -36,7 +36,7 @@ public class PaymentRecycleAdapter extends RecyclerView.Adapter<PaymentRecycleAd
     public void onBindViewHolder(@NonNull PaymentHolder holder, int position) {
         Cart cart = cartList.get(position);
         holder.payment_product_image.setImageResource(R.drawable.samsung);
-        double productPrice = cart.getProduct().getProductPrice().getPrice();
+        double productPrice = cart.getProduct().getPrice();
         String productPriceString = PriceFormatter.formatDouble(productPrice);
         double totalPrice = productPrice * cart.getQuantity();
         String totalPriceString = PriceFormatter.formatDouble(totalPrice);

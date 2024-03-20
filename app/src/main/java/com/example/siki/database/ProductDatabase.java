@@ -6,12 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Product;
-import com.example.siki.model.ProductPrice;
-import com.example.siki.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ProductDatabase {
     private SQLiteDatabase db;
@@ -38,12 +35,11 @@ public class ProductDatabase {
                 product.setId(cursor.getLong(0));
                 product.setName(cursor.getString(1));
                 product.setImagePath(cursor.getString(2));
-                ProductPrice productPrice = new ProductPrice();
-                productPrice.setPrice(cursor.getDouble(3));
-                product.setProductPrice(productPrice);
+                product.setPrice(cursor.getDouble(3));
                 listProduct.add(product);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return listProduct;
     }
     public Product findById(Long productId) {
@@ -54,9 +50,7 @@ public class ProductDatabase {
                 product.setId(cursor.getLong(0));
                 product.setName(cursor.getString(1));
                 product.setImagePath(cursor.getString(2));
-                ProductPrice productPrice = new ProductPrice();
-                productPrice.setPrice(cursor.getDouble(3));
-                product.setProductPrice(productPrice);
+                product.setPrice(cursor.getDouble(3));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,13 +65,14 @@ public class ProductDatabase {
             values.put("Id", product.getId());
             values.put("Name", product.getName());
             values.put("ImagePath", product.getImagePath());
-            values.put("ProductPrice", product.getProductPrice().getPrice());
+            values.put("ProductPrice", product.getPrice());
 
             id = db.insert("Product", null, values);
         } catch (Exception e) {
             // Handle any exceptions
             e.printStackTrace();
         }
+        System.out.println(id);
         return id;
     }
 
@@ -96,10 +91,9 @@ public class ProductDatabase {
         int rowsAffected = -1;
         try {
             ContentValues values = new ContentValues();
-            values.put("Id", product.getId());
             values.put("Name", product.getName());
             values.put("ImagePath", product.getImagePath());
-            values.put("ProductPrice", product.getProductPrice().getPrice());
+            values.put("ProductPrice", product.getPrice());
 
             rowsAffected = db.update("Product", values, "Id=?", new String[]{String.valueOf(product.getId())});
         } catch (Exception e) {

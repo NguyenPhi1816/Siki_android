@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
-import com.example.siki.model.ProductPrice;
 import com.example.siki.model.User;
 
 import java.util.ArrayList;

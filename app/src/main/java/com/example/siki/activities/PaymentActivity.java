@@ -8,11 +8,9 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.siki.Adapter.PaymentRecycleAdapter;
-import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.R;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
-import com.example.siki.model.ProductPrice;
 import com.example.siki.model.Store;
 import com.example.siki.utils.PriceFormatter;
 
@@ -38,23 +36,21 @@ public class PaymentActivity extends AppCompatActivity {
     }
     private void createCartList() {
         // Todo: get data from api
-        ProductPrice productPrice = new ProductPrice();
         Store store1 = new Store();
         store1.setName("The gioi di dong");
 
         Store store2 = new Store();
         store2.setName("Apple");
-        productPrice.setPrice(120000.0);
 
 
         Product product1 = new Product();
         product1.setName("Sam sung1");
-        product1.setProductPrice(productPrice);
+        product1.setPrice(120.0);
 
 
         Product product2 = new Product();
         product2.setName("Sam sung2");
-        product2.setProductPrice(productPrice);
+        product2.setPrice(120.0);
 
 
         product1.setStore(store1);
@@ -62,11 +58,11 @@ public class PaymentActivity extends AppCompatActivity {
 
         Product product3 = new Product();
         product3.setName("Sam sung3");
-        product3.setProductPrice(productPrice);
+        product3.setPrice(120.0);
 
         Product product4 = new Product();
         product4.setName("Apple 1");
-        product4.setProductPrice(productPrice);
+        product4.setPrice(120.0);
 
         product3.setStore(store2);
         product4.setStore(store2);
@@ -101,7 +97,7 @@ public class PaymentActivity extends AppCompatActivity {
     private String getTotalPricePayment() {
         if (cartList.size() > 0) {
             double total = cartList.stream()
-                    .mapToDouble(cart -> cart.getProduct().getProductPrice().getPrice())
+                    .mapToDouble(cart -> cart.getProduct().getPrice())
                     .reduce(0.0, (accumulator, price) -> accumulator + price);
             return PriceFormatter.formatDouble(total);
         }

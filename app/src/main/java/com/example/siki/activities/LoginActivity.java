@@ -11,12 +11,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.siki.Bcrypt.BcryptManager;
 import com.example.siki.R;
 import com.example.siki.database.AccountDataSource;
 import com.example.siki.database.SikiDatabaseHelper;
 import com.example.siki.database.UserDataSource;
 import com.example.siki.model.Account;
 import com.example.siki.model.User;
+import com.example.siki.service.UserService;
 import com.example.siki.variable.GlobalVariable;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -29,11 +31,15 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginToHomeBtn;
     private Button createNewAccountBtn;
     private Button submitBtn;
+    private Button forgotPasswordBtn;
+    private UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        userService = new UserService(this);
 
         phoneNumber = (EditText) findViewById(R.id.phone_number);
         password = (EditText) findViewById(R.id.password);
@@ -42,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         loginToHomeBtn = (Button) findViewById(R.id.login_to_home_btn);
         createNewAccountBtn = (Button) findViewById(R.id.create_new_account_btn);
         submitBtn = (Button) findViewById(R.id.submit_btn);
+        forgotPasswordBtn = (Button) findViewById(R.id.forgot_pass_btn);
 
         loginToHomeBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -52,6 +59,12 @@ public class LoginActivity extends AppCompatActivity {
         createNewAccountBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 navigateToSignUp();
+            }
+        });
+
+        forgotPasswordBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                navigateToForgotPassword();
             }
         });
 
@@ -90,6 +103,11 @@ public class LoginActivity extends AppCompatActivity {
         LoginActivity.this.startActivity(activityChangeIntent);
     }
 
+    public void navigateToForgotPassword() {
+        Intent activityChangeIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+        LoginActivity.this.startActivity(activityChangeIntent);
+    }
+
     public void login() {
         String phoneNumber_str = phoneNumber.getText().toString();
         String pass_str = password.getText().toString();
@@ -105,16 +123,14 @@ public class LoginActivity extends AppCompatActivity {
         if (!phoneNumber_str.isEmpty() && !pass_str.isEmpty()){
             Account account = getAccountByCredentials(phoneNumber_str, pass_str);
             if (account != null) {
-                User authUser = getUserByPhoneNumber(account.getPhoneNumber());
+                User authUser = userService.getUserByPhoneNumber(account.getPhoneNumber());
                 if (authUser != null) {
-                    GlobalVariable globalVariable = (GlobalVariable) getApplication();
-                    globalVariable.setAuthUser(authUser);
-                    globalVariable.setLoggedIn(true);
-                    Toast.makeText(LoginActivity.this,  "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    Intent activityChangeIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    LoginActivity.this.startActivity(activityChangeIntent);
+                    Intent intent = new Intent(this, OtpActivity.class);
+                    intent.putExtra("authAccount", account);
+                    intent.putExtra("authUser", authUser);
+                    startActivity(intent);
                 } else {
-                    Toast.makeText(LoginActivity.this,  "Có lỗi xảy ra trong quá trình đăng nhập", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,  "Có lỗi xảy ra trong quá trình đăng nhập", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(LoginActivity.this,  "Có lỗi xảy ra trong quá trình đăng nhập", Toast.LENGTH_SHORT).show();
@@ -128,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
         accountDataSource.open();
         Account retrievedAccount = accountDataSource.getAccountByPhoneNumber(phoneNumber);
         if (retrievedAccount != null) {
-            if (!checkPassword(password, retrievedAccount.getPassword())) {
+            if (!BcryptManager.checkPassword(password, retrievedAccount.getPassword())) {
                 pass_error_message.setText("Mật khẩu không đúng");
                 accountDataSource.close();
                 return null;
@@ -141,17 +157,4 @@ public class LoginActivity extends AppCompatActivity {
         accountDataSource.close();
         return retrievedAccount;
     };
-
-    public User getUserByPhoneNumber (String phoneNumber) {
-        Context context = this;
-        UserDataSource userDataSource = new UserDataSource(context);
-        userDataSource.open();
-        User retrievedUser = userDataSource.getUserPhoneNumber(phoneNumber);
-        userDataSource.close();
-        return retrievedUser;
-    }
-
-    public static boolean checkPassword(String plainTextPassword, String hashedPassword) {
-        return BCrypt.checkpw(plainTextPassword, hashedPassword);
-    }
 }

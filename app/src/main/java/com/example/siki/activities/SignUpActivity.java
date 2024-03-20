@@ -15,6 +15,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.siki.Bcrypt.BcryptManager;
+import com.example.siki.FormValidator.FormValidator;
 import com.example.siki.R;
 import com.example.siki.database.AccountDataSource;
 import com.example.siki.database.UserDataSource;
@@ -104,21 +106,21 @@ public class SignUpActivity extends AppCompatActivity {
         firstNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                editTextValidator(hasFocus, firstNameErrorMessage, firstNameEditText.getText().toString().isEmpty(), "Vui lòng nhập thông tin này");
+                FormValidator.editTextValidator(hasFocus, firstNameErrorMessage, firstNameEditText.getText().toString().isEmpty(), "Vui lòng nhập thông tin này");
             }
         });
 
         lastNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                editTextValidator(hasFocus, lastNameErrorMessage, lastNameEditText.getText().toString().isEmpty(), "Vui lòng nhập thông tin này");
+                FormValidator.editTextValidator(hasFocus, lastNameErrorMessage, lastNameEditText.getText().toString().isEmpty(), "Vui lòng nhập thông tin này");
             }
         });
 
         addressEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                editTextValidator(hasFocus, addressErrorMessage, addressEditText.getText().toString().isEmpty(), "Vui lòng nhập thông tin này");
+                FormValidator.editTextValidator(hasFocus, addressErrorMessage, addressEditText.getText().toString().isEmpty(), "Vui lòng nhập thông tin này");
             }
         });
 
@@ -127,7 +129,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 final String phoneNumberStr = phoneNumberEditText.getText().toString();
                 final boolean condition = phoneNumberStr.length() != 10 || !phoneNumberStr.startsWith("0");
-                        editTextValidator(hasFocus, phoneNumberErrorMessage, condition, "Số điện thoại không đúng");
+                FormValidator.editTextValidator(hasFocus, phoneNumberErrorMessage, condition, "Số điện thoại không đúng");
             }
         });
 
@@ -136,21 +138,21 @@ public class SignUpActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 final String email = emailEditText.getText().toString();
                 final boolean condition = email.isEmpty() || !isValidEmail(email);
-                editTextValidator(hasFocus, emailErrorMessage, condition, "Địa chỉ email không đúng");
+                FormValidator.editTextValidator(hasFocus, emailErrorMessage, condition, "Địa chỉ email không đúng");
             }
         });
 
         passwordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                editTextValidator(hasFocus, passwordErrorMessage, passwordEditText.getText().toString().isEmpty(), "Vui lòng nhập mật khẩu");
+                FormValidator.editTextValidator(hasFocus, passwordErrorMessage, passwordEditText.getText().toString().isEmpty(), "Vui lòng nhập mật khẩu");
             }
         });
 
         confirmPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                editTextValidator(hasFocus, confirmPasswordErrorMessage, confirmPasswordEditText.getText().toString().isEmpty(), "Vui lòng nhập lại mật khẩu");
+                FormValidator.editTextValidator(hasFocus, confirmPasswordErrorMessage, confirmPasswordEditText.getText().toString().isEmpty(), "Vui lòng nhập lại mật khẩu");
             }
         });
 
@@ -159,7 +161,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 final String dateOfBirth = dateOfBirthEditText.getText().toString();
                 final boolean condition = dateOfBirth.isEmpty() || !isValidDate(dateOfBirth);
-                editTextValidator(hasFocus, dateOfBirthErrorMessage, condition, "Vui lòng nhập một ngày (dd/MM/yyyy)");
+                FormValidator.editTextValidator(hasFocus, dateOfBirthErrorMessage, condition, "Vui lòng nhập một ngày (dd/MM/yyyy)");
             }
         });
 
@@ -182,19 +184,6 @@ public class SignUpActivity extends AppCompatActivity {
                 setDateOfBirth();
             }
         });
-    }
-
-    private void editTextValidator (boolean hasFocus, TextView tw, boolean condition, String message) {
-        if (!hasFocus) {
-            if (condition) {
-                tw.setText(message);
-                tw.setVisibility(View.VISIBLE);
-            }
-        }
-        if (hasFocus) {
-            tw.setText("");
-            tw.setVisibility(View.GONE);
-        }
     }
 
     private void setDateOfBirth() {
@@ -256,7 +245,7 @@ public class SignUpActivity extends AppCompatActivity {
                 newUser.setEmail(email);
 
                 // Create a new Account
-                final String hashedPassword = hashPassword(password);
+                final String hashedPassword = BcryptManager.hashPassword(password);
                 Account newAccount = new Account();
                 newAccount.setPhoneNumber(phoneNumber);
                 newAccount.setPassword(hashedPassword);
@@ -274,19 +263,6 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin.", Toast.LENGTH_SHORT).show();
         }
     };
-
-
-
-    // Method to hash a password
-    public static String hashPassword(String plainTextPassword) {
-        // Generate a salt for hashing
-        String salt = BCrypt.gensalt();
-
-        // Hash the password using the generated salt
-        String hashedPassword = BCrypt.hashpw(plainTextPassword, salt);
-
-        return hashedPassword;
-    }
 
     public static boolean isValidEmail(String email) {
         Matcher matcher = pattern.matcher(email);

@@ -11,17 +11,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.siki.R;
+import com.example.siki.enums.OTPType;
 import com.example.siki.model.Account;
 import com.example.siki.model.User;
 import com.example.siki.otp.EmailManager;
 import com.example.siki.otp.OTPManager;
 import com.example.siki.otp.TimeCounter;
+import com.example.siki.service.AccountService;
 import com.example.siki.service.UserService;
 import com.example.siki.variable.GlobalVariable;
 
 public class OtpActivity extends AppCompatActivity {
     private User newUser;
     private Account newAccount;
+    private Account authAccount;
+    private User authUser;
+    private Account forgotPasswordAccount;
+    private User forgotPasswordUser;
+    private OTPType otpType;
     private Button sendNewOTPBtn;
     private Button validateOtpBtn;
     private Button otpToSignUpBtn;
@@ -29,13 +36,15 @@ public class OtpActivity extends AppCompatActivity {
     private TextView timerTextView;
     private TimeCounter timeCounter;
     private UserService userService;
+    private AccountService accountService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
 
-        userService = new UserService();
+        userService = new UserService(this);
+        accountService = new AccountService(this);
 
         sendNewOTPBtn = findViewById(R.id.send_new_otp);
         validateOtpBtn = findViewById(R.id.validate_otp_btn);
@@ -69,17 +78,28 @@ public class OtpActivity extends AppCompatActivity {
         });
     }
 
-    private void getUserInfor() {
+    private void getInfor() {
         Intent intent = getIntent();
         if(intent != null) {
             User newUser = (User) intent.getSerializableExtra("newUser");
             Account newAccount = (Account) intent.getSerializableExtra("newAccount");
-            System.out.println(newUser);
-            System.out.println(newAccount);
+            Account authAccount = (Account) intent.getSerializableExtra("authAccount");
+            User authUser = (User) intent.getSerializableExtra("authUser");
+            Account forgotPasswordAccount = (Account) intent.getSerializableExtra("forgotPasswordAccount");
+            User forgotPasswordUser = (User) intent.getSerializableExtra("forgotPasswordUser");
             if(newUser != null && newAccount != null) {
                 System.out.println("get user infor successfully.");
                 this.newUser = newUser;
                 this.newAccount = newAccount;
+                otpType = OTPType.SIGN_UP;
+            } else if (authAccount != null && authUser != null) {
+                this.authAccount = authAccount;
+                this.authUser = authUser;
+                otpType = OTPType.SIGN_IN;
+            } else if (forgotPasswordAccount != null && forgotPasswordUser != null) {
+                this.forgotPasswordAccount = forgotPasswordAccount;
+                this.forgotPasswordUser = forgotPasswordUser;
+                otpType = OTPType.FORGOT_PASS;
             }else {
                 System.out.println("get user infor failed.");
             }
@@ -89,38 +109,90 @@ public class OtpActivity extends AppCompatActivity {
     }
 
     private void sendOTP () {
-        getUserInfor();
+        getInfor();
+        String userId = "";
+        String email = "";
         if (newUser != null && newAccount != null) {
-            String userId = newUser.getPhoneNumber();
-            String otp = OTPManager
-                    .generateOTP(userId);
-            System.out.println("OTP generated: " + otp);
-
-            new EmailManager().execute(newUser.getEmail(), otp);
-            timeCounter.reset();
-            timeCounter.start();
+            userId = newUser.getPhoneNumber();
+            email = newUser.getEmail();
+        } else if (authAccount != null && authUser != null) {
+            userId = authAccount.getPhoneNumber();
+            email = authUser.getEmail();
+        } else if (forgotPasswordUser != null && forgotPasswordAccount != null) {
+            userId = forgotPasswordUser.getPhoneNumber();
+            email = forgotPasswordUser.getEmail();
         }
-
+        String otp = OTPManager
+                .generateOTP(userId);
+        System.out.println("OTP generated: " + otp);
+        new EmailManager().execute(email, otp);
+        timeCounter.reset();
+        timeCounter.start();
     }
 
     private void validateOTP(){
         final String otp = otpEditText.getText().toString();
-        String userId = newUser.getPhoneNumber();
+        String userId = "";
+        if (newUser != null) {
+            userId = newUser.getPhoneNumber();
+        } else if (authUser != null) {
+            userId = authUser.getPhoneNumber();
+        } else if (forgotPasswordUser != null) {
+            userId = forgotPasswordUser.getPhoneNumber();
+        }
         boolean isValid = OTPManager.validateOTP(userId, otp);
         if (isValid) {
-            boolean isSuccess = userService.insertUserInforToDB(this, newUser, newAccount);
-            if(isSuccess) {
-                GlobalVariable globalVariable = (GlobalVariable) getApplication();
-                globalVariable.setAuthenticationInfor(newUser, true);
-                Intent activityChangeIntent = new Intent(OtpActivity.this, MainActivity.class);
-                OtpActivity.this.startActivity(activityChangeIntent);
-                Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Có lỗi xảy ra trong quá trình đăng ký", Toast.LENGTH_SHORT).show();
+            switch(otpType) {
+                case SIGN_UP:{
+                    boolean isSuccess = insertUserInforToDB(newUser, newAccount);
+                    if(isSuccess) {
+                        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+                        globalVariable.setAuthenticationInfor(newUser, true);
+                        Intent activityChangeIntent = new Intent(OtpActivity.this, MainActivity.class);
+                        OtpActivity.this.startActivity(activityChangeIntent);
+                        Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Có lỗi xảy ra trong quá trình đăng ký", Toast.LENGTH_SHORT).show();
+                    }
+                    newAccount = null;
+                    newUser = null;
+                    break;
+                }
+                case SIGN_IN:{
+                    GlobalVariable globalVariable = (GlobalVariable) getApplication();
+                    globalVariable.setAuthenticationInfor(authUser, true);
+                    Toast.makeText(this,  "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    Intent activityChangeIntent = new Intent(this, MainActivity.class);
+                    this.startActivity(activityChangeIntent);
+                    authAccount = null;
+                    authUser = null;
+                    break;
+                }
+                case FORGOT_PASS:{
+                    Intent intent = new Intent(this, ChangePasswordActivity.class);
+                    intent.putExtra("forgotPasswordAccount", forgotPasswordAccount);
+                    startActivity(intent);
+                    forgotPasswordUser = null;
+                    forgotPasswordAccount = null;
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
+
         }
         else {
             Toast.makeText(OtpActivity.this, "OTP invalid: ", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public boolean insertUserInforToDB(User user, Account account) {
+        final User retreivedUser = userService.insertUserToDB(user);
+        if(retreivedUser != null) {
+            final Account retreivedAccount = accountService.insertAccountToDB(account);
+            return retreivedAccount != null;
+        }
+        return false;
     }
 }

@@ -8,16 +8,13 @@ import com.example.siki.model.Account;
 import com.example.siki.model.User;
 
 public class UserService {
-    public boolean insertUserInforToDB(Context context, User user, Account account) {
-        final User retreivedUser = insertUserToDB(context, user);
-        if(retreivedUser != null) {
-            final Account retreivedAccount = insertAccountToDB(context, account);
-            return retreivedAccount != null;
-        }
-        return false;
+    private Context context;
+
+    public UserService(Context context) {
+        this.context = context;
     }
 
-    public User insertUserToDB (Context context, User newUser) {
+    public User insertUserToDB (User newUser) {
         // Initialize UserDataSource
         UserDataSource userDataSource = new UserDataSource(context);
         userDataSource.open();
@@ -39,32 +36,11 @@ public class UserService {
         return retrievedUser;
     }
 
-    public Account insertAccountToDB (Context context, Account newAccount) {
-        // Initialize AccountDataSource
-        AccountDataSource accountDataSource = new AccountDataSource(context);
-        accountDataSource.open();
-
-        // Insert the new account into the database
-        long insertedId = accountDataSource.insertAccount(newAccount);
-        if (insertedId != -1) {
-            System.out.println("Account inserted successfully with ID: " + insertedId);
-
-            // Retrieve the account from the database using the phone number
-            String phoneNumberToRetrieve = "1234567890";
-            Account retrievedAccount = accountDataSource.getAccountByPhoneNumber(phoneNumberToRetrieve);
-            if (retrievedAccount != null) {
-                System.out.println("Retrieved Account: " + retrievedAccount.toString());
-            } else {
-                System.out.println("Account not found.");
-            }
-            accountDataSource.close();
-            return retrievedAccount;
-        } else {
-            System.out.println("Failed to insert account into the database.");
-        }
-
-        // Close the database connection
-        accountDataSource.close();
-        return null;
+    public User getUserByPhoneNumber (String phoneNumber) {
+        UserDataSource userDataSource = new UserDataSource(context);
+        userDataSource.open();
+        User retrievedUser = userDataSource.getUserPhoneNumber(phoneNumber);
+        userDataSource.close();
+        return retrievedUser;
     }
 }

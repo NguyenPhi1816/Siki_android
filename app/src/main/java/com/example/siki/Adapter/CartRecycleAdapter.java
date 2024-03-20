@@ -43,7 +43,7 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
         holder.cartCheckbox.setChecked(true);
         holder.cartImage.setImageResource(R.drawable.samsung);
         holder.productName.setText(product.getName());
-        holder.productPrice.setText(product.getProductPrice().getPrice()+" d");
+        holder.productPrice.setText(product.getPrice()+" d");
     }
 
     @Override

@@ -27,11 +27,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Thông tin sản phẩm"
+                android:text="Thông tin loại sản phẩm"
                 android:textColor="@android:color/white"
                 android:textSize="28sp"
                 android:layout_marginTop="4dp"
-                android:layout_marginLeft="-4dp"
+                android:layout_marginLeft="-25dp"
                 />
 
         </LinearLayout>
@@ -44,55 +44,18 @@
                 android:enabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mã sản phẩm"
-                android:id="@+id/maSp"/>
+                android:hint="Mã loại sản phẩm"
+                android:id="@+id/maLoaiSp"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tên sản phẩm"
-                android:id="@+id/tenSp"/>
+                android:hint="Tên loại sản phẩm"
+                android:id="@+id/tenLoaiSp"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Giá sản phẩm"
-                android:id="@+id/giaSp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Link hình ảnh"
-                android:id="@+id/anhSP"/>
-            <EditText
-                android:enabled="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Loại sản phẩm"
-                android:id="@+id/loaiSp"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="Loại sản phẩm"
-                    android:paddingLeft="5dp"
-                    android:textSize="18dp"
-                    />
-                <Spinner
-                    android:id="@+id/spLoaiSp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    />
-            </LinearLayout>
-            <TextView
-                android:id="@+id/tvLoaiSp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:textSize="18dp"
-                android:text="Loại sản phẩm đã chọn:"/>
+                android:hint="Mô tả"
+                android:id="@+id/moTaLoaiSp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"

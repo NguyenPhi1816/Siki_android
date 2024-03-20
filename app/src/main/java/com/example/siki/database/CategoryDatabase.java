@@ -4,16 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-
-import androidx.annotation.Nullable;
 
 import com.example.siki.model.Category;
-import com.example.siki.model.Product;
-import com.example.siki.model.ProductPrice;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CategoryDatabase {
     private SQLiteDatabase db;
@@ -44,6 +41,25 @@ public class CategoryDatabase {
                 listCategory.add(category);
             } while (cursor.moveToNext());
         }
+        cursor.close();
+        return listCategory;
+    }
+
+    public Long findIdByName(String name) {
+        Cursor cursor = db.query("Category", null, "Name=?", new String[]{name}, null, null, null);
+        return cursor.getLong(0);
+    }
+
+    public Map<Long, String> getAllCategory() {
+        String sql = "Select * from Category";
+        Map<Long, String> listCategory = new HashMap<>();
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                listCategory.put(cursor.getLong(0), cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
         return listCategory;
     }
 
@@ -51,7 +67,6 @@ public class CategoryDatabase {
         long id = -1;
         try {
             ContentValues values = new ContentValues();
-            values.put("Id", category.getId());
             values.put("Name", category.getName());
             values.put("Description", category.getDescription());
 
@@ -78,7 +93,6 @@ public class CategoryDatabase {
         int rowsAffected = -1;
         try {
             ContentValues values = new ContentValues();
-            values.put("Id", category.getId());
             values.put("Name", category.getName());
             values.put("Description", category.getDescription());
 

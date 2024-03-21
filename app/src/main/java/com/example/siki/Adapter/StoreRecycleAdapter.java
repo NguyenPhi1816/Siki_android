@@ -24,11 +24,11 @@ import java.util.stream.Collectors;
 
 public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapter.StoreHolder> {
 
-    private Map<Store, List<Cart>> stores;
+    private Map<String, List<Cart>> stores;
 
     private Context context;
 
-    public StoreRecycleAdapter(Map<Store, List<Cart>> stores, Context context) {
+    public StoreRecycleAdapter(Map<String, List<Cart>> stores, Context context) {
         this.stores = stores;
         this.context = context;
     }
@@ -42,13 +42,15 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
 
     @Override
     public void onBindViewHolder(@NonNull StoreHolder holder, int position) {
-        Map.Entry<Store, List<Cart>> store = (Map.Entry<Store, List<Cart>>) getItem(position);
-        holder.cb_shopId.setChecked(true);
-        holder.cb_shopId.setText(store.getKey().getName());
+        Map.Entry<String, List<Cart>> store =  getItem(position);
+
+        // Todo: Check is all cart is selected then set selection for cb_shop < doing
+        holder.cb_shopId.setChecked(false);
+        holder.cb_shopId.setText(store.getKey());
         List<Cart> cartList = store.getValue();
-        CartRecycleAdapter cartAdapter = new CartRecycleAdapter(cartList, holder.itemView.getContext());
+        CartRecycleAdapter cartAdapter = new CartRecycleAdapter(cartList, context);
         holder.rv_shopItem.setAdapter(cartAdapter);
-        holder.rv_shopItem.setLayoutManager(new GridLayoutManager(holder.itemView.getContext(),1));
+        holder.rv_shopItem.setLayoutManager(new GridLayoutManager(context,1));
         CartDatasource cartDatasource = new CartDatasource(context);
         cartDatasource.open();
         holder.cb_shopId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -61,10 +63,10 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
         });
     }
 
-    public Map.Entry<Store, List<Cart>> getItem(int position) {
+    public Map.Entry<String, List<Cart>> getItem(int position) {
         int start = 0 ;
 
-        for (Map.Entry<Store, List<Cart>> entry : stores.entrySet()) {
+        for (Map.Entry<String, List<Cart>> entry : stores.entrySet()) {
             if (start == position) {
                 return entry;
             }

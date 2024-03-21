@@ -35,6 +35,7 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createCartTable());
         db.execSQL(createCategoryTable());
         db.execSQL(createProductCategoryTable());
+        db.execSQL(createStoreTable());
 
     }
 
@@ -60,6 +61,21 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
                 "Password TEXT, " +
                 "UserRoleId INTEGER, " +
                 "Status TEXT);";
+    }
+
+    public String createStoreTable() {
+        return "PRAGMA foreign_keys = ON;\n" +
+                "\n" +
+                "CREATE TABLE Store (\n" +
+                "    Id INTEGER PRIMARY KEY,\n" +
+                "    Name TEXT,\n" +
+                "    UserId INTEGER,\n" +
+                "    Description TEXT,\n" +
+                "    Avatar TEXT,\n" +
+                "    BackgroundImage TEXT,\n" +
+                "    Status TEXT,\n" +
+                "    FOREIGN KEY (UserId) REFERENCES User(id)\n" +
+                ");\n";
     }
 
     private String createProductTable() {

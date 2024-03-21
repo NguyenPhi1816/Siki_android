@@ -41,22 +41,55 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-            <EditText
-                android:enabled="false"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Mã loại sản phẩm"
-                android:id="@+id/maLoaiSp"/>
-            <EditText
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mã loại sản phẩm:"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:textSize="18sp"/>
+                <EditText
+                    android:enabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mã loại sản phẩm"
+                    android:id="@+id/maLoaiSp"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tên loại sản phẩm"
-                android:id="@+id/tenLoaiSp"/>
-            <EditText
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên loại sản phẩm:"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:textSize="18sp"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Tên loại sản phẩm"
+                    android:id="@+id/tenLoaiSp"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Mô tả"
-                android:id="@+id/moTaLoaiSp"/>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mô tả:"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:textSize="18sp"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mô tả"
+                    android:id="@+id/moTaLoaiSp"/>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"

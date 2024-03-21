@@ -14,6 +14,8 @@ import java.util.List;
 public class ProductDatabase {
     private SQLiteDatabase db;
     private SikiDatabaseHelper dbHelper;
+
+    private StoreDataSource storeDataSource ;
     public ProductDatabase(Context context) {
         dbHelper = new SikiDatabaseHelper(context);
     }
@@ -46,6 +48,12 @@ public class ProductDatabase {
     }
     public Product findById(Long productId) {
         Product product = null;
+        Store store1 = new Store();
+        store1.setId(1L);
+        store1.setName("Samsung");
+        Store store2 = new Store();
+        store2.setId(2L);
+        store2.setName("Apple");
         try (Cursor cursor = db.query("Product", null, "id=?", new String[]{String.valueOf(productId)}, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 product = new Product();
@@ -54,9 +62,13 @@ public class ProductDatabase {
                 product.setImagePath(cursor.getString(2));
                 product.setPrice(cursor.getDouble(3));
                 product.setQuantity(cursor.getInt(4));
-//                Store store = new Store();
-//                store.setId(cursor.getLong(5));
-//                product.setStore(store);
+                Long storeId = cursor.getLong(5);
+                if (storeId == 1) {
+                    product.setStore(store1);
+                }else if (storeId == 2) {
+                    product.setStore(store2);
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();

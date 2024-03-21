@@ -45,20 +45,17 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
         Product product = cart.getProduct();
 
 
-        // Todo: set isChosen of cart
-
+        // Todo: set isChosen of cart => completed
         int currentQuantity = cart.getQuantity();
 
         holder.btn_cart_minus.setEnabled(cart.getQuantity() > 1);
-        holder.cartCheckbox.setChecked(true);
+        holder.cartCheckbox.setChecked(cart.isChosen());
         holder.cartImage.setImageResource(R.drawable.samsung);
         holder.productName.setText(product.getName());
 
         holder.productPrice.setText(product.getPrice()+" d");
 
-        holder.productPrice.setText(product.getPrice()+" d");
-
-        holder.tv_cart_quantity.setText(currentQuantity);
+        holder.tv_cart_quantity.setText(currentQuantity+"");
 
         CartDatasource cartDatasource = new CartDatasource(context);
         cartDatasource.open();

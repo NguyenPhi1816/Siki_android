@@ -18,8 +18,6 @@ public class CartDatasource {
 
     private ProductDatabase productDatabase;
 
-    private UserDataSource userDataSource ;
-
     public CartDatasource(Context context) {
         dbHelper = new SikiDatabaseHelper(context);
     }
@@ -32,7 +30,7 @@ public class CartDatasource {
         dbHelper.close();
     }
 
-    public List<Cart> findByUser(int userId) {
+    public List<Cart> findByUser(int userId, ProductDatabase productDatabase, UserDataSource userDataSource) {
         String sql = "Select * from Cart c where c.user_id = ?";
         List<Cart> listCart = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)});
@@ -109,5 +107,19 @@ public class CartDatasource {
 
 
     // Todo: Update selection by shop id
-    //
+
+
+    public int updateSelectedCartByUser(int userId, boolean isSelected) {
+        int rowsAffected = -1;
+        try {
+            ContentValues values = new ContentValues();
+            values.put("is_selected", isSelected);
+            rowsAffected = db.update("Cart", values, "user_id=?", new String[]{String.valueOf(userId)});
+        } catch (Exception e) {
+            // Handle any exceptions
+            e.printStackTrace();
+        }
+        return rowsAffected;
+    }
+
 }

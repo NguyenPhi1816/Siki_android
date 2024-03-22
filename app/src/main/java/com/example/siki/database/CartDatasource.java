@@ -40,6 +40,9 @@ public class CartDatasource {
                 cart.setId(cursor.getLong(0));
                 cart.setQuantity(cursor.getInt(3));
                 Long productId = cursor.getLong(2);
+                int isSelectedInt = cursor.getInt(4); // Assuming is_selected field is stored as an integer (0 or 1)
+                boolean isChosen = isSelectedInt == 1;
+                cart.setChosen(isChosen);
                 Product product = productDatabase.findById(productId);
                 cart.setProduct(product);
                 User user = userDataSource.getUserById(userId);

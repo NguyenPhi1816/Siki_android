@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
+import com.example.siki.activities.CartActivity;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
@@ -45,7 +46,7 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
         Map.Entry<String, List<Cart>> store =  getItem(position);
 
         // Todo: Check is all cart is selected then set selection for cb_shop < doing
-        holder.cb_shopId.setChecked(false);
+        holder.cb_shopId.setChecked(isAllSelected(store.getValue()));
         holder.cb_shopId.setText(store.getKey());
         List<Cart> cartList = store.getValue();
         CartRecycleAdapter cartAdapter = new CartRecycleAdapter(cartList, context);
@@ -58,14 +59,33 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cartList.forEach(cart -> {
                     cartDatasource.updateSelectedCart(cart.getId(), isChecked);
+                    cart.setChosen(isChecked);
                 });
+                cartAdapter.notifyDataSetChanged();
+                holder.cb_shopId.setChecked(isChecked);
+                if (context instanceof CartActivity) {
+                    ((CartActivity)context).readDb();
+                }
             }
         });
     }
 
+
+
+    private boolean isAllSelected(List<Cart> cartList) {
+        boolean check = true ;
+        for (Cart cart : cartList ) {
+            if (!cart.isChosen()) {
+                check = false;
+                break;
+            }
+        }
+        return check;
+
+    }
+
     public Map.Entry<String, List<Cart>> getItem(int position) {
         int start = 0 ;
-
         for (Map.Entry<String, List<Cart>> entry : stores.entrySet()) {
             if (start == position) {
                 return entry;

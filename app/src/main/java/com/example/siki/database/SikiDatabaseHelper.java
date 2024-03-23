@@ -36,7 +36,8 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createCategoryTable());
         db.execSQL(createProductCategoryTable());
         db.execSQL(createStoreTable());
-
+        db.execSQL(createOrderTable());
+        db.execSQL(createOrderDetailTable());
     }
 
     // Define methods to create each table
@@ -105,6 +106,31 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
                 "    is_selected BOOLEAN,\n" +
                 "    FOREIGN KEY (user_id) REFERENCES User(Id),\n" +
                 "    FOREIGN KEY (product_id) REFERENCES Product(Id)\n" +
+                ");\n";
+    }
+    private String createOrderTable() {
+        return "CREATE TABLE IF NOT EXISTS Order (\n" +
+                "    Id BIGINT PRIMARY KEY AUTOINCREMENT,\n" +
+                "    user_id BIGINT,\n" +
+                "    receiverPhoneNumber TEXT,\n" +
+                "    receiverAddress TEXT,\n" +
+                "    receiverName TEXT,\n" +
+                "    note TEXT,\n" +
+                "    createAt TEXT,\n" +
+                "    status TEXT,\n" +
+                "    FOREIGN KEY (user_id) REFERENCES User(Id),\n" +
+                ");\n";
+    }
+
+    private String createOrderDetailTable() {
+        return "CREATE TABLE IF NOT EXISTS OrderDetail (\n" +
+                "    Id BIGINT PRIMARY KEY AUTOINCREMENT,\n" +
+                "    order_id BIGINT,\n" +
+                "    product_id BIGINT,\n" +
+                "    quantity INTEGER,\n" +
+                "    price double,\n" +
+                "    FOREIGN KEY (order_id) REFERENCES Order(Id),\n" +
+                "    FOREIGN KEY (product_id) REFERENCES Product(Id),\n" +
                 ");\n";
     }
 }

@@ -61,8 +61,6 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
                     cartDatasource.updateSelectedCart(cart.getId(), isChecked);
                     cart.setChosen(isChecked);
                 });
-                cartAdapter.notifyDataSetChanged();
-                holder.cb_shopId.setChecked(isChecked);
                 if (context instanceof CartActivity) {
                     ((CartActivity)context).readDb();
                 }

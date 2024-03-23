@@ -87,7 +87,7 @@ public class CartDatasource {
         int rowsAffected = -1;
         try {
             ContentValues values = new ContentValues();
-            values.put("is_selected", isSelected);
+            values.put("is_selected", isSelected ? 1 : 0);
             rowsAffected = db.update("Cart", values, "id=?", new String[]{String.valueOf(cartId)});
         } catch (Exception e) {
             // Handle any exceptions
@@ -103,6 +103,16 @@ public class CartDatasource {
             rowsAffected = db.delete("Cart", "id=?", new String[]{String.valueOf(cartId)});
         } catch (Exception e) {
             // Handle any exceptions
+            e.printStackTrace();
+        }
+        return rowsAffected;
+    }
+
+    public int removeByUserId (Integer userId) {
+        int rowsAffected = -1;
+        try {
+            rowsAffected = db.delete("Cart", "user_id=?", new String[]{String.valueOf(userId)});
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return rowsAffected;

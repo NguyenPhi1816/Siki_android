@@ -13,12 +13,14 @@
         android:orientation="horizontal"
         >
         <Button
-            android:id="@+id/login_to_home_btn"
+            android:id="@+id/btn_back_to_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_chevron_left" />
+            android:drawableLeft="@drawable/ic_chevron_left"
+            android:paddingLeft="30dp"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,6 +113,7 @@
                <LinearLayout
                    android:layout_width="wrap_content"
                    android:orientation="vertical"
+                   android:paddingRight="5dp"
                    android:layout_height="wrap_content">
                    <TextView
                        android:layout_width="match_parent"
@@ -129,7 +132,9 @@
                    android:gravity="center"
                    android:background="@color/main_color"
                    android:layout_width="wrap_content"
-                   android:text="Thanh toán"
+                   android:text="Đặt hàng"
+                   android:paddingHorizontal="5dp"
+                   android:textColor="@color/white"
                    android:layout_height="match_parent"/>
            </LinearLayout>
     </LinearLayout>

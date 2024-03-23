@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ import com.example.siki.model.User;
 import com.example.siki.utils.PriceFormatter;
 import com.example.siki.variable.GlobalVariable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +43,7 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView storeRecycle;
 
     private AlertDialog.Builder builder;
+
     private UserDataSource userDataSource   ;
     private CartDatasource cartDatasource;
 
@@ -78,6 +81,7 @@ public class CartActivity extends AppCompatActivity {
         storeAdapter = new StoreRecycleAdapter(storeProductMap, this);
         storeRecycle.setAdapter(storeAdapter);
         storeRecycle.setLayoutManager(new GridLayoutManager(this, 1));
+        btn_cart_order.setEnabled(cartList.size() > 0);
         cb_cart_total.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -99,6 +103,12 @@ public class CartActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 CharSequence text = "Hello toast!";
                                 Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                                User user = globalVariable.getAuthUser();
+                                if (user != null) {
+                                    cartDatasource.removeByUserId(user.getId());
+                                }
+                                readDb();
+                                storeAdapter.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("Huy", new DialogInterface.OnClickListener() {
@@ -109,6 +119,19 @@ public class CartActivity extends AppCompatActivity {
                         })
                         .show();
 
+            }
+        });
+        btn_cart_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+                Bundle bundle = new Bundle();
+                List<Cart> selectingCarts = cartList.stream()
+                        .filter(Cart::isChosen) // Keep only carts where isChosen is true
+                        .collect(Collectors.toList());
+                bundle.putSerializable("selectingCarts", (Serializable) selectingCarts);
+                intent.putExtra("selectingCarts", bundle);
+                startActivity(intent);
             }
         });
 
@@ -122,15 +145,18 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private boolean isAllSelected(List<Cart> cartList) {
-        boolean check = true ;
-        for (Cart cart : cartList ) {
-            if (!cart.isChosen()) {
-                check = false;
-                break;
-            }
-        }
-        return check;
-
+       if (cartList.size() == 0) {
+           return false ;
+       }else {
+           boolean check = true ;
+           for (Cart cart : cartList ) {
+               if (!cart.isChosen()) {
+                   check = false;
+                   break;
+               }
+           }
+           return check;
+       }
     }
 
     public void readDb() {
@@ -154,6 +180,7 @@ public class CartActivity extends AppCompatActivity {
 
            // Set value for component when data
             tv_cart_totalPrice.setText(getTotalOfCartIsSelected());
+            btn_cart_order.setEnabled(cartList.size() > 0);
             int selectingCart = (int) cartList.stream().filter(Cart::isChosen).count();
             cb_cart_total.setText(String.format(cartMessage, cartList.size()));
             cb_cart_total.setChecked(isAllSelected(cartList));

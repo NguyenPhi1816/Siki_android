@@ -1,6 +1,8 @@
 package com.example.siki.model;
 
-public class Cart {
+import java.io.Serializable;
+
+public class Cart implements Serializable {
     private Long id;
     private Product product;
     private User user;

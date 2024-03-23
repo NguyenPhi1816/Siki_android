@@ -2,6 +2,7 @@ package com.example.siki.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
@@ -19,6 +22,7 @@ import com.example.siki.activities.CartActivity;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
+import com.example.siki.model.User;
 import com.example.siki.utils.PriceFormatter;
 
 import java.util.List;
@@ -52,7 +56,7 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
         holder.cartCheckbox.setChecked(cart.isChosen());
         holder.cartImage.setImageResource(R.drawable.samsung);
         holder.productName.setText(product.getName());
-        holder.productPrice.setText(PriceFormatter.formatDouble(product.getPrice() * cart.getQuantity()) +" d");
+        holder.productPrice.setText(PriceFormatter.formatDouble(product.getPrice() * cart.getQuantity()));
         holder.tv_cart_quantity.setText(currentQuantity+"");
         CartDatasource cartDatasource = new CartDatasource(context);
         cartDatasource.open();
@@ -60,7 +64,6 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
         holder.cartCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                holder.cartCheckbox.setChecked(isChecked);
                 cartDatasource.updateSelectedCart(cart.getId(), isChecked);
                 if (context instanceof CartActivity) {
                     ((CartActivity)context).readDb();
@@ -92,10 +95,24 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
         holder.delete_total_carts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cartDatasource.remove(cart.getId());
-                if (context instanceof CartActivity) {
-                    ((CartActivity)context).readDb();
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Xoá sản phẩm").setMessage("Bạn có muốn xóa sản phẩm đang chọn?")
+                        .setCancelable(true).setPositiveButton("Xac nhan", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cartDatasource.remove(cart.getId());
+                                if (context instanceof CartActivity) {
+                                    ((CartActivity)context).readDb();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Huy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -120,7 +137,6 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
             cartImage = itemView.findViewById(R.id.cart_image);
             productName = itemView.findViewById(R.id.cart_name);
             productPrice = itemView.findViewById(R.id.cart_price);
-
             btn_cart_minus = itemView.findViewById(R.id.btn_cart_minus);
             tv_cart_quantity = itemView.findViewById(R.id.tv_cart_quantity);
             btn_cart_add = itemView.findViewById(R.id.btn_cart_add);

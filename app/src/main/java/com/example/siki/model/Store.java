@@ -1,6 +1,8 @@
 package com.example.siki.model;
 
-public class Store {
+import java.io.Serializable;
+
+public class Store implements Serializable {
 	private Long Id;
 	private String Name;
 	private User user;

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.AddressForm">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="#F0739D"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/btn_back_to_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_chevron_left"
+            android:paddingLeft="30dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_gravity="center"
+            android:text="Địa chỉ nhận hàng"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Nhập họ"
+            android:id="@+id/ed_address_ho"
+            android:layout_marginBottom="4dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/redcart"
+            android:textSize="12dp"
+            android:id="@+id/first_name_error_message"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Nhập tên"
+            android:id="@+id/ed_address_ten"
+            android:layout_marginBottom="4dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/redcart"
+            android:textSize="12dp"
+            android:id="@+id/last_name_error_message"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Nhập địa chỉ"
+            android:id="@+id/ed_address_diachi"
+            android:layout_marginBottom="4dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/redcart"
+            android:textSize="12dp"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Nhập số điện thoại"
+            android:id="@+id/ed_address_sdt"
+            android:layout_marginBottom="4dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/redcart"
+            android:textSize="12dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_address_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@color/main_color"
+            android:textColor="@color/white"
+            android:layout_marginRight="10dp"
+            android:text="Huy bo"/>
+        <Button
+            android:id="@+id/btn_address_edit"
+            android:layout_width="wrap_content"
+            android:text="Cap nhat"
+            android:layout_marginLeft="10dp"
+            android:layout_height="50dp"
+            android:background="@color/main_color"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</LinearLayout>

@@ -109,28 +109,30 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
                 ");\n";
     }
     private String createOrderTable() {
-        return "CREATE TABLE IF NOT EXISTS Order (\n" +
-                "    Id BIGINT PRIMARY KEY AUTOINCREMENT,\n" +
-                "    user_id BIGINT,\n" +
+        return "CREATE TABLE IF NOT EXISTS `Order` (\n" +
+                "    Id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "    receiverPhoneNumber TEXT,\n" +
                 "    receiverAddress TEXT,\n" +
                 "    receiverName TEXT,\n" +
                 "    note TEXT,\n" +
                 "    createAt TEXT,\n" +
                 "    status TEXT,\n" +
-                "    FOREIGN KEY (user_id) REFERENCES User(Id),\n" +
+                "    user_id INTEGER,\n" +
+                "    FOREIGN KEY (user_id) REFERENCES User(Id)\n" +
                 ");\n";
     }
 
+
     private String createOrderDetailTable() {
-        return "CREATE TABLE IF NOT EXISTS OrderDetail (\n" +
-                "    Id BIGINT PRIMARY KEY AUTOINCREMENT,\n" +
-                "    order_id BIGINT,\n" +
-                "    product_id BIGINT,\n" +
+        return "CREATE TABLE IF NOT EXISTS `OrderDetail` (\n" +
+                "    Id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "    order_id INTEGER,\n" +
+                "    product_id INTEGER,\n" +
                 "    quantity INTEGER,\n" +
-                "    price double,\n" +
-                "    FOREIGN KEY (order_id) REFERENCES Order(Id),\n" +
-                "    FOREIGN KEY (product_id) REFERENCES Product(Id),\n" +
+                "    price DOUBLE,\n" +
+                "    FOREIGN KEY (order_id) REFERENCES `Order`(Id),\n" + // corrected table name and enclose in backticks
+                "    FOREIGN KEY (product_id) REFERENCES Product(Id)\n" + // removed unnecessary comma
                 ");\n";
     }
+
 }

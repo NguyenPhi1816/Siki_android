@@ -42,6 +42,7 @@
             android:paddingHorizontal="15dp"
             >
             <ImageView
+                android:color="@color/main_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_position"
@@ -60,15 +61,17 @@
             android:orientation="horizontal"
             >
             <TextView
+                android:id="@+id/tv_payment_userAddress"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:text="Nguyễn Tiến Đạt  - 0707380352
-72 Làng Tăng Phú - TP Thủ Đức"
+                android:text="Nguyễn Tiến Đạt - 070738035272 Làng Tăng Phú - TP Thủ Đức"
                 />
             <ImageView
+                android:background="@color/white"
+                android:id="@+id/iv_edit_address"
                 android:layout_marginLeft="120dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_arrow_right"
                 />
         </LinearLayout>
@@ -87,18 +90,30 @@
             android:background="@color/grey"
             android:layout_marginTop="5dp"
             android:layout_height="1dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingVertical="20dp"
-            >
+            android:paddingLeft="5dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Phương thức thanh toán:"
+                android:text="Phương thức thanh toán:" />
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
+            <Spinner
+                android:id="@+id/spinner_paymentType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
                 />
         </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:background="@color/grey"

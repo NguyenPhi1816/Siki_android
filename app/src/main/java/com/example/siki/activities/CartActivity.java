@@ -69,6 +69,8 @@ public class CartActivity extends AppCompatActivity {
         cartDatasource.open();
         //Todo: get all cart that is selected -> get total price
         tv_cart_totalPrice.setText(getTotalOfCartIsSelected());
+
+
         List<Cart> selectingCarts = cartList.stream().map(cart -> {
             if (cart.isChosen()) {
                 return cart;
@@ -165,6 +167,8 @@ public class CartActivity extends AppCompatActivity {
         userDataSource.open();
         productDatabase = new ProductDatabase(this);
         productDatabase.open();
+
+        // fake data
         User user = userDataSource.getUserById(1);
         globalVariable.setAuthUser(user);
 

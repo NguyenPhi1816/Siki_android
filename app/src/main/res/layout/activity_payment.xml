@@ -61,7 +61,7 @@
             android:orientation="horizontal"
             >
             <TextView
-                android:id="@+id/tv_payment_userAddress"
+                android:id="@+id/tv_payment_address"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:text="Nguyễn Tiến Đạt - 070738035272 Làng Tăng Phú - TP Thủ Đức"
@@ -83,7 +83,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_shopItem"
             android:layout_width="match_parent"
-            android:layout_height="550dp"
+            android:layout_height="480dp"
         />
         <TextView
             android:layout_width="match_parent"
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingVertical="20dp"
+            android:paddingVertical="10dp"
             android:paddingLeft="5dp">
 
             <TextView
@@ -113,7 +113,40 @@
                 android:layout_weight="1" />
                 />
         </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:background="@color/grey"
+            android:layout_marginTop="5dp"
+            android:layout_height="1dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingLeft="5dp">
 
+            <TextView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="Tin nhắn :" />
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
+            <TextView
+                android:text="Lưu ý "
+                android:gravity="center_vertical"
+                android:id="@+id/tv_payment_note"
+                android:layout_width="200dp"
+                android:layout_height="40dp" />
+            <ImageView
+                android:background="@color/white"
+                android:id="@+id/iv_note"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow_right"
+                />
+        </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:background="@color/grey"
@@ -143,6 +176,7 @@
                        android:text="1000000"/>
                </LinearLayout>
                <Button
+                   android:id="@+id/btn_payment_createOrder"
                    android:layout_gravity="end"
                    android:gravity="center"
                    android:background="@color/main_color"

@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi;
 import com.example.siki.enums.OrderStatus;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
 
 public class OrderDataSource {
     private SQLiteDatabase db;
@@ -28,8 +29,12 @@ public class OrderDataSource {
         dbHelper.close();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public Long createOrder (String receiverPhoneNumber, String receiverAddress, String receiverName, String note, Long userId) {
+    public Long createOrder (String receiverPhoneNumber,
+                             String receiverAddress,
+                             String receiverName,
+                             String note,
+                             int userId
+    ) {
         long id = -1;
         try {
             ContentValues values = new ContentValues();
@@ -37,7 +42,7 @@ public class OrderDataSource {
             values.put("receiverAddress", receiverAddress);
             values.put("receiverName", receiverName);
             values.put("status", OrderStatus.Pending.toString());
-            values.put("createdAt", LocalDateTime.now().toString());
+            values.put("createdAt", Calendar.getInstance().getTime().toString());
             values.put("note", note);
             values.put("user_id", userId);
             id = db.insert("Order", null, values);

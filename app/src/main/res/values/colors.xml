@@ -8,4 +8,7 @@
     <color name="redcart">#DF0000</color>
     <color name="border">#CACACA</color>
     <color name="gray">#A8A4A4</color>
+    
+    <color name="colorPrimary">#306B34</color>
+    <color name="colorSecondary">#FF6663</color>
 </resources>

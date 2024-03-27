@@ -24,7 +24,6 @@ import com.example.siki.database.OrderDetailDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
 import com.example.siki.model.Cart;
-import com.example.siki.model.OrderDetail;
 import com.example.siki.model.User;
 import com.example.siki.utils.PriceFormatter;
 import com.example.siki.variable.GlobalVariable;
@@ -36,8 +35,8 @@ import java.util.stream.Collectors;
 
 public class PaymentActivity extends AppCompatActivity {
     private List<Cart> selectingCarts = new ArrayList<>() ;
-    private TextView paymentTotal, tv_payment_userAddress, tv_payment_note;
-    private Button btn_note_cancel, btn_note_confirm;
+    private TextView paymentTotal, tv_payment_userAddress, tv_payment_note, tv_title;
+    private Button btn_note_cancel, btn_note_confirm, btn_payment_success;
     private EditText ed_note;
     private final String userAddressFormat = "%s - %s %s";
 
@@ -88,29 +87,8 @@ public class PaymentActivity extends AppCompatActivity {
         btn_payment_createOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // create order
-                OrderDataSource orderDataSource = new OrderDataSource(getApplicationContext());
-                orderDataSource.open();
-                OrderDetailDatasource orderDetailDatasource = new OrderDetailDatasource(getApplicationContext());
-                orderDetailDatasource.open();
-                if (globalVariable.getAuthUser() != null) {
-                    User currentUser = globalVariable.getAuthUser();
-                    String receiverPhoneNumber = currentUser.getPhoneNumber();
-                    String receiverAddress= currentUser.getPhoneNumber();
-                    String receiverName = currentUser.getFirstName().concat(" ").concat(currentUser.getLastName());
-                    String note = tv_payment_note.getText().toString().trim();
-                    int userId = currentUser.getId();
-
-                    Long orderId = orderDataSource.createOrder(receiverPhoneNumber, receiverAddress, receiverName, note, userId);
-                    if (orderId != -1) {
-                        selectingCarts.forEach(cart -> {
-                            orderDetailDatasource.save(cart.getProduct().getId(),
-                                    orderId, cart.getQuantity(), cart.getProduct().getPrice());
-                        });
-                    }
-
-                }
-                // Todo: dialog alert success when create order
+                saveOrder();
+                showSuccessMessage();
             }
         });
 
@@ -125,6 +103,43 @@ public class PaymentActivity extends AppCompatActivity {
         paymentRecycleAdapter = new PaymentRecycleAdapter(selectingCarts);
         paymentRecycle.setAdapter(paymentRecycleAdapter);
         paymentRecycle.setLayoutManager(new GridLayoutManager(this, 1));
+    }
+
+    private void saveOrder() {
+        OrderDataSource orderDataSource = new OrderDataSource(this);
+        orderDataSource.open();
+        OrderDetailDatasource orderDetailDatasource = new OrderDetailDatasource(this);
+        orderDetailDatasource.open();
+        if (globalVariable.getAuthUser() != null) {
+            User currentUser = globalVariable.getAuthUser();
+            String receiverPhoneNumber = currentUser.getPhoneNumber();
+            String receiverAddress= currentUser.getPhoneNumber();
+            String receiverName = currentUser.getFirstName().concat(" ").concat(currentUser.getLastName());
+            String note = tv_payment_note.getText().toString().trim();
+            int userId = currentUser.getId();
+            Long orderId = orderDataSource.createOrder(receiverPhoneNumber, receiverAddress, receiverName, note, userId);
+            if (orderId != -1) {
+                selectingCarts.forEach(cart -> {
+                    orderDetailDatasource.save(cart.getProduct().getId(),
+                            orderId, cart.getQuantity(), cart.getProduct().getPrice());
+                });
+            }
+        }
+    }
+
+    private void showSuccessMessage() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.layout_success_dialog);
+        btn_payment_success = dialog.findViewById(R.id.btn_payment_success);
+        tv_title = dialog.findViewById(R.id.tv_title);
+        btn_payment_success.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Todo: go to home page
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
 

@@ -30,7 +30,7 @@ public class OrderDetailDatasource {
             values.put("product_id", product_id);
             values.put("quantity",quantity );
             values.put("price", price);
-            id = db.insert("Cart", null, values);
+            id = db.insert("OrderDetail", null, values);
         } catch (Exception e) {
             // Handle any exceptions
             e.printStackTrace();

@@ -3,6 +3,19 @@
   <component name="deploymentTargetDropDown">
     <value>
       <entry key="app">
+      <entry key="CartActivity">
+        <State />
+      </entry>
+      <entry key="ListProductForCustomerActivity">
+        <State />
+      </entry>
+      <entry key="MenuProduct_ProductCategoryActivity">
+        <State />
+      </entry>
+      <entry key="PaymentActivity">
+        <State />
+      </entry>
+      <entry key="SignUpActivity">
         <State />
       </entry>
     </value>

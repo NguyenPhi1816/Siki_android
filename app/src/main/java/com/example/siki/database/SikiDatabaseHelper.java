@@ -80,7 +80,12 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
     }
 
     private String createProductTable() {
-        return "create table if not exists Product(Id integer primary key autoincrement, Name text, ImagePath text, ProductPrice double, Quantity integer, StoreId integer)";
+        return "create table if not exists Product(Id integer primary key autoincrement, " +
+                "Name text, " +
+                "ImagePath text, " +
+                "ProductPrice double, " +
+                "Quantity integer, " +
+                "StoreId integer)";
     }
 
     private String createCategoryTable() {

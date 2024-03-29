@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -19,10 +20,8 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
     private List<Product> productList = new ArrayList<>();
     TextView tv_categoryName;
     RecyclerView rv_product_list_customer;
-
     private ProductCategoryDatabase productCategoryDatabase;
-
-    private final Integer categoryId = 1;
+    private Integer categoryId = 1;
 
     private ProductListForCustomerRecycleAdapter productListForCustomerRecycleAdapter;
     @Override
@@ -54,5 +53,8 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
     private void setControl() {
         tv_categoryName = findViewById(R.id.tv_categoryName);
         rv_product_list_customer = findViewById(R.id.rv_product_list_customer);
+        Intent intent = getIntent();
+        Bundle categoryIdBundle = intent.getBundleExtra("categoryId");
+        categoryId = categoryIdBundle.getInt("categoryId");
     }
 }

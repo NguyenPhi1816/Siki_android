@@ -226,6 +226,5 @@
         app:menu="@menu/navmenu"
         app:itemIconSize="@dimen/iconsize"
         >
-
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 </androidx.constraintlayout.widget.ConstraintLayout>

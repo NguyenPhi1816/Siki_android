@@ -25,7 +25,6 @@ public class TrangChuActivity extends AppCompatActivity {
     RecyclerView viewlsp ;
     ExpandableHeightGridView gridView ;
     GridListSPApdapter gridlistviewsp ;
-
     TopSPAdapter topSPAdapter ;
 
     @Override
@@ -43,11 +42,8 @@ public class TrangChuActivity extends AppCompatActivity {
         viewlsp.setLayoutManager(mLayoutM);
         viewlsp.setItemAnimator(new DefaultItemAnimator());
         viewlsp.setAdapter(topSPAdapter);
-        gridlistviewsp = new GridListSPApdapter(this,R.layout.layout_gridcardsp,Topsp) ;
+        gridlistviewsp = new GridListSPApdapter(this,R.layout.layout_gridcardsp, Topsp) ;
         gridView.setAdapter(gridlistviewsp);
-
-
-
     }
     private void addData() {
         Topsp.add(new Product(1L,"Card 4090","",4800000d,200,null));

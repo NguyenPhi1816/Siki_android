@@ -174,12 +174,11 @@ public class PaymentActivity extends AppCompatActivity {
             ProductDatabase productDatabase = new ProductDatabase(this);
             productDatabase.open();
             List<Cart> cartList = cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource);
-            selectingCarts.addAll(cartList.stream().map(cart -> {
+            cartList.forEach(cart -> {
                 if (cart.isChosen()) {
-                    return cart;
+                    selectingCarts.add(cart);
                 }
-                return null;
-            }).collect(Collectors.toList()));
+            });
             paymentTotal.setText(getTotalPricePayment());
         }
     }
@@ -198,9 +197,8 @@ public class PaymentActivity extends AppCompatActivity {
         tv_payment_note = findViewById(R.id.tv_payment_note);
         iv_note = findViewById(R.id.iv_note);
         spinner_paymentType = findViewById(R.id.spinner_paymentType);
-        spinner_paymentType = findViewById(R.id.spinner_paymentType);
         btn_back_to_cart = findViewById(R.id.btn_back_to_cart);
-        paymentRecycle = findViewById(R.id.rv_shopItem);
+        paymentRecycle = findViewById(R.id.rv_payment);
         paymentTotal = findViewById(R.id.tv_payment_total);
         iv_edit_address = findViewById(R.id.iv_edit_address);
         tv_payment_userAddress = findViewById(R.id.tv_payment_address);

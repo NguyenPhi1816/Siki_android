@@ -54,9 +54,11 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
         holder.rv_shopItem.setLayoutManager(new GridLayoutManager(context,1));
         CartDatasource cartDatasource = new CartDatasource(context);
         cartDatasource.open();
-        holder.cb_shopId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.cb_shopId.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
+                boolean isChecked = holder.cb_shopId.isChecked();
+                holder.cb_shopId.setChecked(isChecked);
                 cartList.forEach(cart -> {
                     cartDatasource.updateSelectedCart(cart.getId(), isChecked);
                     cart.setChosen(isChecked);
@@ -66,6 +68,8 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
                 }
             }
         });
+
+
     }
 
 

@@ -49,7 +49,6 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
     public void onBindViewHolder(@NonNull CartHolder holder, @SuppressLint("RecyclerView") int position) {
         Cart cart = cartList.get(position);
         Product product = cart.getProduct();
-        // Todo: set isChosen of cart => completed
         int currentQuantity = cart.getQuantity();
         holder.btn_cart_minus.setEnabled(cart.getQuantity() > 1);
         holder.btn_cart_minus.setHovered(cart.getQuantity() > 1);
@@ -61,9 +60,11 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
         CartDatasource cartDatasource = new CartDatasource(context);
         cartDatasource.open();
 
-        holder.cartCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.cartCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
+                boolean isChecked = holder.cartCheckbox.isChecked();
+                holder.cartCheckbox.setChecked(isChecked);
                 cartDatasource.updateSelectedCart(cart.getId(), isChecked);
                 if (context instanceof CartActivity) {
                     ((CartActivity)context).readDb();

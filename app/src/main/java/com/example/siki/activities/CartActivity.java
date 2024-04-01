@@ -84,9 +84,10 @@ public class CartActivity extends AppCompatActivity {
         storeRecycle.setAdapter(storeAdapter);
         storeRecycle.setLayoutManager(new GridLayoutManager(this, 1));
         btn_cart_order.setEnabled(cartList.size() > 0);
-        cb_cart_total.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_cart_total.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
+                boolean isChecked = cb_cart_total.isChecked();
                 cb_cart_total.setChecked(isChecked);
                 if (globalVariable.getAuthUser() != null) {
                     cartDatasource.updateSelectedCartByUser(globalVariable.getAuthUser().getId() , isChecked);
@@ -95,6 +96,9 @@ public class CartActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
 
         btn_delete_total_carts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,7 +195,7 @@ public class CartActivity extends AppCompatActivity {
             btn_cart_order.setText(String.format(btnOrderMessage, selectingCart));
             storeAdapter = new StoreRecycleAdapter(storeProductMap, this);
             storeRecycle.setAdapter(storeAdapter);
-           storeAdapter.notifyDataSetChanged();
+            storeAdapter.notifyDataSetChanged();
        }
     }
 

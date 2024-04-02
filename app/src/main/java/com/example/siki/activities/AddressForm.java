@@ -62,8 +62,7 @@ public class AddressForm extends AppCompatActivity {
                 currentUser.setPhoneNumber(ed_address_sdt.getText().toString().trim());
                 int checked = userDataSource.updateUser(currentUser);
                 if (checked != -1) {
-                    Intent intent = new Intent(AddressForm.this, PaymentActivity.class);
-                    startActivity(intent);
+
                     showSuccessMessage();
                 } else {
                     //
@@ -101,7 +100,8 @@ public class AddressForm extends AppCompatActivity {
         btn_payment_success.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Todo: go to home page
+                Intent intent = new Intent(AddressForm.this, PaymentActivity.class);
+                startActivity(intent);
                 dialog.dismiss();
             }
         });

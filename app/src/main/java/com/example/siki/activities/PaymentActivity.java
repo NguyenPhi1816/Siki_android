@@ -35,7 +35,8 @@ import java.util.stream.Collectors;
 
 public class PaymentActivity extends AppCompatActivity {
     private List<Cart> selectingCarts = new ArrayList<>() ;
-    private TextView paymentTotal, tv_payment_userAddress, tv_payment_note, tv_title;
+    private TextView paymentTotal, tv_payment_userAddress, tv_payment_note, tv_title,
+            tv_payment_fullname, tv_payment_phonenumber;
     private Button btn_note_cancel, btn_note_confirm, btn_payment_success;
     private EditText ed_note;
     private final String userAddressFormat = "%s - %s %s";
@@ -165,8 +166,9 @@ public class PaymentActivity extends AppCompatActivity {
             String sdt = currentUser.getPhoneNumber();
 
             String fullName = ho.concat(" ").concat(ten);
-            String userAddress = String.format(userAddressFormat, fullName, sdt, address);
-            tv_payment_userAddress.setText(userAddress);
+            tv_payment_userAddress.setText(address);
+            tv_payment_fullname.setText(fullName);
+            tv_payment_phonenumber.setText(sdt);
 
             selectingCarts.clear();
             CartDatasource cartDatasource = new CartDatasource(this);
@@ -194,6 +196,8 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void setControl () {
+        tv_payment_phonenumber = findViewById(R.id.tv_payment_phonenumber);
+        tv_payment_fullname = findViewById(R.id.tv_payment_fullname);
         tv_payment_note = findViewById(R.id.tv_payment_note);
         iv_note = findViewById(R.id.iv_note);
         spinner_paymentType = findViewById(R.id.spinner_paymentType);

@@ -111,6 +111,8 @@ public class PaymentActivity extends AppCompatActivity {
         orderDataSource.open();
         OrderDetailDatasource orderDetailDatasource = new OrderDetailDatasource(this);
         orderDetailDatasource.open();
+        ProductDatabase productDatabase = new ProductDatabase(this);
+        productDatabase.open();
         if (globalVariable.getAuthUser() != null) {
             User currentUser = globalVariable.getAuthUser();
             String receiverPhoneNumber = currentUser.getPhoneNumber();
@@ -123,6 +125,8 @@ public class PaymentActivity extends AppCompatActivity {
                 selectingCarts.forEach(cart -> {
                     orderDetailDatasource.save(cart.getProduct().getId(),
                             orderId, cart.getQuantity(), cart.getProduct().getPrice());
+                    int updateQuantity = cart.getProduct().getQuantity() - cart.getQuantity();
+                    productDatabase.updateQuantityProduct(cart.getProduct().getId(), updateQuantity);
                 });
             }
         }

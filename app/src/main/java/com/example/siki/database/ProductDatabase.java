@@ -126,4 +126,17 @@ public class ProductDatabase {
         }
         return rowsAffected;
     }
+
+    public int updateQuantityProduct(Long productId, int quantity) {
+        int rowsAffected = -1;
+        try {
+            ContentValues values = new ContentValues();
+            values.put("Quantity", quantity);
+            rowsAffected = db.update("Product", values, "Id=?", new String[]{String.valueOf(productId)});
+        } catch (Exception e) {
+            // Handle any exceptions
+            e.printStackTrace();
+        }
+        return rowsAffected;
+    }
 }

@@ -16,10 +16,7 @@
         android:theme="@style/Theme.Siki"
         tools:targetApi="31">
         <activity
-            android:name=".activities.TrangChuActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activities.AddressForm"
+            android:name=".activities.Menu_Manager"
             android:exported="false" />
         <activity
             android:name=".activities.ChangePasswordActivity"
@@ -65,7 +62,7 @@
             android:exported="true" />
         <activity
             android:name=".activities.SignUpActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".activities.LoginActivity"
             android:exported="false" />

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Category;
+import com.squareup.picasso.Picasso;
 
 public class CategoryDetailActivity extends AppCompatActivity {
 
-    EditText edtMaLoaiSp, edtTenLoaiSp, edtMoTaLoaiSp;
+    EditText edtMaLoaiSp, edtTenLoaiSp, edtMoTaLoaiSp, edtAnhLoaiSp;
     Button btnBack, btnSua;
 
     @Override
@@ -37,6 +39,7 @@ public class CategoryDetailActivity extends AppCompatActivity {
             edtMaLoaiSp.setText(category.getId().toString());
             edtTenLoaiSp.setText(category.getName());
             edtMoTaLoaiSp.setText(category.getDescription());
+            edtAnhLoaiSp.setText(category.getImagePath());
 
         }
 
@@ -62,6 +65,7 @@ public class CategoryDetailActivity extends AppCompatActivity {
                         category.setId(Long.parseLong(edtMaLoaiSp.getText().toString()));
                         category.setName(edtTenLoaiSp.getText().toString());
                         category.setDescription(edtMoTaLoaiSp.getText().toString());
+                        category.setImagePath(edtAnhLoaiSp.getText().toString());
                         categoryDatabase.updateProduct(category);
                         Intent intent = new Intent(CategoryDetailActivity.this, CategoryListActivity.class);
                         startActivity(intent);
@@ -86,6 +90,7 @@ public class CategoryDetailActivity extends AppCompatActivity {
         edtMaLoaiSp = findViewById(R.id.maLoaiSp);
         edtTenLoaiSp = findViewById(R.id.tenLoaiSp);
         edtMoTaLoaiSp = findViewById(R.id.moTaLoaiSp);
+        edtAnhLoaiSp = findViewById(R.id.anhLoaiSp);
 
         btnSua = findViewById(R.id.btnSua);
         btnBack = findViewById(R.id.btnBack);

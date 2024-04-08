@@ -92,6 +92,7 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
         return "CREATE TABLE IF NOT EXISTS Category (" +
                 "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "Name TEXT," +
+                "ImagePath text, " +
                 "Description TEXT)";
     }
 

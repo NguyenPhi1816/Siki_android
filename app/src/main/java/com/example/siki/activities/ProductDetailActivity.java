@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.example.siki.database.ProductCategoryDatabase;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.model.Product;
 import com.example.siki.model.ProductCategory;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     EditText edtTenSp, edtMaSp, edtGiaSp, edtAnhSp, edtLoaiSp, edtSoLuongSp;
     TextView tvLoaiSp;
     Button btnBack, btnSua;
+    ImageView ivAnhSp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,12 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getItemAtPosition(position);
+                for (Map.Entry<Long, String> entry : listCategory.entrySet()) {
+                    if (entry.getValue().equals(selectedItem)) {
+                        Picasso.get().load(categoryDatabase.findImagePathById(Math.toIntExact(entry.getKey()))).into(ivAnhSp);
+                    }
+                }
+
                 if (isFirstSelection) {
                     isFirstSelection = false;
                     return;
@@ -173,5 +182,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvLoaiSp = findViewById(R.id.tvLoaiSp);
 
         spLoaiSp = findViewById(R.id.spLoaiSp);
+
+        ivAnhSp = findViewById(R.id.ivAnhSp);
     }
 }

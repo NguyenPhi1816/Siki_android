@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,9 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Category;
+import com.squareup.picasso.Picasso;
 
 public class CategoryAddActivity extends AppCompatActivity {
-    EditText edtTenLoaiSp, edtMoTaLoaiSp;
+    EditText edtTenLoaiSp, edtMoTaLoaiSp, edtAnhLoaiSp;
     Button btnBack, btnThem;
 
     @Override
@@ -53,6 +55,7 @@ public class CategoryAddActivity extends AppCompatActivity {
                         Category category = new Category();
                         category.setName(edtTenLoaiSp.getText().toString());
                         category.setDescription(edtMoTaLoaiSp.getText().toString());
+                        category.setImagePath(edtAnhLoaiSp.getText().toString());
                         categoryDatabase.addCategory(category);
                         Intent intent = new Intent(CategoryAddActivity.this, CategoryListActivity.class);
                         startActivity(intent);
@@ -76,9 +79,9 @@ public class CategoryAddActivity extends AppCompatActivity {
     private void setControl() {
         edtTenLoaiSp = findViewById(R.id.tenLoaiSp);
         edtMoTaLoaiSp = findViewById(R.id.moTaLoaiSp);
+        edtAnhLoaiSp = findViewById(R.id.anhLoaiSP);
 
         btnThem = findViewById(R.id.btnThem);
         btnBack = findViewById(R.id.btnBack);
-
     }
 }

@@ -60,12 +60,36 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
-            <TextView
-                android:id="@+id/tv_payment_address"
+            <LinearLayout
                 android:layout_width="220dp"
-                android:layout_height="wrap_content"
-                android:text="Nguyễn Tiến Đạt - 070738035272 Làng Tăng Phú - TP Thủ Đức"
-                />
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_payment_fullname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nguyễn Tiến Đạt"
+                        android:layout_marginRight="10dp"
+                        />
+                    <TextView
+                        android:id="@+id/tv_payment_phonenumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="070738035272"
+                        />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_payment_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Làng Tăng Phú - TP Thủ Đức"
+                    />
+            </LinearLayout>
             <ImageView
                 android:background="@color/white"
                 android:id="@+id/iv_edit_address"
@@ -81,7 +105,7 @@
             android:layout_marginTop="10dp"
             android:layout_height="1dp"/>
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_shopItem"
+            android:id="@+id/rv_payment"
             android:layout_width="match_parent"
             android:layout_height="480dp"
         />
@@ -134,7 +158,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0" />
             <TextView
-                android:text="Lưu ý "
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:hint="Lưu ý "
                 android:gravity="center_vertical"
                 android:id="@+id/tv_payment_note"
                 android:layout_width="200dp"

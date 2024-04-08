@@ -2,6 +2,7 @@ package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.siki.R;
 import com.example.siki.database.UserDataSource;
@@ -60,9 +62,8 @@ public class AddressForm extends AppCompatActivity {
                 currentUser.setPhoneNumber(ed_address_sdt.getText().toString().trim());
                 int checked = userDataSource.updateUser(currentUser);
                 if (checked != -1) {
-                    Intent intent = new Intent(AddressForm.this, PaymentActivity.class);
-                    startActivity(intent);
-                    // notify success message
+
+                    showSuccessMessage();
                 } else {
                     //
                 }
@@ -89,5 +90,21 @@ public class AddressForm extends AppCompatActivity {
         ed_address_ho.setText(currentUser.getFirstName());
         ed_address_ten.setText(currentUser.getLastName());
         ed_address_sdt.setText(currentUser.getPhoneNumber());
+    }
+    private void showSuccessMessage() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.layout_success_dialog);
+        Button btn_payment_success = dialog.findViewById(R.id.btn_payment_success);
+        TextView tv_title = dialog.findViewById(R.id.tv_title);
+        tv_title.setText("Cap nhat thanh cong");
+        btn_payment_success.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddressForm.this, PaymentActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

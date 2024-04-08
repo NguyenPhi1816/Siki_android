@@ -1,10 +1,12 @@
 package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,22 +41,32 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set the icon for the back button (should be a left chevron)
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left);  // Replace with your own icon here
+        }
+
         userService = new UserService(this);
 
         phoneNumber = (EditText) findViewById(R.id.phone_number);
         password = (EditText) findViewById(R.id.password);
         phone_number_error_message = (TextView) findViewById(R.id.phone_number_error_message);
         pass_error_message = (TextView) findViewById(R.id.pass_error_message);
-        loginToHomeBtn = (Button) findViewById(R.id.login_to_home_btn);
+//        loginToHomeBtn = (Button) findViewById(R.id.login_to_home_btn);
         createNewAccountBtn = (Button) findViewById(R.id.create_new_account_btn);
         submitBtn = (Button) findViewById(R.id.submit_btn);
         forgotPasswordBtn = (Button) findViewById(R.id.forgot_pass_btn);
 
-        loginToHomeBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                navigateToHome();
-            }
-        });
+//        loginToHomeBtn.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                navigateToHome();
+//            }
+//        });
 
         createNewAccountBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -91,6 +103,17 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to previous one if there is any
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void navigateToHome() {

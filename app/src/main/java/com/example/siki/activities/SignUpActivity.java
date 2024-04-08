@@ -1,11 +1,13 @@
 package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -51,7 +53,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Button showDatePickerButton;
     private Button signUpButton;
     private Button signUpToLoginButton;
-    private Button signUpToMain;
+//    private Button signUpToMain;
     private TextView firstNameErrorMessage;
     private TextView lastNameErrorMessage;
     private TextView addressErrorMessage;
@@ -65,6 +67,17 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set the icon for the back button (should be a left chevron)
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left);  // Replace with your own icon here
+        }
+
         firstNameEditText = findViewById(R.id.first_name);
         lastNameEditText = findViewById(R.id.last_name);
         addressEditText = findViewById(R.id.address);
@@ -77,7 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
         showDatePickerButton = findViewById(R.id.show_date_picker_btn);
         signUpButton = findViewById(R.id.sign_up_btn);
         signUpToLoginButton = findViewById(R.id.sign_up_to_login_btn);
-        signUpToMain = findViewById(R.id.sign_up_to_main);
+//        signUpToMain = findViewById(R.id.sign_up_to_main);
         firstNameErrorMessage = findViewById(R.id.first_name_error_message);
         lastNameErrorMessage = findViewById(R.id.last_name_error_message);
         addressErrorMessage = findViewById(R.id.address_error_message);
@@ -96,12 +109,12 @@ public class SignUpActivity extends AppCompatActivity {
         confirmPasswordErrorMessage.setVisibility(View.GONE);
         dateOfBirthErrorMessage.setVisibility(View.GONE);
 
-        signUpToMain.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent activityChangeIntent = new Intent(SignUpActivity.this, MainActivity.class);
-                SignUpActivity.this.startActivity(activityChangeIntent);
-            }
-        });
+//        signUpToMain.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent activityChangeIntent = new Intent(SignUpActivity.this, MainActivity.class);
+//                SignUpActivity.this.startActivity(activityChangeIntent);
+//            }
+//        });
 
         firstNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -184,6 +197,17 @@ public class SignUpActivity extends AppCompatActivity {
                 setDateOfBirth();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to previous one if there is any
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void setDateOfBirth() {

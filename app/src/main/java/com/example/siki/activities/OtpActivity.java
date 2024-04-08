@@ -1,9 +1,11 @@
 package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +33,7 @@ public class OtpActivity extends AppCompatActivity {
     private OTPType otpType;
     private Button sendNewOTPBtn;
     private Button validateOtpBtn;
-    private Button otpToSignUpBtn;
+//    private Button otpToSignUpBtn;
     private EditText otpEditText;
     private TextView timerTextView;
     private TimeCounter timeCounter;
@@ -43,12 +45,22 @@ public class OtpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set the icon for the back button (should be a left chevron)
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left);  // Replace with your own icon here
+        }
+
         userService = new UserService(this);
         accountService = new AccountService(this);
 
         sendNewOTPBtn = findViewById(R.id.send_new_otp);
         validateOtpBtn = findViewById(R.id.validate_otp_btn);
-        otpToSignUpBtn = findViewById(R.id.otp_to_sign_up_btn);
+//        otpToSignUpBtn = findViewById(R.id.otp_to_sign_up_btn);
         otpEditText = findViewById(R.id.otp_edit_text);
         timerTextView = findViewById(R.id.time_counter);
         timeCounter = new TimeCounter(timerTextView);
@@ -69,13 +81,24 @@ public class OtpActivity extends AppCompatActivity {
             }
         });
 
-        otpToSignUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent activityChangeIntent = new Intent(OtpActivity.this, SignUpActivity.class);
-                OtpActivity.this.startActivity(activityChangeIntent);
-            }
-        });
+//        otpToSignUpBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent activityChangeIntent = new Intent(OtpActivity.this, SignUpActivity.class);
+//                OtpActivity.this.startActivity(activityChangeIntent);
+//            }
+//        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to previous one if there is any
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void getInfor() {

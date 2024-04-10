@@ -1,16 +1,19 @@
 package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.siki.R;
 
 public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
-    Button btnSp, btnLoaiSp;
+    CardView cvSp, cvLoaiSp;
+    ImageButton btnLoaiSp, btnSp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,13 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        cvSp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductListActivity.class);
+                startActivity(intent);
+            }
+        });
         btnSp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -29,6 +39,13 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
             }
         });
 
+        cvLoaiSp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, CategoryListActivity.class);
+                startActivity(intent);
+            }
+        });
         btnLoaiSp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,7 +56,9 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
     }
 
     private void setControl() {
-        btnSp = findViewById(R.id.btnSp);
+        cvLoaiSp = findViewById(R.id.cvLoaiSp);
+        cvSp = findViewById(R.id.cvSp);
         btnLoaiSp = findViewById(R.id.btnLoaiSp);
+        btnSp = findViewById(R.id.btnSp);
     }
 }

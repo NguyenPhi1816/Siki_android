@@ -81,6 +81,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     />
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:id="@+id/ivAnhSp"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/tvLoaiSp"

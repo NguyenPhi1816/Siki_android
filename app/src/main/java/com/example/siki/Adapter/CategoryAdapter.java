@@ -60,7 +60,8 @@ public class CategoryAdapter extends BaseAdapter {
         ((TextView) categoryView.findViewById(R.id.categoryId)).setText(String.format("Id: %s", category.getId()));
         ((TextView) categoryView.findViewById(R.id.categoryName)).setText(String.format("Tên loại: %s", category.getName()));
         ((TextView) categoryView.findViewById(R.id.categoryDescription)).setText(String.format("Mô tả: %s", category.getDescription()));
-
+        ImageView myView = categoryView.findViewById(R.id.categoryImage);
+        Picasso.get().load(category.getImagePath()).into(myView);
 
         Button btnEdit = categoryView.findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(new View.OnClickListener() {

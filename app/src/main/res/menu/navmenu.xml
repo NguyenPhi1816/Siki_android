@@ -6,12 +6,12 @@
         android:title=""
         />
     <item
-        android:id="@+id/navigation_thongbao"
-        android:icon="@drawable/thongbao"
+        android:id="@+id/navigation_danhmuc"
+        android:icon="@drawable/ic_carts_black_24dp"
         android:title="" />
     <item
-        android:id="@+id/navigation_danhmuc"
-        android:icon="@drawable/danhmuc"
+        android:id="@+id/navigation_thongbao"
+        android:icon="@drawable/baseline_circle_notifications_24"
         android:title="" />
     <item
         android:id="@+id/navigation_user"

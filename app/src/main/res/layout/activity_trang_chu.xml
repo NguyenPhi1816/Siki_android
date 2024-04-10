@@ -224,6 +224,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navmenu"
+        app:itemTextColor="@color/main_color"
         app:itemIconSize="@dimen/iconsize"
         >
     </com.google.android.material.bottomnavigation.BottomNavigationView>

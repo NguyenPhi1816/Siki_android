@@ -21,6 +21,7 @@ import com.example.siki.database.CartDatasource;
 import com.example.siki.model.Product;
 import com.example.siki.utils.PriceFormatter;
 import com.example.siki.variable.GlobalVariable;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,7 +45,8 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
     @Override
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         Product product = productList.get(position);
-        holder.iv_product.setImageResource(R.drawable.samsung);
+        Picasso.get().load(product.getImagePath()).into(holder.iv_product);
+        /*holder.iv_product.setImageResource(R.drawable.samsung);*/
         holder.tv_productName.setText(product.getName());
         holder.tv_productPrice.setText(PriceFormatter.formatDouble(product.getPrice()));
         holder.tv_productQuantity.setText(product.getQuantity()+"");

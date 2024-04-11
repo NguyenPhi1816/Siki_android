@@ -59,13 +59,11 @@
            android:background="@color/black"
            >
        </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cart_recycleView"
         android:layout_width="match_parent"
         android:layout_height="650dp"
         android:paddingHorizontal="10dp" />
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"

@@ -1,5 +1,6 @@
 package com.example.siki.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,8 +12,10 @@ import android.view.ViewGroup;
 import com.example.siki.R;
 
 public class HomeFragment extends Fragment {
+    private Context context;
 
-    public HomeFragment() {
+    public HomeFragment(Context context) {
+        this.context = context;
     }
 
     @Override

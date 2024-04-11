@@ -60,11 +60,11 @@ public class CartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        setControl();
-        setEvent();
+       /* setControl();
+        setEvent();*/
     }
 
-    private void setEvent() {
+    /*private void setEvent() {
         cartDatasource = new CartDatasource(this);
         cartDatasource.open();
         //Todo: get all cart that is selected -> get total price
@@ -221,5 +221,5 @@ public class CartActivity extends AppCompatActivity {
             }
         }
         return PriceFormatter.formatDouble(totalPrice);
-    }
+    }*/
 }

@@ -69,7 +69,8 @@ public class PaymentActivity extends AppCompatActivity {
         btn_back_to_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PaymentActivity.this, CartActivity.class);
+                Intent intent = new Intent(PaymentActivity.this, HomeActivity.class);
+                intent.putExtra("cartFragment", R.id.nav_cart);
                 startActivity(intent);
             }
         });

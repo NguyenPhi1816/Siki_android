@@ -1,5 +1,6 @@
 package com.example.siki.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import com.example.siki.model.Cart;
 import com.example.siki.model.User;
 import com.example.siki.utils.PriceFormatter;
 import com.example.siki.variable.GlobalVariable;
+import com.saadahmedev.popupdialog.PopupDialog;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -84,6 +86,7 @@ public class CartFragment extends Fragment {
             }
             return null;
         }).collect(Collectors.toList());
+
         cb_cart_total.setText(String.format(cartMessage, selectingCarts.size()));
         cb_cart_total.setChecked(isAllSelected(cartList));
         btn_cart_order.setText(String.format(btnOrderMessage, selectingCarts.size()));
@@ -103,10 +106,6 @@ public class CartFragment extends Fragment {
                 }
             }
         });
-
-
-
-
 
         btn_delete_total_carts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,21 +137,35 @@ public class CartFragment extends Fragment {
         btn_cart_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PaymentActivity.class);
-                Bundle bundle = new Bundle();
-                List<Cart> selectingCarts = cartList.stream()
-                        .filter(Cart::isChosen) // Keep only carts where isChosen is true
-                        .collect(Collectors.toList());
-                bundle.putSerializable("selectingCarts", (Serializable) selectingCarts);
-                intent.putExtra("selectingCarts", bundle);
-                startActivity(intent);
+                if (selectingCarts.size() > 0) {
+                    Intent intent = new Intent(context, PaymentActivity.class);
+                    Bundle bundle = new Bundle();
+                    List<Cart> selectingCarts = cartList.stream()
+                            .filter(Cart::isChosen) // Keep only carts where isChosen is true
+                            .collect(Collectors.toList());
+                    bundle.putSerializable("selectingCarts", (Serializable) selectingCarts);
+                    intent.putExtra("selectingCarts", bundle);
+                    startActivity(intent);
+                }else {
+                    //Todo : alert user must choose at least one product.
+                    String message = "You must choose at least one product !";
+                    showAlertMessage(message);
+                }
             }
         });
 
     }
 
+    private void showAlertMessage(String message) {
+        PopupDialog.getInstance(context)
+                .statusDialogBuilder()
+                .createWarningDialog()
+                .setHeading("Alert")
+                .setDescription(message)
+                .build(Dialog::dismiss)
+                .show();
+    }
     public void readDb() {
-        // Todo: fake data user when login successful
         userDataSource = new UserDataSource(context);
         userDataSource.open();
         productDatabase = new ProductDatabase(context);

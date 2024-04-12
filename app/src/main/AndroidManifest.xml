@@ -28,6 +28,9 @@
             android:name=".activities.ForgotPasswordActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.AddressForm"
+            android:exported="true" />
+        <activity
             android:name=".activities.MenuProduct_ProductCategoryActivity"
             android:exported="true" />
         <activity

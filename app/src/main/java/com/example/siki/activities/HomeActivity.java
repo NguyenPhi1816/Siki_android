@@ -37,10 +37,17 @@ public class HomeActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new HomeFragment(this))
+                .commit();
         setControl();
         setEvent() ;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            redirectCartFragment();
+            bottom_navigation.setSelectedItemId(R.id.nav_cart);
+        }
     }
-
     private void setEvent() {
         bottom_navigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

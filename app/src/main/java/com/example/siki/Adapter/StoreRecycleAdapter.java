@@ -5,26 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
-import com.example.siki.activities.CartActivity;
 import com.example.siki.activities.CartFragment;
-import com.example.siki.activities.HomeActivity;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.model.Cart;
-import com.example.siki.model.Product;
-import com.example.siki.model.Store;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapter.StoreHolder> {
 

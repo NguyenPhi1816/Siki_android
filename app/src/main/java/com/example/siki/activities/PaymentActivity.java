@@ -70,7 +70,7 @@ public class PaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PaymentActivity.this, HomeActivity.class);
-                intent.putExtra("cartFragment", R.id.nav_cart);
+                intent.putExtra("fragment", R.id.nav_cart);
                 startActivity(intent);
             }
         });

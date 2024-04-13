@@ -9,11 +9,14 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
 import com.example.siki.activities.CartActivity;
+import com.example.siki.activities.CartFragment;
+import com.example.siki.activities.HomeActivity;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
@@ -29,9 +32,12 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
 
     private Context context;
 
-    public StoreRecycleAdapter(Map<String, List<Cart>> stores, Context context) {
+    private CartFragment cartFragment;
+
+    public StoreRecycleAdapter(Map<String, List<Cart>> stores, Context context, CartFragment cartFragment) {
         this.stores = stores;
         this.context = context;
+        this.cartFragment = cartFragment;
     }
 
     @NonNull
@@ -49,7 +55,7 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
         holder.cb_shopId.setChecked(isAllSelected(store.getValue()));
         holder.cb_shopId.setText(store.getKey());
         List<Cart> cartList = store.getValue();
-        CartRecycleAdapter cartAdapter = new CartRecycleAdapter(cartList, context);
+        CartRecycleAdapter cartAdapter = new CartRecycleAdapter(cartList, context, cartFragment);
         holder.rv_shopItem.setAdapter(cartAdapter);
         holder.rv_shopItem.setLayoutManager(new GridLayoutManager(context,1));
         CartDatasource cartDatasource = new CartDatasource(context);
@@ -63,9 +69,7 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
                     cartDatasource.updateSelectedCart(cart.getId(), isChecked);
                     cart.setChosen(isChecked);
                 });
-                if (context instanceof CartActivity) {
-                    ((CartActivity)context).readDb();
-                }
+                cartFragment.readDb();
             }
         });
 

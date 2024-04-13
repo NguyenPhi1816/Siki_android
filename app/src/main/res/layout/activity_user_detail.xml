@@ -40,7 +40,7 @@
                 android:background="@android:color/transparent"
                 android:paddingLeft="30dp"
                 android:layout_marginTop="-1dp"
-                android:drawableLeft="@drawable/baseline_add_shopping_cart_24" />
+                android:drawableLeft="@drawable/ic_carts_black_24dp" />
 
         </LinearLayout>
 

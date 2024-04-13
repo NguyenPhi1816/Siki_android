@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
 import com.example.siki.model.Cart;
+import com.example.siki.model.Product;
 import com.example.siki.utils.PriceFormatter;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -35,7 +37,10 @@ public class PaymentRecycleAdapter extends RecyclerView.Adapter<PaymentRecycleAd
     @Override
     public void onBindViewHolder(@NonNull PaymentHolder holder, int position) {
         Cart cart = cartList.get(position);
-        holder.payment_product_image.setImageResource(R.drawable.samsung);
+
+        Product product = cart.getProduct();
+        Picasso.get().load(product.getImagePath()).into(holder.payment_product_image);
+//        holder.payment_product_image.setImageResource(R.drawable.samsung);
         double productPrice = cart.getProduct().getPrice();
         String productPriceString = PriceFormatter.formatDouble(productPrice);
         double totalPrice = productPrice * cart.getQuantity();

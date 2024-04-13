@@ -147,7 +147,6 @@ public class CartFragment extends Fragment {
                     intent.putExtra("selectingCarts", bundle);
                     startActivity(intent);
                 }else {
-                    //Todo : alert user must choose at least one product.
                     String message = "You must choose at least one product !";
                     showAlertMessage(message);
                 }

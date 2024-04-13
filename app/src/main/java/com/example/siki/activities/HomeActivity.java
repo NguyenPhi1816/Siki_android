@@ -44,8 +44,13 @@ public class HomeActivity extends AppCompatActivity  {
         setEvent() ;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            redirectCartFragment();
-            bottom_navigation.setSelectedItemId(R.id.nav_cart);
+            int fragment = extras.getInt("fragment");
+            if (fragment == R.id.nav_cart) {
+                redirectCartFragment();
+                bottom_navigation.setSelectedItemId(R.id.nav_cart);
+            }else {
+                // Todo: another fragment
+            }
         }
     }
     private void setEvent() {
@@ -61,9 +66,17 @@ public class HomeActivity extends AppCompatActivity  {
                     redirectCartFragment();
                     return true;
                 }
+
+                if(item.getItemId() == R.id.nav_profile) {
+                    redirectProfileFragment();
+                }
                 return false;
             }
         });
+    }
+
+    private void redirectProfileFragment() {
+        // Todo : go to profile user
     }
 
     @Override

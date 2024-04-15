@@ -64,7 +64,7 @@
             android:orientation="vertical"
             android:layout_below="@+id/ly1"
             android:paddingTop="80dp"
-            android:background="#B1AEAE"
+            android:background="#D6D3D3"
             tools:ignore="MissingConstraints">
 
 
@@ -74,8 +74,9 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="50dp"
+                    android:padding="10dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/user"
+                    android:src="@drawable/user_1"
                     android:background="@color/white"
                     />
                 <LinearLayout
@@ -126,7 +127,8 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/user"
+                    android:src="@drawable/signature"
+                    android:padding="10dp"
                     android:background="@color/white"
                     />
                 <LinearLayout
@@ -175,7 +177,8 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/user"
+                    android:src="@drawable/birthday"
+                    android:padding="10dp"
                     android:background="@color/white"
                     />
                 <LinearLayout
@@ -224,7 +227,8 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/user"
+                    android:src="@drawable/gender"
+                    android:padding="10dp"
                     android:background="@color/white"
                     />
                 <LinearLayout
@@ -273,7 +277,8 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/user"
+                    android:src="@drawable/nationality"
+                    android:padding="10dp"
                     android:background="@color/white"
                     />
                 <LinearLayout
@@ -322,7 +327,8 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/user"
+                    android:src="@drawable/telephone"
+                    android:padding="10dp"
                     android:background="@color/white"
                     />
                 <LinearLayout
@@ -371,7 +377,8 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/user"
+                    android:src="@drawable/address"
+                    android:padding="10dp"
                     android:background="@color/white"
                     />
                 <LinearLayout
@@ -420,7 +427,8 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/user"
+                    android:src="@drawable/password"
+                    android:padding="10dp"
                     android:background="@color/white"
                     />
                 <LinearLayout

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -28,6 +29,7 @@ public class HomeActivity extends AppCompatActivity  {
     private List<Cart> cartList = new ArrayList<>();
     BottomNavigationView bottom_navigation;
     private UserDataSource userDataSource;
+
     private Map<String, List<Cart>> storeProductMap = new HashMap<>();
 
     private GlobalVariable globalVariable = new GlobalVariable();
@@ -109,8 +111,13 @@ public class HomeActivity extends AppCompatActivity  {
 
 
     private void redirectCartFragment() {
-        Fragment fragment = new CartFragment(this, cartList, storeProductMap);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+        if (globalVariable.getAuthUser() == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        } else {
+            Fragment fragment = new CartFragment(this, cartList, storeProductMap);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+        }
     }
 
     private void redirectHomeFragment() {

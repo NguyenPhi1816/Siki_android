@@ -51,4 +51,30 @@ public class OrderDataSource {
         }
         return id;
     }
+
+    public Long createOrder (String receiverPhoneNumber,
+                             String receiverAddress,
+                             String receiverName,
+                             String note,
+                             String createAt,
+                             String status,
+                             int userId
+    ) {
+        long id = -1;
+        try {
+            ContentValues values = new ContentValues();
+            values.put("receiverPhoneNumber", receiverPhoneNumber);
+            values.put("receiverAddress", receiverAddress);
+            values.put("receiverName", receiverName);
+            values.put("status", status);
+            values.put("createAt", createAt);
+            values.put("note", note);
+            values.put("user_id", userId);
+            id = db.insert("`Order`", null, values);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
 }

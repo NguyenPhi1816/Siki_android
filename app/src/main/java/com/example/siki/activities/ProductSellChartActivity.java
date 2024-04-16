@@ -2,10 +2,14 @@ package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,7 +17,9 @@ import android.widget.TextView;
 import com.example.siki.Adapter.StatisticalAdapter;
 import com.example.siki.R;
 import com.example.siki.database.ProductDatabase;
+import com.example.siki.database.SikiDatabaseHelper;
 import com.example.siki.database.StatisticalQuery;
+import com.example.siki.model.Product;
 import com.example.siki.model.StatisticalModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -25,12 +31,14 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class ProductSellChartActivity extends AppCompatActivity {
 
@@ -39,7 +47,8 @@ public class ProductSellChartActivity extends AppCompatActivity {
     ListView listViewStatistical;
     Button btnshowChart, btnShowList;
     LinearLayout layout_list, layout_chart;
-    TextView tvSold, tvThangSelected, tvNamSelected, tvThangClicker, tvNamClicker;
+    TextView tvSold, tvThangSelected, tvNamSelected, tvThangClicker, tvNamClicker, tvProductName;
+    ImageView imageProduct;
 
     private List<String> xValue = new ArrayList<>();
 
@@ -50,6 +59,22 @@ public class ProductSellChartActivity extends AppCompatActivity {
         SetControl();
         SetEvent();
         SetDefaul();
+
+
+        loadProduct(1L);
+//        SQLiteDatabase db;
+//        SikiDatabaseHelper helper;
+//        helper= new SikiDatabaseHelper(this);
+//        db = helper.getWritableDatabase();
+    }
+
+    private void loadProduct(long id) {
+        ProductDatabase productDatabase = new ProductDatabase(this);
+        productDatabase.open();
+        Product product = productDatabase.findById(id);
+        productDatabase.close();
+        tvProductName.setText(product.getName());
+        Picasso.get().load(product.getImagePath()).into(imageProduct);
     }
 
     private void SetDefaul() {
@@ -110,22 +135,24 @@ public class ProductSellChartActivity extends AppCompatActivity {
         tvNamSelected = findViewById(R.id.namSelected);
         tvThangClicker = findViewById(R.id.tvThangClicker);
         tvNamClicker = findViewById(R.id.tvNamClicker);
+        imageProduct = findViewById(R.id.image_prodcut);
+        tvProductName = findViewById(R.id.product_name);
     }
 
     private void statisticalDataMonth() {
         adapter = new StatisticalAdapter(this, product_month_data());
         listViewStatistical.setAdapter(adapter);
         AtomicReference<Double> sum = new AtomicReference<>((double) 0);
-        product_month_data().forEach(o -> sum.updateAndGet(v -> o.getQuantity()));
+        product_month_data().forEach(o -> sum.updateAndGet(v ->v+o.getQuantity()));
         tvSold.setText(String.format("Thống kê được %s sản phẩm", String.valueOf(sum.get())));
     }
 
     private void statisticalDataYear() {
         adapter = new StatisticalAdapter(this, product_year_data());
         listViewStatistical.setAdapter(adapter);
-        AtomicReference<Double> sum = new AtomicReference<>((double) 0);
-        product_year_data().forEach(o -> sum.updateAndGet(v->o.getQuantity()));
-        tvSold.setText(String.format("Thống kê được %s sản phẩm", String.valueOf(sum)));
+        AtomicReference<Double> sum = new AtomicReference<>(0d);
+        product_year_data().forEach(o -> sum.updateAndGet(v->v+o.getQuantity()));
+        tvSold.setText(String.format("Thống kê được %s sản phẩm", String.valueOf(sum.get())));
     }
 
     private void ChartSetting() {
@@ -151,7 +178,7 @@ public class ProductSellChartActivity extends AppCompatActivity {
     }
 
     private void ChartSettingMonthData() {
-        xValue = Arrays.asList("11-2023", "12-2023", "1-2024", "2-2024", "3-2024", "4-2024");
+        xValue = product_month_data().stream().map(StatisticalModel::getTitle).collect(Collectors.toList());
         XAxis xAxis = mplineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xValue));
@@ -160,7 +187,7 @@ public class ProductSellChartActivity extends AppCompatActivity {
     }
 
     private void ChartSettingYearData() {
-        xValue = Arrays.asList("2020", "2021", "2022", "2023");
+        xValue = product_year_data().stream().map(StatisticalModel::getTitle).collect(Collectors.toList());
         XAxis xAxis = mplineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xValue));
@@ -169,12 +196,10 @@ public class ProductSellChartActivity extends AppCompatActivity {
     }
 
     private ArrayList<Entry> product_year_data_chart() {
+        List<StatisticalModel> listYearData = product_year_data();
         ArrayList<Entry> entries = new ArrayList<Entry>();
-        entries.add(new Entry(0, 400));
-        entries.add(new Entry(1, 324));
-        entries.add(new Entry(2, 1234));
-        entries.add(new Entry(3, 900));
-
+        for (int i= 0; i<listYearData.size();i++)
+            entries.add(new Entry(i, listYearData.get(i).getQuantity().floatValue()));
         return entries;
     }
 
@@ -188,14 +213,10 @@ public class ProductSellChartActivity extends AppCompatActivity {
 
 
     private ArrayList<Entry> product_month_data_chart() {
+        List<StatisticalModel> listMonthData = product_month_data();
         ArrayList<Entry> entries = new ArrayList<Entry>();
-        entries.add(new Entry(0, 31));
-        entries.add(new Entry(1, 25));
-        entries.add(new Entry(2, 11));
-        entries.add(new Entry(3, 8));
-        entries.add(new Entry(4, 43));
-        entries.add(new Entry(5, 21));
-
+        for (int i= 0; i<listMonthData.size();i++)
+            entries.add(new Entry(i, listMonthData.get(i).getQuantity().floatValue()));
         return entries;
     }
 
@@ -238,4 +259,44 @@ public class ProductSellChartActivity extends AppCompatActivity {
         mplineChart.setData(lineData);
         mplineChart.invalidate();
     }
+
+//    private void initData(){
+//        UserDataSource userDataSource = new UserDataSource(this);
+//        userDataSource.open();
+//        userDataSource.insertUser(new User(1,"Huy","Nguyen","32F10","01234567890","male","06-04-2002","none","a@gmail.com"));
+//        userDataSource.close();
+//
+//        ProductDatabase productDatabase = new ProductDatabase(this);
+//        productDatabase.open();
+//        productDatabase.addProduct(new Product(1L, "Iphone","https://th.bing.com/th/id/OIP.lochyvMcAayefCqjuf0cagHaHa?rs=1&pid=ImgDetMain",10000000d, 100, null));
+//        productDatabase.close();
+//
+//        OrderDataSource orderDataSource = new OrderDataSource(this);
+//        orderDataSource.open();
+//        orderDataSource.createOrder("01234567890","32F10","Nguyen Thanh Huy","Ok","25-01-2020", OrderStatus.Success.toString(),1);
+//        orderDataSource.createOrder("01234567890","32F10","Nguyen Thanh Huy","Ok","25-01-2021", OrderStatus.Success.toString(),1);
+//        orderDataSource.createOrder("01234567890","32F10","Nguyen Thanh Huy","Ok","25-01-2022", OrderStatus.Success.toString(),1);
+//        orderDataSource.createOrder("01234567890","32F10","Nguyen Thanh Huy","Ok","25-12-2023", OrderStatus.Success.toString(),1);
+//        orderDataSource.createOrder("01234567890","32F10","Nguyen Thanh Huy","Ok","07-01-2024", OrderStatus.Success.toString(),1);
+//        orderDataSource.createOrder("01234567890","32F10","Nguyen Thanh Huy","Ok","06-02-2024", OrderStatus.Success.toString(),1);
+//        orderDataSource.createOrder("01234567890","32F10","Nguyen Thanh Huy","Ok","12-03-2024", OrderStatus.Success.toString(),1);
+//        orderDataSource.createOrder("01234567890","32F10","Nguyen Thanh Huy","Ok","17-04-2024", OrderStatus.Success.toString(),1);
+//        orderDataSource.createOrder("01234567890","32F10","Nguyen Thanh Huy","Ok","23-05-2024", OrderStatus.Success.toString(),1);
+//        orderDataSource.createOrder("01234567890","32F10","Nguyen Thanh Huy","Ok","23-06-2024", OrderStatus.Success.toString(),1);
+//        orderDataSource.close();
+//
+//        OrderDetailDatasource orderDetailDatasource = new OrderDetailDatasource(this);
+//        orderDetailDatasource.open();
+//        orderDetailDatasource.save(1L,1L,100, 10000000d);
+//        orderDetailDatasource.save(1L,2L,200, 12000000d);
+//        orderDetailDatasource.save(1L,3L,250, 14000000d);
+//        orderDetailDatasource.save(1L,4L,515, 50000000d);
+//        orderDetailDatasource.save(1L,5L,135, 34000000d);
+//        orderDetailDatasource.save(1L,6L,125, 23000000d);
+//        orderDetailDatasource.save(1L,7L,15, 45000000d);
+//        orderDetailDatasource.save(1L,8L,923, 45000000d);
+//        orderDetailDatasource.save(1L,9L,275, 14000000d);
+//        orderDetailDatasource.save(1L,10L,150, 24000000d);
+//        orderDetailDatasource.close();
+//    }
 }

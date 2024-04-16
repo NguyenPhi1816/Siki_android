@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.siki.model.StatisticalModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class StatisticalQuery {
@@ -29,8 +30,8 @@ public class StatisticalQuery {
 
     public List<StatisticalModel> getProductSellMonthData(int id){
         String sql = "SELECT \n" +
-                "    strftime('%Y', createAt) AS year, \n" +
-                "    strftime('%m', createAt) AS month, \n" +
+                "    substr(createAt, 4, 2) AS month, \n" +
+                "    substr(createAt, 7, 4) AS year, \n" +
                 "    SUM(quantity) AS total_quantity \n" +
                 "FROM \n" +
                 "    \"Order\" o \n" +
@@ -38,15 +39,14 @@ public class StatisticalQuery {
                 "    OrderDetail od ON o.Id = od.order_id \n" +
                 "WHERE \n" +
                 "    od.product_id = ? \n" +
-                "    AND o.status = 'Đã bán' \n" +
+                "    AND o.status = 'Success' \n" +
                 "GROUP BY \n" +
-                "    strftime('%Y', createAt), \n" +
-                "    strftime('%m', createAt) \n" +
+                "    month,\n" +
+                "    year\n" +
                 "ORDER BY \n" +
                 "    year DESC, \n" +
-                "    month DESC \n" +
-                "LIMIT \n" +
-                "    6;\n";
+                "    month DESC\n" +
+                "LIMIT 6";
         List<StatisticalModel> listStatisticalModels = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(id)});
         if (cursor==null) return listStatisticalModels;
@@ -60,11 +60,12 @@ public class StatisticalQuery {
             while (cursor.moveToNext());
         }
         cursor.close();
+        Collections.reverse(listStatisticalModels);
         return listStatisticalModels;
     }
     public List<StatisticalModel> getProductSellYearData(int id) {
         String sql = "SELECT \n" +
-                "    strftime('%Y', createAt) AS year, \n" +
+                "    substr(createAt, 7, 4) AS year, \n" +
                 "    SUM(quantity) AS total_quantity \n" +
                 "FROM \n" +
                 "    \"Order\" o \n" +
@@ -72,9 +73,9 @@ public class StatisticalQuery {
                 "    OrderDetail od ON o.Id = od.order_id \n" +
                 "WHERE \n" +
                 "    od.product_id = ? \n" +
-                "    AND o.status = 'Đã bán' \n" +
+                "    AND o.status = 'Success' \n" +
                 "GROUP BY \n" +
-                "    strftime('%Y', createAt) \n" +
+                "    year \n" +
                 "ORDER BY \n" +
                 "    year DESC \n" +
                 "LIMIT \n" +
@@ -91,6 +92,7 @@ public class StatisticalQuery {
             }
             while (cursor.moveToNext());
         }
+        Collections.reverse(listStatisticalModels);
         cursor.close();
         return listStatisticalModels;
     }

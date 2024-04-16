@@ -4,9 +4,6 @@ import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +22,6 @@ public class TrangChuActivity extends AppCompatActivity {
     RecyclerView viewlsp ;
     ExpandableHeightGridView gridView ;
     GridListSPApdapter gridlistviewsp ;
-
     TopSPAdapter topSPAdapter ;
 
     @Override
@@ -43,11 +39,8 @@ public class TrangChuActivity extends AppCompatActivity {
         viewlsp.setLayoutManager(mLayoutM);
         viewlsp.setItemAnimator(new DefaultItemAnimator());
         viewlsp.setAdapter(topSPAdapter);
-        gridlistviewsp = new GridListSPApdapter(this,R.layout.layout_gridcardsp,Topsp) ;
+        gridlistviewsp = new GridListSPApdapter(this,R.layout.layout_gridcardsp, Topsp) ;
         gridView.setAdapter(gridlistviewsp);
-
-
-
     }
     private void addData() {
         Topsp.add(new Product(1L,"Card 4090","",4800000d,200,null));

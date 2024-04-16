@@ -1,11 +1,14 @@
 package com.example.siki.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Category;
+import com.example.siki.model.Product;
+import com.example.siki.model.Store;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +39,8 @@ public class CategoryDatabase {
                 Category category = new Category();
                 category.setId(cursor.getLong(0));
                 category.setName(cursor.getString(1));
-                category.setDescription(cursor.getString(2));
+                category.setImagePath(cursor.getString(2));
+                category.setDescription(cursor.getString(3));
 
                 listCategory.add(category);
             } while (cursor.moveToNext());
@@ -44,10 +48,33 @@ public class CategoryDatabase {
         cursor.close();
         return listCategory;
     }
+    public Category findById(Integer categoryId) {
+        Category category = new Category();
+        try (Cursor cursor = db.query("Category", null, "Id=?", new String[]{String.valueOf(categoryId)}, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                category.setId(cursor.getLong(0));
+                category.setName(cursor.getString(1));
+                category.setImagePath(cursor.getString(2));
+                category.setDescription(cursor.getString(3));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return category;
+    }
 
-    public Long findIdByName(String name) {
-        Cursor cursor = db.query("Category", null, "Name=?", new String[]{name}, null, null, null);
-        return cursor.getLong(0);
+    @SuppressLint("Range")
+    public String findImagePathById(int id) {
+        String rs = "";
+        try {
+            Cursor cursor = db.query("Category", null, "Id=?", new String[]{String.valueOf(id)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                rs = cursor.getString(cursor.getColumnIndex("ImagePath"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return rs;
     }
 
     public Map<Long, String> getAllCategory() {
@@ -69,6 +96,7 @@ public class CategoryDatabase {
             ContentValues values = new ContentValues();
             values.put("Name", category.getName());
             values.put("Description", category.getDescription());
+            values.put("ImagePath", category.getImagePath());
 
             id = db.insert("Category", null, values);
         } catch (Exception e) {
@@ -95,6 +123,7 @@ public class CategoryDatabase {
             ContentValues values = new ContentValues();
             values.put("Name", category.getName());
             values.put("Description", category.getDescription());
+            values.put("ImagePath", category.getImagePath());
 
             rowsAffected = db.update("Category", values, "Id=?", new String[]{String.valueOf(category.getId())});
         } catch (Exception e) {

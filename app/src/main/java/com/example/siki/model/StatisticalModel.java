@@ -2,12 +2,12 @@ package com.example.siki.model;
 
 public class StatisticalModel {
     String  title;
-    int quantity;
+    Double quantity;
 
     public StatisticalModel() {
     }
 
-    public StatisticalModel(String title, int quantity) {
+    public StatisticalModel(String title, Double quantity) {
         this.title = title;
         this.quantity = quantity;
     }
@@ -20,11 +20,11 @@ public class StatisticalModel {
         this.title = title;
     }
 
-    public int getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 }

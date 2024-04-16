@@ -1,33 +1,35 @@
 package com.example.siki.Adapter;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
+import com.example.siki.activities.LoginActivity;
 import com.example.siki.database.CartDatasource;
-import com.example.siki.model.Cart;
-import com.example.siki.model.Category;
 import com.example.siki.model.Product;
-import com.example.siki.model.Store;
+import com.example.siki.utils.PriceFormatter;
+import com.example.siki.variable.GlobalVariable;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.Map;
 
 public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<ProductListForCustomerRecycleAdapter.ProductHolder> {
 
     private List<Product> productList ;
 
+    private final String quantityFormat = "Còn lại %d";
     private Context context;
 
     public ProductListForCustomerRecycleAdapter(List<Product> productList, Context context) {
@@ -44,14 +46,27 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
     @Override
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         Product product = productList.get(position);
-        holder.iv_product.setImageResource(R.drawable.samsung);
+        Picasso.get().load(product.getImagePath()).into(holder.iv_product);
         holder.tv_productName.setText(product.getName());
-        holder.tv_productPrice.setText("120,000d");
-        holder.tv_productQuantity.setText("Con lai 4sp");
+        holder.tv_productPrice.setText(PriceFormatter.formatDouble(product.getPrice()));
+        holder.tv_productQuantity.setText(String.format(quantityFormat, product.getQuantity()));
+        CartDatasource cartDatasource = new CartDatasource(context);
+        cartDatasource.open();
         holder.btn_product_add2Cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                GlobalVariable globalVariable = new GlobalVariable();
+                if (globalVariable.getAuthUser() != null) {
+                    Integer userId = globalVariable.getAuthUser().getId();
+                    long isAddSuccess = cartDatasource.addToCart(product.getId(), userId);
+                    if (isAddSuccess != -1) {
+                        String message = "Thêm vào giỏ hàng thành công!";
+                        showSuccessMessage(context, message);
+                    }
+                } else {
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    startActivity(context, intent, null);
+                }
             }
         });
     }
@@ -75,5 +90,19 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
             tv_productQuantity = itemView.findViewById(R.id.tv_productQuantity);
             btn_product_add2Cart = itemView.findViewById(R.id.btn_product_add2Cart);
         }
+    }
+    private void showSuccessMessage(Context context, String message) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.layout_success_dialog);
+        Button btn_payment_success = dialog.findViewById(R.id.btn_payment_success);
+        TextView tv_title = dialog.findViewById(R.id.tv_title);
+        tv_title.setText(message);
+        btn_payment_success.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

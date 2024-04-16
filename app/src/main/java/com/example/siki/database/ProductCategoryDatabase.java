@@ -55,6 +55,37 @@ public class ProductCategoryDatabase {
         return categoryNameList;
     }
 
+    public List<Product> findByCategoryId(Integer categoryI) {
+        List<Product> productList = new ArrayList<>();
+        String sql = "select p.Id, p.Name, p.ImagePath, p.ProductPrice, p.Quantity " +
+                "from Product p " +
+                "inner join ProductCategory pc  " +
+                "on p.id = pc.ProductId " +
+                "where pc.CategoryId = ?";;
+
+        try {
+            // Thực thi truy vấn
+            Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(categoryI)});
+
+            // Lấy tên danh mục nếu có kết quả
+            if (cursor.moveToFirst()) {
+                do {
+                    Product product = new Product();
+                    product.setId(cursor.getLong(0));
+                    product.setName(cursor.getString(1));
+                    product.setImagePath(cursor.getString(2));
+                    product.setPrice(cursor.getDouble(3));
+                    product.setQuantity(cursor.getInt(4));
+                    productList.add(product);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return productList  ;
+    }
+
     public long addProductCategory(ProductCategory productCategory) {
         long id = -1;
         try {

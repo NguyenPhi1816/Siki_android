@@ -9,18 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F0739D">
-            <Button
-                android:id="@+id/login_to_home_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:drawableLeft="@drawable/ic_chevron_left"
-                />
-        </LinearLayout>
+            android:layout_height="50dp"
+            android:background="#F0739D"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,25 +61,26 @@
                 android:textSize="12dp"
                 android:id="@+id/pass_error_message"
                 />
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#F0739D"
                 app:cornerRadius="8dp"
                 android:text="Đăng nhập"
                 android:textSize="24sp"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:id="@+id/submit_btn"/>
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/forgot_pass_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="0dp"
-                android:backgroundTint="@android:color/transparent"
                 android:text="Quên mật khẩu?"
-                android:textColor="#F0739D"/>
+                android:textColor="#F0739D"
+                android:background="@null"
+                android:textAllCaps="false"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,14 +90,14 @@
                     android:layout_height="wrap_content"
                     android:text="Chưa có tài khoản?"
                     android:layout_marginRight="8px"/>
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/create_new_account_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="0dp"
-                    android:backgroundTint="@android:color/transparent"
                     android:text="Tạo tài khoản"
-                    android:textColor="#F0739D"/>
+                    android:textColor="#F0739D"
+                    android:background="@null"
+                    android:textAllCaps="false"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

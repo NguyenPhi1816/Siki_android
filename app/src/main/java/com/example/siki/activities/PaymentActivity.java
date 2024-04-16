@@ -35,7 +35,8 @@ import java.util.stream.Collectors;
 
 public class PaymentActivity extends AppCompatActivity {
     private List<Cart> selectingCarts = new ArrayList<>() ;
-    private TextView paymentTotal, tv_payment_userAddress, tv_payment_note, tv_title;
+    private TextView paymentTotal, tv_payment_userAddress, tv_payment_note, tv_title,
+            tv_payment_fullname, tv_payment_phonenumber;
     private Button btn_note_cancel, btn_note_confirm, btn_payment_success;
     private EditText ed_note;
     private final String userAddressFormat = "%s - %s %s";
@@ -68,7 +69,8 @@ public class PaymentActivity extends AppCompatActivity {
         btn_back_to_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PaymentActivity.this, CartActivity.class);
+                Intent intent = new Intent(PaymentActivity.this, HomeActivity.class);
+                intent.putExtra("fragment", R.id.nav_cart);
                 startActivity(intent);
             }
         });
@@ -110,6 +112,8 @@ public class PaymentActivity extends AppCompatActivity {
         orderDataSource.open();
         OrderDetailDatasource orderDetailDatasource = new OrderDetailDatasource(this);
         orderDetailDatasource.open();
+        ProductDatabase productDatabase = new ProductDatabase(this);
+        productDatabase.open();
         if (globalVariable.getAuthUser() != null) {
             User currentUser = globalVariable.getAuthUser();
             String receiverPhoneNumber = currentUser.getPhoneNumber();
@@ -122,6 +126,8 @@ public class PaymentActivity extends AppCompatActivity {
                 selectingCarts.forEach(cart -> {
                     orderDetailDatasource.save(cart.getProduct().getId(),
                             orderId, cart.getQuantity(), cart.getProduct().getPrice());
+                    int updateQuantity = cart.getProduct().getQuantity() - cart.getQuantity();
+                    productDatabase.updateQuantityProduct(cart.getProduct().getId(), updateQuantity);
                 });
             }
         }
@@ -165,8 +171,9 @@ public class PaymentActivity extends AppCompatActivity {
             String sdt = currentUser.getPhoneNumber();
 
             String fullName = ho.concat(" ").concat(ten);
-            String userAddress = String.format(userAddressFormat, fullName, sdt, address);
-            tv_payment_userAddress.setText(userAddress);
+            tv_payment_userAddress.setText(address);
+            tv_payment_fullname.setText(fullName);
+            tv_payment_phonenumber.setText(sdt);
 
             selectingCarts.clear();
             CartDatasource cartDatasource = new CartDatasource(this);
@@ -174,12 +181,11 @@ public class PaymentActivity extends AppCompatActivity {
             ProductDatabase productDatabase = new ProductDatabase(this);
             productDatabase.open();
             List<Cart> cartList = cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource);
-            selectingCarts.addAll(cartList.stream().map(cart -> {
+            cartList.forEach(cart -> {
                 if (cart.isChosen()) {
-                    return cart;
+                    selectingCarts.add(cart);
                 }
-                return null;
-            }).collect(Collectors.toList()));
+            });
             paymentTotal.setText(getTotalPricePayment());
         }
     }
@@ -195,12 +201,13 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void setControl () {
+        tv_payment_phonenumber = findViewById(R.id.tv_payment_phonenumber);
+        tv_payment_fullname = findViewById(R.id.tv_payment_fullname);
         tv_payment_note = findViewById(R.id.tv_payment_note);
         iv_note = findViewById(R.id.iv_note);
         spinner_paymentType = findViewById(R.id.spinner_paymentType);
-        spinner_paymentType = findViewById(R.id.spinner_paymentType);
         btn_back_to_cart = findViewById(R.id.btn_back_to_cart);
-        paymentRecycle = findViewById(R.id.rv_shopItem);
+        paymentRecycle = findViewById(R.id.rv_payment);
         paymentTotal = findViewById(R.id.tv_payment_total);
         iv_edit_address = findViewById(R.id.iv_edit_address);
         tv_payment_userAddress = findViewById(R.id.tv_payment_address);

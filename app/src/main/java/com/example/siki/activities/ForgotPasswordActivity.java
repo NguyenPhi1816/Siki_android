@@ -1,9 +1,11 @@
 package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +19,7 @@ import com.example.siki.service.AccountService;
 import com.example.siki.service.UserService;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
-    private Button forgotPassToLoginBtn;
+//    private Button forgotPassToLoginBtn;
     private Button sendOtpBtn;
     private EditText phoneNumberEditText;
     private TextView phoneNumberErrorMessage;
@@ -29,21 +31,31 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set the icon for the back button (should be a left chevron)
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left);  // Replace with your own icon here
+        }
+
         userService = new UserService(this);
         accountService = new AccountService(this);
 
-        forgotPassToLoginBtn = findViewById(R.id.forgot_pass_to_login_btn);
+//        forgotPassToLoginBtn = findViewById(R.id.forgot_pass_to_login_btn);
         sendOtpBtn = findViewById(R.id.send_otp);
         phoneNumberEditText = findViewById(R.id.phone_number_edit_text);
         phoneNumberErrorMessage = findViewById(R.id.phone_number_error_message);
 
         phoneNumberErrorMessage.setVisibility(View.GONE);
 
-        forgotPassToLoginBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                navigateToLogin();
-            }
-        });
+//        forgotPassToLoginBtn.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                navigateToLogin();
+//            }
+//        });
 
         sendOtpBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -59,6 +71,17 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 FormValidator.editTextValidator(hasFocus, phoneNumberErrorMessage, condition, "Vui lòng nhập thông tin này");
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to previous one if there is any
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void navigateToLogin() {

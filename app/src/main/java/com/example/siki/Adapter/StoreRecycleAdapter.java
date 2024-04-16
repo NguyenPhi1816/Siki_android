@@ -5,23 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
-import com.example.siki.activities.CartActivity;
+import com.example.siki.activities.CartFragment;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.model.Cart;
-import com.example.siki.model.Product;
-import com.example.siki.model.Store;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapter.StoreHolder> {
 
@@ -29,9 +24,12 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
 
     private Context context;
 
-    public StoreRecycleAdapter(Map<String, List<Cart>> stores, Context context) {
+    private CartFragment cartFragment;
+
+    public StoreRecycleAdapter(Map<String, List<Cart>> stores, Context context, CartFragment cartFragment) {
         this.stores = stores;
         this.context = context;
+        this.cartFragment = cartFragment;
     }
 
     @NonNull
@@ -49,23 +47,25 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
         holder.cb_shopId.setChecked(isAllSelected(store.getValue()));
         holder.cb_shopId.setText(store.getKey());
         List<Cart> cartList = store.getValue();
-        CartRecycleAdapter cartAdapter = new CartRecycleAdapter(cartList, context);
+        CartRecycleAdapter cartAdapter = new CartRecycleAdapter(cartList, context, cartFragment);
         holder.rv_shopItem.setAdapter(cartAdapter);
         holder.rv_shopItem.setLayoutManager(new GridLayoutManager(context,1));
         CartDatasource cartDatasource = new CartDatasource(context);
         cartDatasource.open();
-        holder.cb_shopId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.cb_shopId.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
+                boolean isChecked = holder.cb_shopId.isChecked();
+                holder.cb_shopId.setChecked(isChecked);
                 cartList.forEach(cart -> {
                     cartDatasource.updateSelectedCart(cart.getId(), isChecked);
                     cart.setChosen(isChecked);
                 });
-                if (context instanceof CartActivity) {
-                    ((CartActivity)context).readDb();
-                }
+                cartFragment.readDb();
             }
         });
+
+
     }
 
 

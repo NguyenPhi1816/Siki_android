@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Product;
+import com.example.siki.model.StatisticalModel;
 import com.example.siki.model.Store;
 
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ public class ProductDatabase {
         cursor.close();
         return listProduct;
     }
+
+
     public Product findById(Long productId) {
         Product product = null;
         Store store1 = new Store();
@@ -118,6 +121,19 @@ public class ProductDatabase {
 //            values.put("StoreId", product.getStore().getId());
 
             rowsAffected = db.update("Product", values, "Id=?", new String[]{String.valueOf(product.getId())});
+        } catch (Exception e) {
+            // Handle any exceptions
+            e.printStackTrace();
+        }
+        return rowsAffected;
+    }
+
+    public int updateQuantityProduct(Long productId, int quantity) {
+        int rowsAffected = -1;
+        try {
+            ContentValues values = new ContentValues();
+            values.put("Quantity", quantity);
+            rowsAffected = db.update("Product", values, "Id=?", new String[]{String.valueOf(productId)});
         } catch (Exception e) {
             // Handle any exceptions
             e.printStackTrace();

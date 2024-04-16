@@ -29,6 +29,7 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
 
     private List<Product> productList ;
 
+    private final String quantityFormat = "Còn lại %d";
     private Context context;
 
     public ProductListForCustomerRecycleAdapter(List<Product> productList, Context context) {
@@ -46,10 +47,9 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         Product product = productList.get(position);
         Picasso.get().load(product.getImagePath()).into(holder.iv_product);
-        /*holder.iv_product.setImageResource(R.drawable.samsung);*/
         holder.tv_productName.setText(product.getName());
         holder.tv_productPrice.setText(PriceFormatter.formatDouble(product.getPrice()));
-        holder.tv_productQuantity.setText(product.getQuantity()+"");
+        holder.tv_productQuantity.setText(String.format(quantityFormat, product.getQuantity()));
         CartDatasource cartDatasource = new CartDatasource(context);
         cartDatasource.open();
         holder.btn_product_add2Cart.setOnClickListener(new View.OnClickListener() {

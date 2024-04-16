@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Category;
+import com.example.siki.model.Product;
+import com.example.siki.model.Store;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +47,20 @@ public class CategoryDatabase {
         }
         cursor.close();
         return listCategory;
+    }
+    public Category findById(Integer categoryId) {
+        Category category = new Category();
+        try (Cursor cursor = db.query("Category", null, "Id=?", new String[]{String.valueOf(categoryId)}, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                category.setId(cursor.getLong(0));
+                category.setName(cursor.getString(1));
+                category.setImagePath(cursor.getString(2));
+                category.setDescription(cursor.getString(3));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return category;
     }
 
     @SuppressLint("Range")

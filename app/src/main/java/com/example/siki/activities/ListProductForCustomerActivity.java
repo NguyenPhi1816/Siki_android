@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.siki.Adapter.ProductListForCustomerRecycleAdapter;
@@ -26,16 +28,28 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
     private CategoryDatabase categoryDatabase;
     private Category category = new Category();
     private Integer categoryId = 1;
+    private Button btn_list_product_back;
     private ProductListForCustomerRecycleAdapter productListForCustomerRecycleAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_product_for_customer);
         setControl();
-
+        setEvent();
         productListForCustomerRecycleAdapter = new ProductListForCustomerRecycleAdapter(productList, this);
         rv_product_list_customer.setAdapter(productListForCustomerRecycleAdapter);
         rv_product_list_customer.setLayoutManager(new GridLayoutManager(this, 2));
+    }
+
+    private void setEvent() {
+        btn_list_product_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ListProductForCustomerActivity.this, HomeActivity.class);
+                intent.putExtra("fragment", R.id.nav_home);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -62,10 +76,11 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
 
     private void setControl() {
         tv_categoryName = findViewById(R.id.tv_categoryName);
+        btn_list_product_back = findViewById(R.id.btn_list_product_back);
         rv_product_list_customer = findViewById(R.id.rv_product_list_customer);
 
-        Intent intent = getIntent();
+       /* Intent intent = getIntent();
         Bundle categoryIdBundle = intent.getBundleExtra("categoryId");
-        categoryId = categoryIdBundle.getInt("categoryId");
+        categoryId = categoryIdBundle.getInt("categoryId");*/
     }
 }

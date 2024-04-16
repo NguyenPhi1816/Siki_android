@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Product;
+import com.example.siki.model.StatisticalModel;
 import com.example.siki.model.Store;
 
 import java.util.ArrayList;

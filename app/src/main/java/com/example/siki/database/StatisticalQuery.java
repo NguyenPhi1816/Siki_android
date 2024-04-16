@@ -28,7 +28,8 @@ public class StatisticalQuery {
         dbHelper.close();
     }
 
-    public List<StatisticalModel> getProductSellMonthData(int id){
+
+    public List<StatisticalModel> getProductSellMonthData(long id){
         String sql = "SELECT \n" +
                 "    substr(createAt, 4, 2) AS month, \n" +
                 "    substr(createAt, 7, 4) AS year, \n" +
@@ -54,7 +55,7 @@ public class StatisticalQuery {
             do {
                 StatisticalModel statisticalModel = new StatisticalModel();
                 statisticalModel.setTitle(cursor.getString(0)+"-"+cursor.getString(1));
-                statisticalModel.setQuantity((double) cursor.getInt(2));
+                statisticalModel.setQuantity(cursor.getDouble(2));
                 listStatisticalModels.add(statisticalModel);
             }
             while (cursor.moveToNext());
@@ -63,7 +64,7 @@ public class StatisticalQuery {
         Collections.reverse(listStatisticalModels);
         return listStatisticalModels;
     }
-    public List<StatisticalModel> getProductSellYearData(int id) {
+    public List<StatisticalModel> getProductSellYearData(long id) {
         String sql = "SELECT \n" +
                 "    substr(createAt, 7, 4) AS year, \n" +
                 "    SUM(quantity) AS total_quantity \n" +
@@ -87,13 +88,83 @@ public class StatisticalQuery {
             do {
                 StatisticalModel statisticalModel = new StatisticalModel();
                 statisticalModel.setTitle(cursor.getString(0));
-                statisticalModel.setQuantity((double) cursor.getInt(1));
+                statisticalModel.setQuantity( cursor.getDouble(1));
                 listStatisticalModels.add(statisticalModel);
             }
             while (cursor.moveToNext());
         }
         Collections.reverse(listStatisticalModels);
         cursor.close();
+        return listStatisticalModels;
+    }
+
+    public List<StatisticalModel> getProductRevenueYearData(long id) {
+        String sql = "SELECT \n" +
+                "    substr(createAt, 7, 4) AS year, \n" +
+                "    SUM(quantity*price) AS total_quantity \n" +
+                "FROM \n" +
+                "    \"Order\" o \n" +
+                "JOIN \n" +
+                "    OrderDetail od ON o.Id = od.order_id \n" +
+                "WHERE \n" +
+                "    od.product_id = ? \n" +
+                "    AND o.status = 'Success' \n" +
+                "GROUP BY \n" +
+                "    year \n" +
+                "ORDER BY \n" +
+                "    year DESC \n" +
+                "LIMIT \n" +
+                "    5;";
+        List<StatisticalModel> listStatisticalModels = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(id)});
+        if (cursor==null) return listStatisticalModels;
+        if (cursor.moveToFirst()) {
+            do {
+                StatisticalModel statisticalModel = new StatisticalModel();
+                statisticalModel.setTitle(cursor.getString(0));
+                statisticalModel.setQuantity(cursor.getDouble(1));
+                listStatisticalModels.add(statisticalModel);
+            }
+            while (cursor.moveToNext());
+        }
+        Collections.reverse(listStatisticalModels);
+        cursor.close();
+        return listStatisticalModels;
+    }
+
+    public List<StatisticalModel> getProductRevenueMonthData(long id){
+        String sql = "SELECT \n" +
+                "    substr(createAt, 4, 2) AS month, \n" +
+                "    substr(createAt, 7, 4) AS year, \n" +
+                "    SUM(quantity*price) AS total_quantity \n" +
+                "FROM \n" +
+                "    \"Order\" o \n" +
+                "JOIN \n" +
+                "    OrderDetail od ON o.Id = od.order_id \n" +
+                "WHERE \n" +
+                "    od.product_id = ? \n" +
+                "    AND o.status = 'Success' \n" +
+                "GROUP BY \n" +
+                "    month,\n" +
+                "    year\n" +
+                "ORDER BY \n" +
+                "    year DESC, \n" +
+                "    month DESC\n" +
+                "LIMIT 6";
+        List<StatisticalModel> listStatisticalModels = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(id)});
+        if (cursor==null) return listStatisticalModels;
+        if (cursor.moveToFirst()) {
+            do {
+                StatisticalModel statisticalModel = new StatisticalModel();
+                statisticalModel.setTitle(cursor.getString(0)+"-"+cursor.getString(1));
+                statisticalModel.setQuantity(cursor.getDouble(2));
+                listStatisticalModels.add(statisticalModel);
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        Collections.reverse(listStatisticalModels);
         return listStatisticalModels;
     }
 }

@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".activities.TrangChuActivity">
 
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -16,6 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
 
 
         <LinearLayout
@@ -28,7 +30,12 @@
                 android:layout_height="70dp"
                 android:src="@drawable/logo"
                 android:layout_marginTop="15dp"/>
+
+
+
         </LinearLayout>
+
+
 
     </LinearLayout>
 
@@ -42,6 +49,8 @@
             android:layout_marginTop="88dp"
             android:layout_marginBottom="120dp"
             android:orientation="vertical">
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"

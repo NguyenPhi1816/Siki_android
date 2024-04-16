@@ -60,7 +60,6 @@ public class ProductSellChartActivity extends AppCompatActivity {
         SetEvent();
         SetDefaul();
 
-
         loadProduct(1L);
 //        SQLiteDatabase db;
 //        SikiDatabaseHelper helper;

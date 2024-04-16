@@ -3,36 +3,6 @@
   <component name="deploymentTargetDropDown">
     <value>
       <entry key="ProductSellChartActivity">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="R9AM9151X6J" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-16T07:12:28.816977Z" />
-        </State>
-      <entry key="AddressForm">
-        <State />
-      </entry>
-      <entry key="CartActivity">
-        <State />
-      </entry>
-      <entry key="HomeActivity">
-        <State />
-      </entry>
-      <entry key="ListProductForCustomerActivity">
-        <State />
-      </entry>
-      <entry key="TrangChuActivity">
-        <State />
-      </entry>
-      <entry key="app">
         <State />
       </entry>
     </value>

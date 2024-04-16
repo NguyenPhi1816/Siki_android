@@ -9,6 +9,7 @@
     <TextView
         android:id="@+id/tv_categoryName"
         android:textSize="30sp"
+        android:paddingLeft="10dp"
         android:text="Loai san pham"
         android:textColor="@color/main_color"
         android:layout_width="wrap_content"

@@ -58,10 +58,10 @@ public class ProductCategoryDatabase {
     public List<Product> findByCategoryId(Integer categoryI) {
         List<Product> productList = new ArrayList<>();
         String sql = "select p.Id, p.Name, p.ImagePath, p.ProductPrice, p.Quantity " +
-                "from ProductCategory pc " +
-                "inner join Product p  " +
-                "on p.id = pc.product_id " +
-                "where pc.category_id = ?";;
+                "from Product p " +
+                "inner join ProductCategory pc  " +
+                "on p.id = pc.ProductId " +
+                "where pc.CategoryId = ?";;
 
         try {
             // Thực thi truy vấn

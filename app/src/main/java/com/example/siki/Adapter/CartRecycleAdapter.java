@@ -16,8 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
-import com.example.siki.activities.CartFragment;
-import com.example.siki.activities.HomeActivity;
+import com.example.siki.activities.fragment.CartFragment;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;

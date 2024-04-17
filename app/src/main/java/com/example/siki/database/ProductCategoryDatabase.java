@@ -55,7 +55,7 @@ public class ProductCategoryDatabase {
         return categoryNameList;
     }
 
-    public List<Product> findByCategoryId(Integer categoryI) {
+    public List<Product> findByCategoryId(Long categoryI) {
         List<Product> productList = new ArrayList<>();
         String sql = "select p.Id, p.Name, p.ImagePath, p.ProductPrice, p.Quantity " +
                 "from Product p " +

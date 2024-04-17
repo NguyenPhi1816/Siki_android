@@ -8,8 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.R;
+import com.example.siki.activities.fragment.CartFragment;
+import com.example.siki.activities.fragment.HomeFragment;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;

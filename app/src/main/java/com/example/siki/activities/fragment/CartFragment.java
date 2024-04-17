@@ -1,4 +1,4 @@
-package com.example.siki.activities;
+package com.example.siki.activities.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.R;
+import com.example.siki.activities.PaymentActivity;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;

@@ -1,29 +1,39 @@
-package com.example.siki.activities;
+package com.example.siki.activities.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.example.siki.Adapter.CategoryForHomePageRecycleAdapter;
 import com.example.siki.Adapter.GridListSPApdapter;
 import com.example.siki.Adapter.ListViewSearchApdapter;
+import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.Adapter.TopSPAdapter;
 import com.example.siki.R;
 import com.example.siki.customgridview.ExpandableHeightGridView;
+import com.example.siki.database.CategoryDatabase;
 import com.example.siki.database.ProductDatabase;
+import com.example.siki.model.Category;
 import com.example.siki.model.Product;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class TrangChuActivity extends AppCompatActivity {
-
+public class HomeFragment extends Fragment {
+    private Context context;
     ArrayList<Product> Topsp = new ArrayList<>();
     RecyclerView viewlsp ;
     ExpandableHeightGridView gridView ;
@@ -35,32 +45,49 @@ public class TrangChuActivity extends AppCompatActivity {
     NestedScrollView scrollMain;
     ArrayList<Product> allProduct = new ArrayList<>();
     ArrayList<Product> lvSearch_list_fillter = new ArrayList<>();
+
+    List<Category> categoryList = new ArrayList<>();
     boolean focus = false;
     TopSPAdapter topSPAdapter ;
+    CategoryForHomePageRecycleAdapter categoryForHomePageRecycleAdapter;
+
+    RecyclerView rc_home_category;
+
+    public HomeFragment(Context context) {
+        this.context = context;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_trang_chu);
-        addControl();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view =  inflater.inflate(R.layout.fragment_home, container, false);
+        /*EdgeToEdge.enable(this);*/
+        addControl(view);
         addTop10NewData();
+        setCategoryList();
         addAllProduct();
         addEvent();
+        categoryForHomePageRecycleAdapter = new CategoryForHomePageRecycleAdapter(categoryList, context, this);
+        rc_home_category.setAdapter(categoryForHomePageRecycleAdapter);
+        rc_home_category.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
+
+
         gridView.setExpanded(true);
         topSPAdapter = new TopSPAdapter(Topsp) ;
         viewlsp.setAdapter(topSPAdapter);
-        LinearLayoutManager mLayoutM = new LinearLayoutManager(getApplicationContext()) ;
+        LinearLayoutManager mLayoutM = new LinearLayoutManager(context) ;
         mLayoutM.setOrientation(LinearLayoutManager.HORIZONTAL);
         viewlsp.setLayoutManager(mLayoutM);
         viewlsp.setItemAnimator(new DefaultItemAnimator());
         viewlsp.setAdapter(topSPAdapter);
-        gridlistviewsp = new GridListSPApdapter(this,R.layout.layout_gridcardsp,Topsp) ;
+        gridlistviewsp = new GridListSPApdapter(context,R.layout.layout_gridcardsp,Topsp) ;
         gridView.setAdapter(gridlistviewsp);
 
         lvSearch_list_fillter = allProduct;
-        listViewSearchApdapter = new ListViewSearchApdapter(this, lvSearch_list_fillter);
+        listViewSearchApdapter = new ListViewSearchApdapter(context, lvSearch_list_fillter);
         lvSearch.setAdapter(listViewSearchApdapter);
         lvSearch.setVisibility(View.GONE);
+        return view;
     }
 
     private void addEvent() {
@@ -97,21 +124,27 @@ public class TrangChuActivity extends AppCompatActivity {
     }
 
     private void addTop10NewData() {
-        ProductDatabase db = new ProductDatabase(this);
+        ProductDatabase db = new ProductDatabase(context);
         db.open();
         Topsp.addAll(db.readTop10New());
         db.close();
     }
+    private void setCategoryList() {
+        CategoryDatabase db = new CategoryDatabase(context);
+        db.open();
+        categoryList.addAll(db.readDb());
+        db.close();
+    }
 
     private void addAllProduct(){
-        ProductDatabase db = new ProductDatabase(this);
+        ProductDatabase db = new ProductDatabase(context);
         db.open();
         allProduct.addAll(db.readDb());
         db.close();
     }
 
     private void intitDatabaseData(){
-        ProductDatabase db = new ProductDatabase(this);
+        ProductDatabase db = new ProductDatabase(context);
         db.open();
         db.addProduct(new Product(1L,"Card 4090","https://product.hstatic.net/200000722513/product/1024_db714ed2cb1e4e6fa1d6ebec4cd92fb9_af81e6f9d5294638a9587f509a69c660_1024x1024.jpg",4800000d,200, null));
         db.addProduct(new Product(2L,"Iphone 15pro","https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-card-40-iphone15prohero-202309_FMT_WHH?wid=508&hei=472&fmt=p-jpg&qlt=95&.v=1693086369818",1500000d,200, null));
@@ -122,11 +155,12 @@ public class TrangChuActivity extends AppCompatActivity {
         db.close();
     }
 
-    private void addControl() {
-        viewlsp = findViewById(R.id.viewtopsp) ;
-        gridView = (ExpandableHeightGridView) findViewById(R.id.gridlistsp) ;
-        lvSearch = findViewById(R.id.listSearch);
-        searchView = findViewById(R.id.search);
-        scrollMain = findViewById(R.id.scrollMain);
+    private void addControl(View view) {
+        rc_home_category = view.findViewById(R.id.rc_home_category);
+        viewlsp = view.findViewById(R.id.viewtopsp) ;
+        gridView = (ExpandableHeightGridView) view.findViewById(R.id.gridlistsp) ;
+        lvSearch = view.findViewById(R.id.listSearch);
+        searchView = view.findViewById(R.id.search);
+        scrollMain = view.findViewById(R.id.scrollMain);
     }
 }

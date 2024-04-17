@@ -1,4 +1,4 @@
-package com.example.siki.activities;
+package com.example.siki.activities.fragment;
 
 import android.os.Bundle;
 

@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".activities.TrangChuActivity">
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,8 +31,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search"
         android:layout_width="match_parent"
@@ -54,7 +52,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/white"/>
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollMain"
         android:layout_width="match_parent"
@@ -258,6 +255,5 @@
         app:menu="@menu/navmenu"
         app:itemIconSize="@dimen/iconsize"
         >
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

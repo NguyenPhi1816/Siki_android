@@ -27,7 +27,7 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
     private ProductCategoryDatabase productCategoryDatabase;
     private CategoryDatabase categoryDatabase;
     private Category category = new Category();
-    private Integer categoryId = 1;
+    private Long categoryId = 1l;
     private Button btn_list_product_back;
     private ProductListForCustomerRecycleAdapter productListForCustomerRecycleAdapter;
     @Override

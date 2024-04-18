@@ -14,7 +14,7 @@ public class UserDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
-        setControl();
+        /*setControl();*/
     }
 
     private void setControl() {
@@ -28,7 +28,6 @@ public class UserDetail extends AppCompatActivity {
         btnSDT = findViewById(R.id.btnSDT);
         btnEmail = findViewById(R.id.btnEmail);
         btnDoiMK = findViewById(R.id.btnDoiMK);
-
         tvHoVaTen = findViewById(R.id.tvHoVaTen);
         tvNickName = findViewById(R.id.tvNickname);
         tvNgaySinh = findViewById(R.id.tvNgaySinh);

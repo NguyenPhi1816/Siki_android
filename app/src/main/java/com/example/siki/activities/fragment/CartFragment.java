@@ -171,7 +171,7 @@ public class CartFragment extends Fragment {
         productDatabase = new ProductDatabase(context);
         productDatabase.open();
 
-        // fake data
+        // Todo: fake data
         User user = userDataSource.getUserById(1);
         globalVariable.setAuthUser(user);
 

@@ -27,7 +27,7 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
     private ProductCategoryDatabase productCategoryDatabase;
     private CategoryDatabase categoryDatabase;
     private Category category = new Category();
-    private Long categoryId = 1l;
+    private Long categoryId;
     private Button btn_list_product_back;
     private ProductListForCustomerRecycleAdapter productListForCustomerRecycleAdapter;
     @Override
@@ -79,8 +79,10 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
         btn_list_product_back = findViewById(R.id.btn_list_product_back);
         rv_product_list_customer = findViewById(R.id.rv_product_list_customer);
 
-       /* Intent intent = getIntent();
-        Bundle categoryIdBundle = intent.getBundleExtra("categoryId");
-        categoryId = categoryIdBundle.getInt("categoryId");*/
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+             categoryId = extras.getLong("categoryId");
+        } else {
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.siki.Adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.example.siki.database.CartDatasource;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
 import com.example.siki.utils.PriceFormatter;
+import com.saadahmedev.popupdialog.PopupDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -95,14 +97,17 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Xoá sản phẩm").setMessage("Bạn có muốn xóa sản phẩm đang chọn?")
-                        .setCancelable(true).setPositiveButton("Xac nhan", new DialogInterface.OnClickListener() {
+                        .setCancelable(true).setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                cartDatasource.remove(cart.getId());
-                                cartFragment.readDb();
+                                int removeCheck = cartDatasource.remove(cart.getId());
+                                if (removeCheck != -1) {
+                                    showAlertMessage("Xóa sản phẩm thành công");
+                                    cartFragment.readDb();
+                                }
                             }
                         })
-                        .setNegativeButton("Huy", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
@@ -112,6 +117,16 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
             }
         });
 
+    }
+
+    private void showAlertMessage(String message) {
+        PopupDialog.getInstance(context)
+                .statusDialogBuilder()
+                .createSuccessDialog()
+                .setHeading("Thành công")
+                .setDescription(message)
+                .build(Dialog::dismiss)
+                .show();
     }
 
     @Override

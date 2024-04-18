@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.siki.R;
 import com.example.siki.activities.LoginActivity;
 import com.example.siki.database.CartDatasource;
+import com.example.siki.database.ProductDatabase;
+import com.example.siki.database.UserDataSource;
 import com.example.siki.model.Product;
 import com.example.siki.utils.PriceFormatter;
 import com.example.siki.variable.GlobalVariable;
@@ -52,13 +54,18 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
         holder.tv_productQuantity.setText(String.format(quantityFormat, product.getQuantity()));
         CartDatasource cartDatasource = new CartDatasource(context);
         cartDatasource.open();
+        UserDataSource userDataSource = new UserDataSource(context);
+        userDataSource.open();
+        ProductDatabase productDatabase = new ProductDatabase(context);
+        productDatabase.open();
         holder.btn_product_add2Cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GlobalVariable globalVariable = new GlobalVariable();
+                // Todo: link activity
+               /* GlobalVariable globalVariable = new GlobalVariable();
                 if (globalVariable.getAuthUser() != null) {
                     Integer userId = globalVariable.getAuthUser().getId();
-                    long isAddSuccess = cartDatasource.addToCart(product.getId(), userId);
+                    long isAddSuccess = cartDatasource.addToCart(product.getId(), userId, userDataSource, productDatabase);
                     if (isAddSuccess != -1) {
                         String message = "Thêm vào giỏ hàng thành công!";
                         showSuccessMessage(context, message);
@@ -66,6 +73,13 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
                 } else {
                     Intent intent = new Intent(context, LoginActivity.class);
                     startActivity(context, intent, null);
+                }*/
+                // Test add to cart
+                Integer userId = 1;
+                long isAddSuccess = cartDatasource.addToCart(product.getId(), userId, userDataSource, productDatabase);
+                if (isAddSuccess != -1) {
+                    String message = "Thêm vào giỏ hàng thành công!";
+                    showSuccessMessage(context, message);
                 }
             }
         });

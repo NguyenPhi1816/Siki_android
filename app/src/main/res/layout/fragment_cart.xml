@@ -12,20 +12,11 @@
         android:background="#F0739D"
         android:orientation="horizontal"
         >
-        <Button
-            android:paddingLeft="30dp"
-            android:id="@+id/login_to_home_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_chevron_left" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:text="Giỏ hàng"
             android:textAlignment="center"
             android:textColor="#FFFFFF"

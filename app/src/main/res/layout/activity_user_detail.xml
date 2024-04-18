@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.UserDetail">
-    <RelativeLayout
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -118,7 +118,7 @@
                     android:drawableLeft="@drawable/ic_arrow_right" />
             </LinearLayout>
 
-            <!-- Nickname -->
+            &lt;!&ndash; Nickname &ndash;&gt;
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -460,6 +460,6 @@
                     android:drawableLeft="@drawable/ic_arrow_right" />
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
+    </RelativeLayout>-->
 
   </androidx.constraintlayout.widget.ConstraintLayout>

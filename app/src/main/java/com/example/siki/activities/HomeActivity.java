@@ -11,12 +11,14 @@ import android.view.MenuItem;
 import com.example.siki.R;
 import com.example.siki.activities.fragment.CartFragment;
 import com.example.siki.activities.fragment.HomeFragment;
+import com.example.siki.activities.fragment.ProfileFragment;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
 import com.example.siki.model.Cart;
 import com.example.siki.model.User;
 import com.example.siki.variable.GlobalVariable;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -44,6 +46,7 @@ public class HomeActivity extends AppCompatActivity  {
                 .replace(R.id.fragment_container, new HomeFragment(this))
                 .commit();
         setControl();
+
         setEvent() ;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -79,8 +82,10 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     private void redirectProfileFragment() {
-        // Todo : go to profile user
+        Fragment fragment  = new ProfileFragment(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
     }
+
 
     @Override
     protected void onResume() {

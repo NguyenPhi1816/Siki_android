@@ -35,9 +35,9 @@ public class HomeActivity extends AppCompatActivity  {
 
     private Map<String, List<Cart>> storeProductMap = new HashMap<>();
 
-    private GlobalVariable globalVariable = new GlobalVariable();
 
     private ProductDatabase productDatabase;
+    private GlobalVariable globalVariable = (GlobalVariable) getApplication();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,9 +100,9 @@ public class HomeActivity extends AppCompatActivity  {
         productDatabase.open();
 
         // fake data
-        User user = userDataSource.getUserById(1);
+      /*  User user = userDataSource.getUserById(1);
         globalVariable.setAuthUser(user);
-
+*/
         if (globalVariable.getAuthUser() != null) {
             // Get cart by user who login successful
             User currentUser = globalVariable.getAuthUser();

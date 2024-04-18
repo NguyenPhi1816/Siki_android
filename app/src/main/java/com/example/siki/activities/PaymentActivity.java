@@ -48,7 +48,7 @@ public class PaymentActivity extends AppCompatActivity {
     private ArrayAdapter paymentTypeAdapter;
     private Spinner spinner_paymentType;
 
-    private GlobalVariable globalVariable = new GlobalVariable();
+    private GlobalVariable globalVariable = (GlobalVariable) getApplication();
 
     private UserDataSource userDataSource;
     private PaymentRecycleAdapter paymentRecycleAdapter;
@@ -164,8 +164,8 @@ public class PaymentActivity extends AppCompatActivity {
         userDataSource = new UserDataSource(this);
         userDataSource.open();
         //Todo: Test save user when not login
-        User user = userDataSource.getUserById(1);
-        globalVariable.setAuthUser(user);
+       /* User user = userDataSource.getUserById(1);
+        globalVariable.setAuthUser(user);*/
 
         if (globalVariable.getAuthUser() != null) {
             User currentUser = globalVariable.getAuthUser();

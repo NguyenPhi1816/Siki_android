@@ -117,58 +117,6 @@
                     android:drawableTint="#666"
                     android:drawableLeft="@drawable/ic_arrow_right" />
             </LinearLayout>
-
-            <!-- Nickname -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/signature"
-                    android:padding="10dp"
-                    android:background="@color/white"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@color/white"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Nickname"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="8dp"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        android:textColor="#666666"
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:id="@+id/tvNickname"
-                        android:text="Thêm nickname"
-                        android:paddingLeft="5dp"
-                        android:background="@color/white"
-                        android:textColor="#666666"
-                        android:textSize="16sp"/>
-                </LinearLayout>
-                <Button
-                    android:id="@+id/btnNickname"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:layout_marginLeft="-80dp"
-                    android:paddingLeft="40dp"
-                    android:drawableTint="#666"
-                    android:drawableLeft="@drawable/ic_arrow_right" />
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -269,56 +217,7 @@
                     android:drawableTint="#666"
                     android:drawableLeft="@drawable/ic_arrow_right" />
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/nationality"
-                    android:padding="10dp"
-                    android:background="@color/white"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@color/white"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Quốc tịch"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="8dp"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        android:textColor="#666666"
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Việt Nam"
-                        android:id="@+id/tvQuocTich"
-                        android:paddingLeft="5dp"
-                        android:background="@color/white"
-                        android:textColor="#666666"
-                        android:textSize="16sp"/>
-                </LinearLayout>
-                <Button
-                    android:id="@+id/btnQuocTich"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:layout_marginLeft="-80dp"
-                    android:paddingLeft="40dp"
-                    android:drawableTint="#666"
-                    android:drawableLeft="@drawable/ic_arrow_right" />
-            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -458,6 +357,21 @@
                     android:paddingLeft="40dp"
                     android:drawableTint="#666"
                     android:drawableLeft="@drawable/ic_arrow_right" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/authenticated_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp">
+                <Button
+                    android:id="@+id/logout_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/main_color"
+                    android:textColor="@color/white"
+                    android:text="Đăng xuất"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

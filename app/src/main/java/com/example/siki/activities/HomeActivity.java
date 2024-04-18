@@ -82,8 +82,15 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     private void redirectProfileFragment() {
-        Fragment fragment  = new ProfileFragment(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+        boolean isLoggedIn = globalVariable.isLoggedIn();
+        if (isLoggedIn){
+            Fragment fragment  = new ProfileFragment(this, globalVariable);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+        } else {
+            Intent activityChangeIntent = new Intent(this, LoginActivity.class);
+            this.startActivity(activityChangeIntent);
+        }
     }
 
 

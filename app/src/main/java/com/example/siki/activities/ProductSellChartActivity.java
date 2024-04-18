@@ -66,7 +66,7 @@ public class ProductSellChartActivity extends AppCompatActivity {
         SetControl();
         SetEvent();
         SetDefaul();
-//        loadProduct(productid);
+        loadProduct(productid);
         SQLiteDatabase db;
         SikiDatabaseHelper helper;
         helper= new SikiDatabaseHelper(this);

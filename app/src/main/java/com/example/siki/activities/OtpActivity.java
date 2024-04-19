@@ -185,7 +185,7 @@ public class OtpActivity extends AppCompatActivity {
                     GlobalVariable globalVariable = (GlobalVariable) getApplication();
                     globalVariable.setAuthenticationInfor(authUser, true);
                     Toast.makeText(this,  "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    Intent activityChangeIntent = new Intent(this, MainActivity.class);
+                    Intent activityChangeIntent = new Intent(this, HomeActivity.class);
                     this.startActivity(activityChangeIntent);
                     authAccount = null;
                     authUser = null;

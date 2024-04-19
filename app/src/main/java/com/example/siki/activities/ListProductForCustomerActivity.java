@@ -16,6 +16,7 @@ import com.example.siki.database.CategoryDatabase;
 import com.example.siki.database.ProductCategoryDatabase;
 import com.example.siki.model.Category;
 import com.example.siki.model.Product;
+import com.example.siki.variable.GlobalVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,9 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
     private ProductCategoryDatabase productCategoryDatabase;
     private CategoryDatabase categoryDatabase;
     private Category category = new Category();
-    private Integer categoryId = 1;
+    private Long categoryId;
     private Button btn_list_product_back;
+    private GlobalVariable globalVariable = (GlobalVariable) getApplication();
     private ProductListForCustomerRecycleAdapter productListForCustomerRecycleAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_product_for_customer);
         setControl();
         setEvent();
-        productListForCustomerRecycleAdapter = new ProductListForCustomerRecycleAdapter(productList, this);
+        productListForCustomerRecycleAdapter = new ProductListForCustomerRecycleAdapter(productList, this, globalVariable);
         rv_product_list_customer.setAdapter(productListForCustomerRecycleAdapter);
         rv_product_list_customer.setLayoutManager(new GridLayoutManager(this, 2));
     }
@@ -79,8 +81,10 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
         btn_list_product_back = findViewById(R.id.btn_list_product_back);
         rv_product_list_customer = findViewById(R.id.rv_product_list_customer);
 
-       /* Intent intent = getIntent();
-        Bundle categoryIdBundle = intent.getBundleExtra("categoryId");
-        categoryId = categoryIdBundle.getInt("categoryId");*/
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+             categoryId = extras.getLong("categoryId");
+        } else {
+        }
     }
 }

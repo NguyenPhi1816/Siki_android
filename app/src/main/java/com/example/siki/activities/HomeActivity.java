@@ -8,14 +8,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.R;
+import com.example.siki.activities.fragment.CartFragment;
+import com.example.siki.activities.fragment.HomeFragment;
+import com.example.siki.activities.fragment.ProfileFragment;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
 import com.example.siki.model.Cart;
 import com.example.siki.model.User;
 import com.example.siki.variable.GlobalVariable;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -32,9 +35,9 @@ public class HomeActivity extends AppCompatActivity  {
 
     private Map<String, List<Cart>> storeProductMap = new HashMap<>();
 
-    private GlobalVariable globalVariable = new GlobalVariable();
 
     private ProductDatabase productDatabase;
+    private GlobalVariable globalVariable = (GlobalVariable) getApplication();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,7 @@ public class HomeActivity extends AppCompatActivity  {
                 .replace(R.id.fragment_container, new HomeFragment(this))
                 .commit();
         setControl();
+
         setEvent() ;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -78,8 +82,17 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     private void redirectProfileFragment() {
-        // Todo : go to profile user
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+        boolean isLoggedIn = globalVariable.isLoggedIn();
+        if (isLoggedIn){
+            Fragment fragment  = new ProfileFragment(this, globalVariable);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+        } else {
+            Intent activityChangeIntent = new Intent(this, LoginActivity.class);
+            this.startActivity(activityChangeIntent);
+        }
     }
+
 
     @Override
     protected void onResume() {
@@ -94,9 +107,9 @@ public class HomeActivity extends AppCompatActivity  {
         productDatabase.open();
 
         // fake data
-        User user = userDataSource.getUserById(1);
+      /*  User user = userDataSource.getUserById(1);
         globalVariable.setAuthUser(user);
-
+*/
         if (globalVariable.getAuthUser() != null) {
             // Get cart by user who login successful
             User currentUser = globalVariable.getAuthUser();

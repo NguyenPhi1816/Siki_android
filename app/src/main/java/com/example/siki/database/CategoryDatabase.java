@@ -39,16 +39,15 @@ public class CategoryDatabase {
                 Category category = new Category();
                 category.setId(cursor.getLong(0));
                 category.setName(cursor.getString(1));
-                category.setImagePath(cursor.getString(2));
-                category.setDescription(cursor.getString(3));
-
+                category.setDescription(cursor.getString(2));
+                category.setImagePath(cursor.getString(3));
                 listCategory.add(category);
             } while (cursor.moveToNext());
         }
         cursor.close();
         return listCategory;
     }
-    public Category findById(Integer categoryId) {
+    public Category findById(Long categoryId) {
         Category category = new Category();
         try (Cursor cursor = db.query("Category", null, "Id=?", new String[]{String.valueOf(categoryId)}, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {

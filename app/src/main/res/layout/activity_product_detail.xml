@@ -138,7 +138,6 @@
                     android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Loại sản phẩm"
                     android:id="@+id/loaiSp"/>
             </LinearLayout>
             <LinearLayout

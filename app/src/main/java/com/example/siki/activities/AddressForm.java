@@ -54,7 +54,6 @@ public class AddressForm extends AppCompatActivity {
                 currentUser.setPhoneNumber(ed_address_sdt.getText().toString().trim());
                 int checked = userDataSource.updateUser(currentUser);
                 if (checked != -1) {
-
                     showSuccessMessage();
                 } else {
                     //

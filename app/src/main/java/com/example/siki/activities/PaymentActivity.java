@@ -48,7 +48,7 @@ public class PaymentActivity extends AppCompatActivity {
     private ArrayAdapter paymentTypeAdapter;
     private Spinner spinner_paymentType;
 
-    private GlobalVariable globalVariable = (GlobalVariable) getApplication();
+
 
     private UserDataSource userDataSource;
     private PaymentRecycleAdapter paymentRecycleAdapter;
@@ -76,6 +76,7 @@ public class PaymentActivity extends AppCompatActivity {
         iv_edit_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GlobalVariable globalVariable = (GlobalVariable) getApplication();
                 Intent intent = new Intent(PaymentActivity.this, AddressForm.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("user", globalVariable.getAuthUser());
@@ -106,6 +107,7 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void saveOrder() {
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
         OrderDataSource orderDataSource = new OrderDataSource(this);
         orderDataSource.open();
         OrderDetailDatasource orderDetailDatasource = new OrderDetailDatasource(this);
@@ -161,6 +163,7 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void getUserAddress() {
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
         userDataSource = new UserDataSource(this);
         userDataSource.open();
         //Todo: Test save user when not login

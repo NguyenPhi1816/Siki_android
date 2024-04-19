@@ -65,17 +65,22 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
             @Override
             public void onClick(View v) {
                 // Todo: link activity
-                if (globalVariable.getAuthUser() != null) {
-                    Integer userId = globalVariable.getAuthUser().getId();
-                    long isAddSuccess = cartDatasource.addToCart(product.getId(), userId, userDataSource, productDatabase);
-                    if (isAddSuccess != -1) {
-                        String message = "Thêm vào giỏ hàng thành công!";
-                        showSuccessMessage(context, message);
-                    }
-                } else {
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    startActivity(context, intent, null);
-                }
+               if (globalVariable != null) {
+                   if (globalVariable.getAuthUser() != null) {
+                       Integer userId = globalVariable.getAuthUser().getId();
+                       long isAddSuccess = cartDatasource.addToCart(product.getId(), userId, userDataSource, productDatabase);
+                       if (isAddSuccess != -1) {
+                           String message = "Thêm vào giỏ hàng thành công!";
+                           showSuccessMessage(context, message);
+                       }
+                   } else {
+                       Intent intent = new Intent(context, LoginActivity.class);
+                       startActivity(context, intent, null);
+                   }
+               } else {
+                   Intent intent = new Intent(context, LoginActivity.class);
+                   startActivity(context, intent, null);
+               }
 
                 // Test add to cart
               /*  Integer userId = 1;

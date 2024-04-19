@@ -104,30 +104,35 @@ public class HomeActivity extends AppCompatActivity  {
         productDatabase = new ProductDatabase(this);
         productDatabase.open();
 
-        // fake data
-      /*  User user = userDataSource.getUserById(1);
-        globalVariable.setAuthUser(user);
-*/
-        if (globalVariable.getAuthUser() != null) {
-            // Get cart by user who login successful
-            User currentUser = globalVariable.getAuthUser();
-            cartList.clear();
-            CartDatasource cartDatasource = new CartDatasource(this);
-            cartDatasource.open();
-            cartList.addAll(cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource));
-            storeProductMap = cartList.stream()
-                    .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
-        }
+       if (globalVariable != null) {
+           if (globalVariable.getAuthUser() != null) {
+               User currentUser = globalVariable.getAuthUser();
+               cartList.clear();
+               CartDatasource cartDatasource = new CartDatasource(this);
+               cartDatasource.open();
+               cartList.addAll(cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource));
+               storeProductMap = cartList.stream()
+                       .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
+           }else {
+               cartList = new ArrayList<>();
+               storeProductMap = new HashMap<>();
+           }
+       }
     }
 
 
     private void redirectCartFragment() {
-        if (globalVariable.getAuthUser() == null) {
+        if (globalVariable != null) {
+            if (globalVariable.getAuthUser() == null) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            } else {
+                Fragment fragment = new CartFragment(this, cartList, storeProductMap, globalVariable);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+            }
+        }else {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-        } else {
-            Fragment fragment = new CartFragment(this, cartList, storeProductMap, globalVariable);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
         }
     }
 

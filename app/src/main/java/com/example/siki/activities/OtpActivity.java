@@ -169,9 +169,7 @@ public class OtpActivity extends AppCompatActivity {
                 case SIGN_UP:{
                     boolean isSuccess = insertUserInforToDB(newUser, newAccount);
                     if(isSuccess) {
-                        GlobalVariable globalVariable = (GlobalVariable) getApplication();
-                        globalVariable.setAuthenticationInfor(newUser, true);
-                        Intent activityChangeIntent = new Intent(OtpActivity.this, MainActivity.class);
+                        Intent activityChangeIntent = new Intent(OtpActivity.this, LoginActivity.class);
                         OtpActivity.this.startActivity(activityChangeIntent);
                         Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                     } else {

@@ -25,7 +25,7 @@ public class AccountService {
             System.out.println("Account inserted successfully with ID: " + insertedId);
 
             // Retrieve the account from the database using the phone number
-            String phoneNumberToRetrieve = "1234567890";
+            String phoneNumberToRetrieve = newAccount.getPhoneNumber();
             Account retrievedAccount = accountDataSource.getAccountByPhoneNumber(phoneNumberToRetrieve);
             if (retrievedAccount != null) {
                 System.out.println("Retrieved Account: " + retrievedAccount.toString());

@@ -50,7 +50,7 @@ public class ProductSellChartActivity extends AppCompatActivity {
     LineChart mplineChart;
     StatisticalAdapter adapter;
     ListView listViewStatistical;
-    Button btnshowChart, btnShowList;
+    Button btnshowChart, btnShowList, btnBack;
     LinearLayout layout_list, layout_chart;
     TextView tvSold, tvThangSelected, tvNamSelected, tvThangClicker, tvNamClicker, tvProductName;
     ImageView imageProduct;
@@ -126,6 +126,12 @@ public class ProductSellChartActivity extends AppCompatActivity {
                 layout_list.setVisibility(View.VISIBLE);
             }
         });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void SetControl() {
@@ -142,6 +148,7 @@ public class ProductSellChartActivity extends AppCompatActivity {
         tvNamClicker = findViewById(R.id.tvNamClicker);
         imageProduct = findViewById(R.id.image_prodcut);
         tvProductName = findViewById(R.id.product_name);
+        btnBack = findViewById(R.id.btn_back);
     }
 
     private void statisticalDataMonth() {

@@ -53,9 +53,33 @@ public class CategoryAddActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Category category = new Category();
-                        category.setName(edtTenLoaiSp.getText().toString());
-                        category.setDescription(edtMoTaLoaiSp.getText().toString());
-                        category.setImagePath(edtAnhLoaiSp.getText().toString());
+                        if (edtTenLoaiSp.getText().toString().isEmpty()) {
+                            edtTenLoaiSp.setError("Trường này là bắt buộc!");
+                            edtTenLoaiSp.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else {
+                            category.setName(edtTenLoaiSp.getText().toString());
+                        }
+
+                        if (edtMoTaLoaiSp.getText().toString().isEmpty()) {
+                            edtMoTaLoaiSp.setError("Trường này là bắt buộc!");
+                            edtMoTaLoaiSp.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else {
+                            category.setDescription(edtMoTaLoaiSp.getText().toString());
+                        }
+
+                        if (edtAnhLoaiSp.getText().toString().isEmpty()) {
+                            edtAnhLoaiSp.setError("Trường này là bắt buộc!");
+                            edtAnhLoaiSp.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else {
+                            category.setImagePath(edtAnhLoaiSp.getText().toString());
+                        }
+
                         categoryDatabase.addCategory(category);
                         Intent intent = new Intent(CategoryAddActivity.this, CategoryListActivity.class);
                         startActivity(intent);

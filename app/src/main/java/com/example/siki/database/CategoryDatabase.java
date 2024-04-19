@@ -53,8 +53,8 @@ public class CategoryDatabase {
             if (cursor != null && cursor.moveToFirst()) {
                 category.setId(cursor.getLong(0));
                 category.setName(cursor.getString(1));
-                category.setImagePath(cursor.getString(2));
-                category.setDescription(cursor.getString(3));
+                category.setDescription(cursor.getString(2));
+                category.setImagePath(cursor.getString(3));
             }
         } catch (Exception e) {
             e.printStackTrace();

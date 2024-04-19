@@ -62,10 +62,34 @@ public class CategoryDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Category category = new Category();
-                        category.setId(Long.parseLong(edtMaLoaiSp.getText().toString()));
-                        category.setName(edtTenLoaiSp.getText().toString());
-                        category.setDescription(edtMoTaLoaiSp.getText().toString());
-                        category.setImagePath(edtAnhLoaiSp.getText().toString());
+                        category.setId(Long.valueOf(edtMaLoaiSp.getText().toString()));
+
+                        if (edtTenLoaiSp.getText().toString().isEmpty()) {
+                            edtTenLoaiSp.setError("Trường này là bắt buộc!");
+                            edtTenLoaiSp.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else {
+                            category.setName(edtTenLoaiSp.getText().toString());
+                        }
+
+                        if (edtMoTaLoaiSp.getText().toString().isEmpty()) {
+                            edtMoTaLoaiSp.setError("Trường này là bắt buộc!");
+                            edtMoTaLoaiSp.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else {
+                            category.setDescription(edtMoTaLoaiSp.getText().toString());
+                        }
+
+                        if (edtAnhLoaiSp.getText().toString().isEmpty()) {
+                            edtAnhLoaiSp.setError("Trường này là bắt buộc!");
+                            edtAnhLoaiSp.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else {
+                            category.setImagePath(edtAnhLoaiSp.getText().toString());
+                        }
                         categoryDatabase.updateProduct(category);
                         Intent intent = new Intent(CategoryDetailActivity.this, CategoryListActivity.class);
                         startActivity(intent);

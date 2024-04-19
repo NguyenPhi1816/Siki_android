@@ -107,7 +107,7 @@ public class ProductDatabase {
             values.put("ImagePath", product.getImagePath());
             values.put("ProductPrice", product.getPrice());
             values.put("Quantity", product.getQuantity());
-//            values.put("StoreId", product.getStore().getId());
+            values.put("StoreId", 1);
 
             id = db.insert("Product", null, values);
         } catch (Exception e) {

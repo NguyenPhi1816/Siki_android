@@ -30,7 +30,7 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
     private Category category = new Category();
     private Long categoryId;
     private Button btn_list_product_back;
-    private GlobalVariable globalVariable = (GlobalVariable) getApplication();
+
     private ProductListForCustomerRecycleAdapter productListForCustomerRecycleAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_product_for_customer);
         setControl();
         setEvent();
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
         productListForCustomerRecycleAdapter = new ProductListForCustomerRecycleAdapter(productList, this, globalVariable);
         rv_product_list_customer.setAdapter(productListForCustomerRecycleAdapter);
         rv_product_list_customer.setLayoutManager(new GridLayoutManager(this, 2));

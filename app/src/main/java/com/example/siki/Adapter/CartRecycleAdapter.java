@@ -57,8 +57,6 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
         holder.btn_cart_minus.setHovered(cart.getQuantity() > 1);
         holder.cartCheckbox.setChecked(cart.isChosen());
         Picasso.get().load(product.getImagePath()).into(holder.cartImage);
-        /*Glide.with(context).load(product.getImagePath()).into(holder.cartImage);
-        holder.cartImage.setImageResource(R.drawable.samsung);*/
         holder.productName.setText(product.getName());
         holder.productPrice.setText(PriceFormatter.formatDouble(product.getPrice() * cart.getQuantity()));
         holder.tv_cart_quantity.setText(currentQuantity+"");

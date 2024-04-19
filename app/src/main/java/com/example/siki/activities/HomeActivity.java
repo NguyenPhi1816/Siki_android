@@ -33,9 +33,7 @@ public class HomeActivity extends AppCompatActivity  {
     BottomNavigationView bottom_navigation;
     private UserDataSource userDataSource;
     private Map<String, List<Cart>> storeProductMap = new HashMap<>();
-
     private ProductDatabase productDatabase;
-    private GlobalVariable globalVariable = (GlobalVariable) getApplication();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,26 +101,30 @@ public class HomeActivity extends AppCompatActivity  {
         userDataSource.open();
         productDatabase = new ProductDatabase(this);
         productDatabase.open();
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+        if (globalVariable.isLoggedIn()) {
+            if (globalVariable.getAuthUser() != null) {
+                User currentUser = globalVariable.getAuthUser();
+                cartList.clear();
+                CartDatasource cartDatasource = new CartDatasource(this);
+                cartDatasource.open();
+                cartList.addAll(cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource));
+                storeProductMap = cartList.stream()
+                        .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
+            }else {
+                cartList = new ArrayList<>();
+                storeProductMap = new HashMap<>();
+            }
+        }
 
-       if (globalVariable != null) {
-           if (globalVariable.getAuthUser() != null) {
-               User currentUser = globalVariable.getAuthUser();
-               cartList.clear();
-               CartDatasource cartDatasource = new CartDatasource(this);
-               cartDatasource.open();
-               cartList.addAll(cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource));
-               storeProductMap = cartList.stream()
-                       .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
-           }else {
-               cartList = new ArrayList<>();
-               storeProductMap = new HashMap<>();
-           }
-       }
     }
 
 
     private void redirectCartFragment() {
-        if (globalVariable != null) {
+        UserDataSource userDataSource1 = new UserDataSource(this);
+        userDataSource1.open();
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+        if (globalVariable.isLoggedIn()) {
             if (globalVariable.getAuthUser() == null) {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);

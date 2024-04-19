@@ -4,17 +4,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.R;
+import com.example.siki.activities.fragment.CartFragment;
+import com.example.siki.activities.fragment.HomeFragment;
+import com.example.siki.activities.fragment.ProfileFragment;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
 import com.example.siki.model.Cart;
 import com.example.siki.model.User;
 import com.example.siki.variable.GlobalVariable;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -29,9 +33,6 @@ public class HomeActivity extends AppCompatActivity  {
     BottomNavigationView bottom_navigation;
     private UserDataSource userDataSource;
     private Map<String, List<Cart>> storeProductMap = new HashMap<>();
-
-    private GlobalVariable globalVariable = new GlobalVariable();
-
     private ProductDatabase productDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +42,17 @@ public class HomeActivity extends AppCompatActivity  {
                 .replace(R.id.fragment_container, new HomeFragment(this))
                 .commit();
         setControl();
+
         setEvent() ;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            redirectCartFragment();
-            bottom_navigation.setSelectedItemId(R.id.nav_cart);
+            int fragment = extras.getInt("fragment");
+            if (fragment == R.id.nav_cart) {
+                redirectCartFragment();
+                bottom_navigation.setSelectedItemId(R.id.nav_cart);
+            }else {
+                // Todo: another fragment
+            }
         }
     }
     private void setEvent() {
@@ -61,10 +68,27 @@ public class HomeActivity extends AppCompatActivity  {
                     redirectCartFragment();
                     return true;
                 }
+
+                if(item.getItemId() == R.id.nav_profile) {
+                    redirectProfileFragment();
+                }
                 return false;
             }
         });
     }
+
+    private void redirectProfileFragment() {
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+        boolean isLoggedIn = globalVariable.isLoggedIn();
+        if (isLoggedIn){
+            Fragment fragment  = new ProfileFragment(this, globalVariable);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+        } else {
+            Intent activityChangeIntent = new Intent(this, LoginActivity.class);
+            this.startActivity(activityChangeIntent);
+        }
+    }
+
 
     @Override
     protected void onResume() {
@@ -77,27 +101,41 @@ public class HomeActivity extends AppCompatActivity  {
         userDataSource.open();
         productDatabase = new ProductDatabase(this);
         productDatabase.open();
-
-        // fake data
-        User user = userDataSource.getUserById(1);
-        globalVariable.setAuthUser(user);
-
-        if (globalVariable.getAuthUser() != null) {
-            // Get cart by user who login successful
-            User currentUser = globalVariable.getAuthUser();
-            cartList.clear();
-            CartDatasource cartDatasource = new CartDatasource(this);
-            cartDatasource.open();
-            cartList.addAll(cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource));
-            storeProductMap = cartList.stream()
-                    .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+        if (globalVariable.isLoggedIn()) {
+            if (globalVariable.getAuthUser() != null) {
+                User currentUser = globalVariable.getAuthUser();
+                cartList.clear();
+                CartDatasource cartDatasource = new CartDatasource(this);
+                cartDatasource.open();
+                cartList.addAll(cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource));
+                storeProductMap = cartList.stream()
+                        .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
+            }else {
+                cartList = new ArrayList<>();
+                storeProductMap = new HashMap<>();
+            }
         }
+
     }
 
 
     private void redirectCartFragment() {
-        Fragment fragment = new CartFragment(this, cartList, storeProductMap);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+        UserDataSource userDataSource1 = new UserDataSource(this);
+        userDataSource1.open();
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+        if (globalVariable.isLoggedIn()) {
+            if (globalVariable.getAuthUser() == null) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            } else {
+                Fragment fragment = new CartFragment(this, cartList, storeProductMap, globalVariable);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+            }
+        }else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void redirectHomeFragment() {

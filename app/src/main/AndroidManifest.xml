@@ -16,10 +16,10 @@
         android:theme="@style/Theme.Siki"
         tools:targetApi="31">
         <activity
-            android:name=".activities.HomeActivity"
+            android:name=".activities.ProductSellChartActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.UserDetail"
+            android:name=".activities.HomeActivity"
             android:exported="true" />
         <activity
             android:name=".activities.ChangePasswordActivity"
@@ -43,9 +43,6 @@
             android:name=".activities.CategoryDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ProductSellChartActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.ListProductForCustomerActivity"
             android:exported="true" />
         <activity
@@ -64,9 +61,6 @@
             android:name=".activities.ProductListActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.CartActivity"
-            android:exported="true" />
-        <activity
             android:name=".activities.SignUpActivity"
             android:exported="false" />
         <activity
@@ -74,6 +68,9 @@
             android:exported="true" />
         <activity
             android:name=".activities.TrangChuActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.ProductRevenueChartActivity"
             android:exported="true" />
         <activity
             android:name=".activities.MainActivity"

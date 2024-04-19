@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
 import com.example.siki.model.Product;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class TopSPAdapter extends RecyclerView.Adapter<TopSPAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product sp = lsp.get(position) ;
-        holder.srcimage.setImageResource(R.drawable.card); // set ảnh
+        Picasso.get().load(sp.getImagePath()).into(holder.srcimage); // set ảnh
         holder.namesp.setText(sp.getName());
         holder.slsp.setText("SL:"+String.valueOf(sp.getQuantity()));
         holder.pricesp.setText(String.format("%svnđ", String.valueOf(sp.getPrice())));

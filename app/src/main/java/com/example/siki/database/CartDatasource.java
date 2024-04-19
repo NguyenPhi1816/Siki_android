@@ -16,8 +16,6 @@ public class CartDatasource {
     private SQLiteDatabase db;
     private SikiDatabaseHelper dbHelper;
 
-    private ProductDatabase productDatabase;
-
     public CartDatasource(Context context) {
         dbHelper = new SikiDatabaseHelper(context);
     }
@@ -53,20 +51,45 @@ public class CartDatasource {
         return listCart;
     }
 
-    public long addToCart (Long productId, int userId) {
-        long id = -1;
-        try {
-            ContentValues values = new ContentValues();
-            values.put("user_id", userId);
-            values.put("product_id", productId);
-            values.put("quantity", 1);
-            values.put("is_selected", false);
-            id = db.insert("Cart", null, values);
-        } catch (Exception e) {
-            // Handle any exceptions
-            e.printStackTrace();
+    public Cart findByProductAndUser(Long productId, int userId, UserDataSource userDataSource, ProductDatabase productDatabase) {
+        String sql = "Select * from Cart c where c.user_id = ? and c.product_id = ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId), String.valueOf(productId)});
+        if (cursor.moveToFirst()) {
+            Cart cart = new Cart();
+            cart.setId(cursor.getLong(0));
+            cart.setQuantity(cursor.getInt(3));
+            int isSelectedInt = cursor.getInt(4); // Assuming is_selected field is stored as an integer (0 or 1)
+            boolean isChosen = isSelectedInt == 1;
+            cart.setChosen(isChosen);
+            Product product = productDatabase.findById(productId);
+            cart.setProduct(product);
+            User user = userDataSource.getUserById(userId);
+            cart.setUser(user);
+            return cart;
         }
-        return id;
+        return null;
+    }
+
+    public long addToCart (Long productId, int userId, UserDataSource userDataSource, ProductDatabase productDatabase) {
+        long id = -1;
+        Cart cart = findByProductAndUser(productId, userId, userDataSource, productDatabase );
+        if ( cart != null) {
+            updateCartQuantity(cart.getId(), cart.getQuantity() + 1);
+            return cart.getId();
+        }
+            try {
+                ContentValues values = new ContentValues();
+                values.put("user_id", userId);
+                values.put("product_id", productId);
+                values.put("quantity", 1);
+                values.put("is_selected", false);
+                id = db.insert("Cart", null, values);
+            } catch (Exception e) {
+                // Handle any exceptions
+                e.printStackTrace();
+            }
+            return id;
+
     }
 
     public int updateCartQuantity (Long cartId, int quantity) {

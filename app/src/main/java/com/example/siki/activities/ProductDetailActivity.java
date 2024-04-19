@@ -129,11 +129,39 @@ public class ProductDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Product product = new Product();
-                        product.setPrice(Double.parseDouble(edtGiaSp.getText().toString()));
-                        product.setId(Long.parseLong(edtMaSp.getText().toString()));
-                        product.setImagePath(edtAnhSp.getText().toString());
-                        product.setName(edtTenSp.getText().toString());
-                        product.setQuantity(Integer.parseInt(edtSoLuongSp.getText().toString()));
+                        product.setId(Long.valueOf(edtMaSp.getText().toString()));
+                        if (edtTenSp.getText().toString().isEmpty()) {
+                            edtTenSp.setError("Trường này là bắt buộc!");
+                            edtTenSp.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else {
+                            product.setName(edtTenSp.getText().toString());
+                        }
+                        if (edtGiaSp.getText().toString().isEmpty()) {
+                            edtGiaSp.setError("Trường này là bắt buộc!");
+                            edtGiaSp.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else {
+                            product.setPrice(Double.parseDouble(edtGiaSp.getText().toString()));
+                        }
+                        if (edtSoLuongSp.getText().toString().isEmpty()) {
+                            edtSoLuongSp.setError("Trường này là bắt buộc!");
+                            edtSoLuongSp.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else {
+                            product.setQuantity(Integer.parseInt(edtSoLuongSp.getText().toString()));
+                        }
+                        if (edtAnhSp.getText().toString().isEmpty()) {
+                            edtAnhSp.setError("Trường này là bắt buộc!");
+                            edtAnhSp.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else {
+                            product.setImagePath(edtAnhSp.getText().toString());
+                        }
                         productDatabase.updateProduct(product);
 
                         if (!selectedItems.isEmpty()) {

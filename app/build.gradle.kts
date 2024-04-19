@@ -71,6 +71,7 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("com.saadahmedev.popup-dialog:popup-dialog:2.0.0")
     implementation("androidx.activity:activity:1.8.0")
+    implementation("com.squareup.picasso:picasso:2.71828")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -83,4 +84,6 @@ dependencies {
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("com.sun.mail:android-mail:1.6.7")
     implementation("com.sun.mail:android-activation:1.6.7")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("androidx.recyclerview:recyclerview-selection:1.1.0")
 }

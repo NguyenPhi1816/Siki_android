@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Product;
+import com.example.siki.model.StatisticalModel;
 import com.example.siki.model.Store;
 
 import java.util.ArrayList;
@@ -30,6 +31,25 @@ public class ProductDatabase {
 
     public List<Product> readDb() {
         String sql = "Select * from Product";
+        List<Product> listProduct = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Product product = new Product();
+                product.setId(cursor.getLong(0));
+                product.setName(cursor.getString(1));
+                product.setImagePath(cursor.getString(2));
+                product.setPrice(cursor.getDouble(3));
+                product.setQuantity(cursor.getInt(4));
+                listProduct.add(product);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return listProduct;
+    }
+
+    public List<Product> readTop10New() {
+        String sql = "Select * from Product as pd Order by pd.Id DESC LIMIT 10";
         List<Product> listProduct = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToFirst()) {

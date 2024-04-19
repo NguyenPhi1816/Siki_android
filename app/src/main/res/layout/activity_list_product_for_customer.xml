@@ -6,9 +6,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.ListProductForCustomerActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="#F0739D"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:paddingLeft="30dp"
+            android:id="@+id/btn_list_product_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_chevron_left" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center"
+            android:text="Danh sách sản phẩm"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp" />
+    </LinearLayout>
     <TextView
         android:id="@+id/tv_categoryName"
         android:textSize="30sp"
+        android:paddingLeft="10dp"
         android:text="Loai san pham"
         android:textColor="@color/main_color"
         android:layout_width="wrap_content"

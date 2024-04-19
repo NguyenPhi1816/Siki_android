@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginRight="10dp"
-            android:text="Cancel"/>
+            android:text="Hủy"/>
         <Button
             android:id="@+id/btn_note_confirm"
             android:layout_width="wrap_content"
@@ -42,6 +42,6 @@
             android:textColor="@color/white"
             android:layout_marginLeft="10dp"
             android:background="@color/main_color"
-            android:text="Xac nhan"/>
+            android:text="Xác nhận"/>
     </LinearLayout>
 </LinearLayout>

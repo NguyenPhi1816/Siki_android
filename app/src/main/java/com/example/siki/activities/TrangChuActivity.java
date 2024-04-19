@@ -42,6 +42,7 @@ public class TrangChuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_trang_chu);
+        intitDatabaseData();
         addControl();
         addTop10NewData();
         addAllProduct();

@@ -22,9 +22,6 @@
             android:name=".activities.HomeActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.UserDetail"
-            android:exported="true" />
-        <activity
             android:name=".activities.ChangePasswordActivity"
             android:exported="false" />
         <activity
@@ -71,6 +68,9 @@
             android:exported="true" />
         <activity
             android:name=".activities.TrangChuActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.ProductRevenueChartActivity"
             android:exported="true" />
         <activity
             android:name=".activities.MainActivity"

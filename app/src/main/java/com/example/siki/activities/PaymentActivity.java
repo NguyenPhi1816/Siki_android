@@ -39,8 +39,6 @@ public class PaymentActivity extends AppCompatActivity {
             tv_payment_fullname, tv_payment_phonenumber;
     private Button btn_note_cancel, btn_note_confirm, btn_payment_success;
     private EditText ed_note;
-    private final String userAddressFormat = "%s - %s %s";
-
     private RecyclerView paymentRecycle;
     private ImageView iv_edit_address, iv_note;
     private Button btn_back_to_cart, btn_payment_createOrder;
@@ -50,7 +48,7 @@ public class PaymentActivity extends AppCompatActivity {
     private ArrayAdapter paymentTypeAdapter;
     private Spinner spinner_paymentType;
 
-    private GlobalVariable globalVariable = new GlobalVariable();
+    private GlobalVariable globalVariable = (GlobalVariable) getApplication();
 
     private UserDataSource userDataSource;
     private PaymentRecycleAdapter paymentRecycleAdapter;
@@ -116,8 +114,8 @@ public class PaymentActivity extends AppCompatActivity {
         productDatabase.open();
         if (globalVariable.getAuthUser() != null) {
             User currentUser = globalVariable.getAuthUser();
-            String receiverPhoneNumber = currentUser.getPhoneNumber();
-            String receiverAddress= currentUser.getPhoneNumber();
+            String receiverPhoneNumber = currentUser.getPhoneNumber().trim();
+            String receiverAddress= currentUser.getAddress();
             String receiverName = currentUser.getFirstName().concat(" ").concat(currentUser.getLastName());
             String note = tv_payment_note.getText().toString().trim();
             int userId = currentUser.getId();
@@ -129,6 +127,7 @@ public class PaymentActivity extends AppCompatActivity {
                     int updateQuantity = cart.getProduct().getQuantity() - cart.getQuantity();
                     productDatabase.updateQuantityProduct(cart.getProduct().getId(), updateQuantity);
                 });
+
             }
         }
     }
@@ -141,11 +140,17 @@ public class PaymentActivity extends AppCompatActivity {
         btn_payment_success.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Todo: go to home page
+                redirectToHomePage();
                 dialog.dismiss();
             }
         });
         dialog.show();
+    }
+
+    private void redirectToHomePage() {
+        Intent intent = new Intent(PaymentActivity.this, HomeActivity.class);
+        intent.putExtra("fragment", R.id.nav_home);
+        startActivity(intent);
     }
 
 
@@ -158,10 +163,9 @@ public class PaymentActivity extends AppCompatActivity {
     private void getUserAddress() {
         userDataSource = new UserDataSource(this);
         userDataSource.open();
-
-
-        User user = userDataSource.getUserById(1);
-        globalVariable.setAuthUser(user);
+        //Todo: Test save user when not login
+       /* User user = userDataSource.getUserById(1);
+        globalVariable.setAuthUser(user);*/
 
         if (globalVariable.getAuthUser() != null) {
             User currentUser = globalVariable.getAuthUser();
@@ -223,8 +227,8 @@ public class PaymentActivity extends AppCompatActivity {
         spinner_paymentType.setAdapter(paymentTypeAdapter);
     }
     private void initPaymentTypeData() {
-        paymentTypes.add("tien mat");
-        paymentTypes.add("chuyen khoan");
+        paymentTypes.add("Tiền mặt");
+        paymentTypes.add("Chuyển khoản");
     }
 
     private void showCustomDialog(String currentNote) {

@@ -2,24 +2,23 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="HomeActivity">
+        <State />
+      </entry>
+      <entry key="MenuProduct_ProductCategoryActivity">
+        <State />
+      </entry>
       <entry key="ProductRevenueChartActivity">
         <State />
       </entry>
       <entry key="ProductSellChartActivity">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\Huy10\.android\avd\Medium_Phone_API_30.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-16T15:46:10.388371800Z" />
-        </State>
+        <State />
+      </entry>
+      <entry key="TrangChuActivity">
+        <State />
+      </entry>
+      <entry key="app">
+        <State />
       </entry>
     </value>
   </component>

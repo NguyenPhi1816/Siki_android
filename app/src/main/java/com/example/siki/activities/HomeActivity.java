@@ -32,9 +32,7 @@ public class HomeActivity extends AppCompatActivity  {
     private List<Cart> cartList = new ArrayList<>();
     BottomNavigationView bottom_navigation;
     private UserDataSource userDataSource;
-
     private Map<String, List<Cart>> storeProductMap = new HashMap<>();
-
 
     private ProductDatabase productDatabase;
     private GlobalVariable globalVariable = (GlobalVariable) getApplication();
@@ -128,7 +126,7 @@ public class HomeActivity extends AppCompatActivity  {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else {
-            Fragment fragment = new CartFragment(this, cartList, storeProductMap);
+            Fragment fragment = new CartFragment(this, cartList, storeProductMap, globalVariable);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
         }
     }

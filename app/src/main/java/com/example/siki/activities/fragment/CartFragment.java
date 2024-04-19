@@ -53,17 +53,18 @@ public class CartFragment extends Fragment {
 
     private ProductDatabase productDatabase;
 
-    private GlobalVariable globalVariable = new GlobalVariable();
+    private GlobalVariable globalVariable ;
     private Map<String, List<Cart>> storeProductMap = new HashMap<>();
     private final String cartMessage = "Tất cả %d sản phẩm";
 
     private final String btnOrderMessage = "Mua hàng (%d)";
 
     private StoreRecycleAdapter storeAdapter;
-    public CartFragment(Context context, List<Cart> cartList, Map<String, List<Cart>> storeProductMap) {
+    public CartFragment(Context context, List<Cart> cartList, Map<String, List<Cart>> storeProductMap, GlobalVariable globalVariable) {
         this.context = context;
         this.cartList = cartList;
         this.storeProductMap = storeProductMap;
+        this.globalVariable = globalVariable;
     }
 
     @Override

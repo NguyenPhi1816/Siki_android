@@ -78,7 +78,6 @@ public class CartFragment extends Fragment {
     private void setEvent() {
         cartDatasource = new CartDatasource(context);
         cartDatasource.open();
-        //Todo: get all cart that is selected -> get total price
         tv_cart_totalPrice.setText(getTotalOfCartIsSelected());
 
 
@@ -139,12 +138,12 @@ public class CartFragment extends Fragment {
         btn_cart_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<Cart> selectingCarts = cartList.stream()
+                        .filter(Cart::isChosen) // Keep only carts where isChosen is true
+                        .collect(Collectors.toList());
                 if (selectingCarts.size() > 0) {
                     Intent intent = new Intent(context, PaymentActivity.class);
                     Bundle bundle = new Bundle();
-                    List<Cart> selectingCarts = cartList.stream()
-                            .filter(Cart::isChosen) // Keep only carts where isChosen is true
-                            .collect(Collectors.toList());
                     bundle.putSerializable("selectingCarts", (Serializable) selectingCarts);
                     intent.putExtra("selectingCarts", bundle);
                     startActivity(intent);

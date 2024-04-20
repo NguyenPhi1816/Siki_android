@@ -114,6 +114,8 @@ public class PaymentActivity extends AppCompatActivity {
         orderDetailDatasource.open();
         ProductDatabase productDatabase = new ProductDatabase(this);
         productDatabase.open();
+        CartDatasource cartDatasource = new CartDatasource(this);
+        cartDatasource.open();
         if (globalVariable.getAuthUser() != null) {
             User currentUser = globalVariable.getAuthUser();
             String receiverPhoneNumber = currentUser.getPhoneNumber().trim();
@@ -128,6 +130,7 @@ public class PaymentActivity extends AppCompatActivity {
                             orderId, cart.getQuantity(), cart.getProduct().getPrice());
                     int updateQuantity = cart.getProduct().getQuantity() - cart.getQuantity();
                     productDatabase.updateQuantityProduct(cart.getProduct().getId(), updateQuantity);
+                    cartDatasource.remove(cart.getId());
                 });
 
             }

@@ -23,6 +23,8 @@ public class PaymentRecycleAdapter extends RecyclerView.Adapter<PaymentRecycleAd
 
     private final String quantityFormat = "x    %d";
 
+    private final String quantityProductFormat = "Tổng số tiền (%d sản phẩm):";
+
     public PaymentRecycleAdapter(List<Cart> cartList) {
         this.cartList = cartList;
     }
@@ -45,7 +47,7 @@ public class PaymentRecycleAdapter extends RecyclerView.Adapter<PaymentRecycleAd
         String productPriceString = PriceFormatter.formatDouble(productPrice);
         double totalPrice = productPrice * cart.getQuantity();
         String totalPriceString = PriceFormatter.formatDouble(totalPrice);
-
+        holder.tv_payment_quantity.setText(String.format(quantityProductFormat, cart.getQuantity()));
         holder.payment_store_name.setText(cart.getProduct().getStore().getName());
         holder.payment_product_price.setText(productPriceString);
         holder.payment_product_quantity.setText(String.format(quantityFormat, cart.getQuantity()));
@@ -61,10 +63,11 @@ public class PaymentRecycleAdapter extends RecyclerView.Adapter<PaymentRecycleAd
     class PaymentHolder extends RecyclerView.ViewHolder{
 
         ImageView payment_product_image;
-        TextView payment_store_name, payment_product_name, payment_product_price,payment_product_quantity, payment_totalPrice;
+        TextView payment_store_name, tv_payment_quantity, payment_product_name, payment_product_price,payment_product_quantity, payment_totalPrice;
 
         public PaymentHolder(@NonNull View itemView) {
             super(itemView);
+            tv_payment_quantity = itemView.findViewById(R.id.tv_payment_quantity);
             payment_product_image = itemView.findViewById(R.id.payment_product_image);
             payment_store_name = itemView.findViewById(R.id.payment_store_name);
             payment_product_name = itemView.findViewById(R.id.payment_product_name);

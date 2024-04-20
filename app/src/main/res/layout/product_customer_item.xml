@@ -17,7 +17,7 @@
         android:layout_height="40dp"
         android:text="Product name"
         android:layout_marginBottom="5dp"
-        android:textSize="30sp"/>
+        android:textSize="20sp"/>
     <TextView
         android:id="@+id/tv_productPrice"
         android:text="200.000D"

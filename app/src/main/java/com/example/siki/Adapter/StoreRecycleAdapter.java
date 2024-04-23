@@ -42,8 +42,6 @@ public class StoreRecycleAdapter extends RecyclerView.Adapter<StoreRecycleAdapte
     @Override
     public void onBindViewHolder(@NonNull StoreHolder holder, int position) {
         Map.Entry<String, List<Cart>> store =  getItem(position);
-
-        // Todo: Check is all cart is selected then set selection for cb_shop < doing
         holder.cb_shopId.setChecked(isAllSelected(store.getValue()));
         holder.cb_shopId.setText(store.getKey());
         List<Cart> cartList = store.getValue();

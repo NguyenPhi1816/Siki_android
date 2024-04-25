@@ -27,6 +27,8 @@ import com.example.siki.model.Cart;
 import com.example.siki.model.User;
 import com.example.siki.utils.PriceFormatter;
 import com.example.siki.variable.GlobalVariable;
+import com.saadahmedev.popupdialog.PopupDialog;
+import com.saadahmedev.popupdialog.listener.StandardDialogActionListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -88,8 +90,7 @@ public class PaymentActivity extends AppCompatActivity {
         btn_payment_createOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveOrder();
-                showSuccessMessage();
+                showConfirmDialog();
             }
         });
 
@@ -132,9 +133,28 @@ public class PaymentActivity extends AppCompatActivity {
                     productDatabase.updateQuantityProduct(cart.getProduct().getId(), updateQuantity);
                     cartDatasource.remove(cart.getId());
                 });
-
+                showSuccessMessage();
             }
         }
+    }
+    private void showConfirmDialog () {
+        PopupDialog.getInstance(this)
+                .standardDialogBuilder()
+                .createIOSDialog()
+                .setHeading("Thanh toán")
+                .setDescription("Bạn có chắc chắn muốn đặt hàng không?")
+                .build(new StandardDialogActionListener() {
+                    @Override
+                    public void onPositiveButtonClicked(Dialog dialog) {
+                        saveOrder();
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked(Dialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private void showSuccessMessage() {

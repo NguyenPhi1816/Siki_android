@@ -176,7 +176,6 @@ public class CartFragment extends Fragment {
         globalVariable.setAuthUser(user);
 
         if (globalVariable.getAuthUser() != null) {
-            // Get cart by user who login successful
             User currentUser = globalVariable.getAuthUser();
             cartList.clear();
             CartDatasource cartDatasource = new CartDatasource(context);
@@ -185,7 +184,6 @@ public class CartFragment extends Fragment {
             storeProductMap = cartList.stream()
                     .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
 
-            // Set value for component when data
             tv_cart_totalPrice.setText(getTotalOfCartIsSelected());
             btn_cart_order.setEnabled(cartList.size() > 0);
             int selectingCart = (int) cartList.stream().filter(Cart::isChosen).count();

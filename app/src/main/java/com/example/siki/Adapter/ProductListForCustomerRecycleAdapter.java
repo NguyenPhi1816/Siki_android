@@ -76,13 +76,6 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
                        Intent intent = new Intent(context, LoginActivity.class);
                        startActivity(context, intent, null);
                    }
-                // Test add to cart
-              /*  Integer userId = 1;
-                long isAddSuccess = cartDatasource.addToCart(product.getId(), userId, userDataSource, productDatabase);
-                if (isAddSuccess != -1) {
-                    String message = "Thêm vào giỏ hàng thành công!";
-                    showSuccessMessage(context, message);
-                }*/
             }
         });
     }

@@ -189,9 +189,6 @@ public class PaymentActivity extends AppCompatActivity {
         GlobalVariable globalVariable = (GlobalVariable) getApplication();
         userDataSource = new UserDataSource(this);
         userDataSource.open();
-        //Todo: Test save user when not login
-       /* User user = userDataSource.getUserById(1);
-        globalVariable.setAuthUser(user);*/
 
         if (globalVariable.getAuthUser() != null) {
             User currentUser = globalVariable.getAuthUser();
@@ -260,7 +257,6 @@ public class PaymentActivity extends AppCompatActivity {
     private void showCustomDialog(String currentNote) {
         final Dialog dialog = new Dialog(this);
 
-        // Set the custom layout for the dialog
         dialog.setContentView(R.layout.layout_dialog_update_note);
         btn_note_cancel = dialog.findViewById(R.id.btn_note_cancel);
         btn_note_confirm = dialog.findViewById(R.id.btn_note_confirm);

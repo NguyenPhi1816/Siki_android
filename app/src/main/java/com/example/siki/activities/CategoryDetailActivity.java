@@ -2,7 +2,9 @@ package com.example.siki.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,9 +20,11 @@ import com.example.siki.model.Category;
 import com.squareup.picasso.Picasso;
 
 public class CategoryDetailActivity extends AppCompatActivity {
-
-    EditText edtMaLoaiSp, edtTenLoaiSp, edtMoTaLoaiSp, edtAnhLoaiSp;
-    Button btnBack, btnSua;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    String imagePath;
+    EditText edtMaLoaiSp, edtTenLoaiSp, edtMoTaLoaiSp;
+    Button btnBack, btnSua, btnAnhLoaiSp;
+    ImageView imgAnhLoaiSp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,22 @@ public class CategoryDetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Xử lý kết quả trả về từ Android Image Picker
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            // Lấy URI của ảnh được chọn
+            Uri selectedImageUri = data.getData();
+            getContentResolver().takePersistableUriPermission(selectedImageUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            imagePath = selectedImageUri.toString();
+            imgAnhLoaiSp.setImageURI(selectedImageUri);
+
+        }
+    }
+
     private void setEvent() {
         CategoryDatabase categoryDatabase = new CategoryDatabase(this);
         categoryDatabase.open();
@@ -39,9 +59,23 @@ public class CategoryDetailActivity extends AppCompatActivity {
             edtMaLoaiSp.setText(category.getId().toString());
             edtTenLoaiSp.setText(category.getName());
             edtMoTaLoaiSp.setText(category.getDescription());
-            edtAnhLoaiSp.setText(category.getImagePath());
+            imgAnhLoaiSp.setImageURI(Uri.parse(category.getImagePath()));
 
         }
+
+        btnAnhLoaiSp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                // Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*"); // Chỉ định loại hình ảnh
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+            }
+
+            // Tạo Intent để mở hộp thoại chọn ảnh từ bộ nhớ thiết bị
+        });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -82,14 +116,7 @@ public class CategoryDetailActivity extends AppCompatActivity {
                             category.setDescription(edtMoTaLoaiSp.getText().toString());
                         }
 
-                        if (edtAnhLoaiSp.getText().toString().isEmpty()) {
-                            edtAnhLoaiSp.setError("Trường này là bắt buộc!");
-                            edtAnhLoaiSp.requestFocus();
-                            dialog.dismiss();
-                            return;
-                        } else {
-                            category.setImagePath(edtAnhLoaiSp.getText().toString());
-                        }
+                        category.setImagePath(imagePath);
                         categoryDatabase.updateProduct(category);
                         Intent intent = new Intent(CategoryDetailActivity.this, CategoryListActivity.class);
                         startActivity(intent);
@@ -114,9 +141,11 @@ public class CategoryDetailActivity extends AppCompatActivity {
         edtMaLoaiSp = findViewById(R.id.maLoaiSp);
         edtTenLoaiSp = findViewById(R.id.tenLoaiSp);
         edtMoTaLoaiSp = findViewById(R.id.moTaLoaiSp);
-        edtAnhLoaiSp = findViewById(R.id.anhLoaiSp);
 
+        btnAnhLoaiSp = findViewById(R.id.btnAnhLoaiSp);
         btnSua = findViewById(R.id.btnSua);
         btnBack = findViewById(R.id.btnBack);
+
+        imgAnhLoaiSp = findViewById(R.id.imgAnhLoaiSp);
     }
 }

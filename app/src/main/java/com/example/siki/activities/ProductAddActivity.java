@@ -2,7 +2,9 @@ package com.example.siki.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,11 +31,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductAddActivity extends AppCompatActivity {
-    EditText edtTenSp, edtGiaSp, edtAnhSp, edtSoLuongSp;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    String imagePath;
+    EditText edtTenSp, edtGiaSp, edtSoLuongSp;
     TextView tvLoaiSp;
     Spinner spLoaiSp;
-    Button btnBack, btnThem;
-    ImageView ivAnhSp;
+    Button btnBack, btnThem, btnAnhSp;
+    ImageView ivAnhSp, imgAnhSp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,22 @@ public class ProductAddActivity extends AppCompatActivity {
         setControl();
         setEvent();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Xử lý kết quả trả về từ Android Image Picker
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            // Lấy URI của ảnh được chọn
+            Uri selectedImageUri = data.getData();
+            getContentResolver().takePersistableUriPermission(selectedImageUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            imagePath = selectedImageUri.toString();
+            imgAnhSp.setImageURI(selectedImageUri);
+
+        }
     }
 
     private void setEvent() {
@@ -94,6 +114,20 @@ public class ProductAddActivity extends AppCompatActivity {
             }
         });
 
+        btnAnhSp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                // Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*"); // Chỉ định loại hình ảnh
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+            }
+
+
+        });
+
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -139,14 +173,7 @@ public class ProductAddActivity extends AppCompatActivity {
                         } else {
                             product.setQuantity(Integer.parseInt(edtSoLuongSp.getText().toString()));
                         }
-                        if (edtAnhSp.getText().toString().isEmpty()) {
-                            edtAnhSp.setError("Trường này là bắt buộc!");
-                            edtAnhSp.requestFocus();
-                            dialog.dismiss();
-                            return;
-                        } else {
-                            product.setImagePath(edtAnhSp.getText().toString());
-                        }
+                        product.setImagePath(imagePath);
 
 
                         Long id = productDatabase.addProduct(product);
@@ -187,10 +214,10 @@ public class ProductAddActivity extends AppCompatActivity {
     private void setControl() {
         edtTenSp = findViewById(R.id.tenSp);
         edtGiaSp = findViewById(R.id.giaSp);
-        edtAnhSp = findViewById(R.id.anhSP);
         edtSoLuongSp = findViewById(R.id.soLuongSp);
 
         btnThem = findViewById(R.id.btnThem);
+        btnAnhSp = findViewById(R.id.btnAnhSP);
         btnBack = findViewById(R.id.btnBack);
 
         spLoaiSp = findViewById(R.id.spLoaiSp);
@@ -198,5 +225,6 @@ public class ProductAddActivity extends AppCompatActivity {
         tvLoaiSp = findViewById(R.id.tvLoaiSp);
 
         ivAnhSp = findViewById(R.id.ivAnhSp);
+        imgAnhSp = findViewById(R.id.imgAnhSp);
     }
 }

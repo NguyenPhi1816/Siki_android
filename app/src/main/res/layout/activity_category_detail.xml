@@ -91,21 +91,28 @@
                     android:id="@+id/moTaLoaiSp"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Link hình ảnh:"
-                    android:textColor="@color/black"
-                    android:paddingLeft="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#6A6969"
+                    android:text="Hình ảnh: "
                     android:textSize="18sp"/>
-                <EditText
+                <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Link hình ảnh"
-                    android:id="@+id/anhLoaiSp"/>
+                    android:hint="Chọn ảnh"
+                    android:id="@+id/btnAnhLoaiSp"/>
             </LinearLayout>
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:id="@+id/imgAnhLoaiSp"
+                android:layout_gravity="center"
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -115,6 +122,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:text="Chỉnh sửa"
                 android:id="@+id/btnSua"
                 android:background="@color/main_color"

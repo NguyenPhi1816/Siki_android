@@ -3,6 +3,8 @@ package com.example.siki.Adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -62,6 +64,7 @@ public class CategoryAdapter extends BaseAdapter {
         ((TextView) categoryView.findViewById(R.id.categoryDescription)).setText(String.format("Mô tả: %s", category.getDescription()));
         ImageView myView = categoryView.findViewById(R.id.categoryImage);
         Picasso.get().load(category.getImagePath()).into(myView);
+
 
         Button btnEdit = categoryView.findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(new View.OnClickListener() {

@@ -54,21 +54,21 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
             }
         });
 
-        btnSellChart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductSellChartActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnRevenueChart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductRevenueChartActivity.class);
-                startActivity(intent);
-            }
-        });
+//        btnSellChart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductSellChartActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        btnRevenueChart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductRevenueChartActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     private void setControl() {
@@ -76,7 +76,7 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
         cvSp = findViewById(R.id.cvSp);
         btnLoaiSp = findViewById(R.id.btnLoaiSp);
         btnSp = findViewById(R.id.btnSp);
-        btnSellChart = findViewById(R.id.btnSellChart);
-        btnRevenueChart = findViewById(R.id.btnRevenueChart);
+//        btnSellChart = findViewById(R.id.btnSellChart);
+//        btnRevenueChart = findViewById(R.id.btnRevenueChart);
     }
 }

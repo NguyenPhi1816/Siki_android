@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,11 +31,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductDetailActivity extends AppCompatActivity {
+    private static final int PICK_IMAGE_REQUEST = 1;
+    String imagePath;
     Spinner spLoaiSp;
-    EditText edtTenSp, edtMaSp, edtGiaSp, edtAnhSp, edtLoaiSp, edtSoLuongSp;
+    EditText edtTenSp, edtMaSp, edtGiaSp, edtLoaiSp, edtSoLuongSp;
     TextView tvLoaiSp;
-    Button btnBack, btnSua;
-    ImageView ivAnhSp;
+    Button btnBack, btnSua, btnAnhSp;
+    ImageView ivAnhSp, imgAnhSp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,22 @@ public class ProductDetailActivity extends AppCompatActivity {
         setControl();
         setEvent();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Xử lý kết quả trả về từ Android Image Picker
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            // Lấy URI của ảnh được chọn
+            Uri selectedImageUri = data.getData();
+            getContentResolver().takePersistableUriPermission(selectedImageUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            imagePath = selectedImageUri.toString();
+            imgAnhSp.setImageURI(selectedImageUri);
+
+        }
     }
 
     private void setEvent() {
@@ -92,13 +112,28 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        btnAnhSp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                // Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*"); // Chỉ định loại hình ảnh
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+            }
+
+
+        });
+
         Product product = (Product) getIntent().getSerializableExtra("product");
         if (product != null) {
             edtGiaSp.setText(product.getPrice()+"");
             edtMaSp.setText(product.getId()+"");
             edtTenSp.setText(product.getName());
-            edtAnhSp.setText(product.getImagePath());
             edtSoLuongSp.setText(product.getQuantity()+"");
+            imgAnhSp.setImageURI(Uri.parse(product.getImagePath()));
             List<String> list = productCategoryDatabase.findNameCategoryByProductId(product.getId());
             StringBuilder rs = new StringBuilder();
             for (int i = 0; i < list.size(); i++) {
@@ -154,14 +189,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                         } else {
                             product.setQuantity(Integer.parseInt(edtSoLuongSp.getText().toString()));
                         }
-                        if (edtAnhSp.getText().toString().isEmpty()) {
-                            edtAnhSp.setError("Trường này là bắt buộc!");
-                            edtAnhSp.requestFocus();
-                            dialog.dismiss();
-                            return;
-                        } else {
-                            product.setImagePath(edtAnhSp.getText().toString());
-                        }
+                        product.setImagePath(imagePath);
+
                         productDatabase.updateProduct(product);
 
                         if (!selectedItems.isEmpty()) {
@@ -200,17 +229,19 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void setControl() {
         edtTenSp = findViewById(R.id.tenSp);
         edtGiaSp = findViewById(R.id.giaSp);
-        edtAnhSp = findViewById(R.id.anhSP);
         edtMaSp = findViewById(R.id.maSp);
         edtLoaiSp = findViewById(R.id.loaiSp);
         edtSoLuongSp = findViewById(R.id.soLuongSp);
 
         btnSua = findViewById(R.id.btnSua);
         btnBack = findViewById(R.id.btnBack);
+        btnAnhSp = findViewById(R.id.btnAnhSP);
+
         tvLoaiSp = findViewById(R.id.tvLoaiSp);
 
         spLoaiSp = findViewById(R.id.spLoaiSp);
 
         ivAnhSp = findViewById(R.id.ivAnhSp);
+        imgAnhSp = findViewById(R.id.imgAnhSp);
     }
 }

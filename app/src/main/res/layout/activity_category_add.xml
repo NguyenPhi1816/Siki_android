@@ -51,28 +51,42 @@
                 android:layout_height="wrap_content"
                 android:hint="Mô tả"
                 android:id="@+id/moTaLoaiSp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Link hình ảnh"
-                android:id="@+id/anhLoaiSP"/>
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            >
-            <Button
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thêm"
-                android:background="@color/main_color"
-                android:textColor="@color/white"
-                android:id="@+id/btnThem"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#6A6969"
+                    android:text="Hình ảnh: "
+                    android:textSize="18sp"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Chọn ảnh"
+                    android:id="@+id/btnAnhLoaiSP"/>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:id="@+id/imgAnhLoaiSp"
+                android:layout_gravity="center"
                 />
+
+
         </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Thêm"
+            android:layout_gravity="center"
+            android:background="@color/main_color"
+            android:textColor="@color/white"
+            android:id="@+id/btnThem"
+            />
 
     </LinearLayout>
 

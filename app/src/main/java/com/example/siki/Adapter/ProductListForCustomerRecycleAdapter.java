@@ -23,6 +23,7 @@ import com.example.siki.database.UserDataSource;
 import com.example.siki.model.Product;
 import com.example.siki.utils.PriceFormatter;
 import com.example.siki.variable.GlobalVariable;
+import com.saadahmedev.popupdialog.PopupDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -65,17 +66,16 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
             @Override
             public void onClick(View v) {
                 // Todo: link activity
-                   if (globalVariable.getAuthUser() != null) {
-                       Integer userId = globalVariable.getAuthUser().getId();
-                       long isAddSuccess = cartDatasource.addToCart(product.getId(), userId, userDataSource, productDatabase);
-                       if (isAddSuccess != -1) {
-                           String message = "Thêm vào giỏ hàng thành công!";
-                           showSuccessMessage(context, message);
-                       }
-                   } else {
-                       Intent intent = new Intent(context, LoginActivity.class);
-                       startActivity(context, intent, null);
+               if (globalVariable.getAuthUser() != null) {
+                   Integer userId = globalVariable.getAuthUser().getId();
+                   long isAddSuccess = cartDatasource.addToCart(product.getId(), userId, userDataSource, productDatabase);
+                   if (isAddSuccess != -1) {
+                       showSuccessMessage();
                    }
+               } else {
+                   Intent intent = new Intent(context, LoginActivity.class);
+                   startActivity(context, intent, null);
+               }
             }
         });
     }
@@ -100,18 +100,13 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
             btn_product_add2Cart = itemView.findViewById(R.id.btn_product_add2Cart);
         }
     }
-    private void showSuccessMessage(Context context, String message) {
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.layout_success_dialog);
-        Button btn_payment_success = dialog.findViewById(R.id.btn_payment_success);
-        TextView tv_title = dialog.findViewById(R.id.tv_title);
-        tv_title.setText(message);
-        btn_payment_success.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+    private void showSuccessMessage() {
+        PopupDialog.getInstance(context)
+                .statusDialogBuilder()
+                .createSuccessDialog()
+                .setHeading("Thành công")
+                .setDescription("Thêm vào giỏ hàng thành công")
+                .build(Dialog::dismiss)
+                .show();
     }
 }

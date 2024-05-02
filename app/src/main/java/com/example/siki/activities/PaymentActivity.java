@@ -147,6 +147,7 @@ public class PaymentActivity extends AppCompatActivity {
                     @Override
                     public void onPositiveButtonClicked(Dialog dialog) {
                         saveOrder();
+                        dialog.dismiss();
                     }
 
                     @Override
@@ -158,18 +159,13 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void showSuccessMessage() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.layout_success_dialog);
-        btn_payment_success = dialog.findViewById(R.id.btn_payment_success);
-        tv_title = dialog.findViewById(R.id.tv_title);
-        btn_payment_success.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                redirectToHomePage();
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        PopupDialog.getInstance(this)
+                .statusDialogBuilder()
+                .createSuccessDialog()
+                .setHeading("Thành công")
+                .setDescription("Bạn đã đặt hàng thành công")
+                .build(Dialog::dismiss)
+                .show();
     }
 
     private void redirectToHomePage() {

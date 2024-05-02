@@ -71,6 +71,7 @@ public class HomeActivity extends AppCompatActivity  {
 
                 if(item.getItemId() == R.id.nav_profile) {
                     redirectProfileFragment();
+                    return true;
                 }
                 return false;
             }
@@ -101,7 +102,14 @@ public class HomeActivity extends AppCompatActivity  {
         userDataSource.open();
         productDatabase = new ProductDatabase(this);
         productDatabase.open();
+
         GlobalVariable globalVariable = (GlobalVariable) getApplication();
+
+        // mock data
+   /*     User user = userDataSource.getUserById(2);
+        globalVariable.setAuthUser(user);
+        globalVariable.setLoggedIn(true);
+*/
         if (globalVariable.isLoggedIn()) {
             if (globalVariable.getAuthUser() != null) {
                 User currentUser = globalVariable.getAuthUser();

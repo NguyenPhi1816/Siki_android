@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.example.siki.R;
 import com.example.siki.database.UserDataSource;
 import com.example.siki.model.User;
+import com.example.siki.variable.GlobalVariable;
+import com.saadahmedev.popupdialog.PopupDialog;
 
 
 public class AddressForm extends AppCompatActivity {
@@ -54,12 +56,25 @@ public class AddressForm extends AppCompatActivity {
                 currentUser.setPhoneNumber(ed_address_sdt.getText().toString().trim());
                 int checked = userDataSource.updateUser(currentUser);
                 if (checked != -1) {
+                    GlobalVariable globalVariable = (GlobalVariable) getApplication();
+                    globalVariable.setAuthUser(currentUser);
                     showSuccessMessage();
                 } else {
-                    //
+                    showAlertMessage("Đã có lỗi xảy ra");
                 }
             }
         });
+    }
+
+
+    private void showAlertMessage(String message) {
+        PopupDialog.getInstance(this)
+                .statusDialogBuilder()
+                .createErrorDialog()
+                .setHeading("Lỗi")
+                .setDescription(message)
+                .build(Dialog::dismiss)
+                .show();
     }
 
     private void setControl() {
@@ -84,19 +99,12 @@ public class AddressForm extends AppCompatActivity {
         }
     }
     private void showSuccessMessage() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.layout_success_dialog);
-        Button btn_payment_success = dialog.findViewById(R.id.btn_payment_success);
-        TextView tv_title = dialog.findViewById(R.id.tv_title);
-        tv_title.setText("Cap nhat thanh cong");
-        btn_payment_success.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddressForm.this, PaymentActivity.class);
-                startActivity(intent);
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        PopupDialog.getInstance(this)
+                .statusDialogBuilder()
+                .createSuccessDialog()
+                .setHeading("Thành công")
+                .setDescription("Cập nhật địa chỉ thành công")
+                .build(Dialog::dismiss)
+                .show();
     }
 }

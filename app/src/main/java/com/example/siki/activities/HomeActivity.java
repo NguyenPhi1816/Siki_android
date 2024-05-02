@@ -106,10 +106,10 @@ public class HomeActivity extends AppCompatActivity  {
         GlobalVariable globalVariable = (GlobalVariable) getApplication();
 
         // mock data
-        User user = userDataSource.getUserById(2);
+   /*     User user = userDataSource.getUserById(2);
         globalVariable.setAuthUser(user);
         globalVariable.setLoggedIn(true);
-
+*/
         if (globalVariable.isLoggedIn()) {
             if (globalVariable.getAuthUser() != null) {
                 User currentUser = globalVariable.getAuthUser();

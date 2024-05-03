@@ -28,7 +28,7 @@ public class AccountDataSource {
         ContentValues values = new ContentValues();
         values.put("PhoneNumber", account.getPhoneNumber());
         values.put("Password", account.getPassword());
-        values.put("UserRoleId", account.getUserRoleId());
+        values.put("Role", account.getRole());
         values.put("Status", account.getStatus());
 
         return db.insert("Account", null, values);
@@ -42,7 +42,7 @@ public class AccountDataSource {
             account = new Account();
             account.setPhoneNumber(cursor.getString(cursor.getColumnIndex("PhoneNumber")));
             account.setPassword(cursor.getString(cursor.getColumnIndex("Password")));
-            account.setUserRoleId(cursor.getInt(cursor.getColumnIndex("UserRoleId")));
+            account.setRole(cursor.getString(cursor.getColumnIndex("Role")));
             account.setStatus(cursor.getString(cursor.getColumnIndex("Status")));
         }
         if (cursor != null) {
@@ -54,7 +54,7 @@ public class AccountDataSource {
     public int updateAccount(Account account) {
         ContentValues values = new ContentValues();
         values.put("Password", account.getPassword());
-        values.put("UserRoleId", account.getUserRoleId());
+        values.put("Role", account.getRole());
         values.put("Status", account.getStatus());
 
         return db.update("Account", values, "PhoneNumber=?", new String[]{account.getPhoneNumber()});

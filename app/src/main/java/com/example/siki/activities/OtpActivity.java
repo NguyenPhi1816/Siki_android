@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.siki.R;
 import com.example.siki.enums.OTPType;
+import com.example.siki.enums.Role;
 import com.example.siki.model.Account;
 import com.example.siki.model.User;
 import com.example.siki.otp.EmailManager;
@@ -183,8 +184,13 @@ public class OtpActivity extends AppCompatActivity {
                     GlobalVariable globalVariable = (GlobalVariable) getApplication();
                     globalVariable.setAuthenticationInfor(authUser, true);
                     Toast.makeText(this,  "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    Intent activityChangeIntent = new Intent(this, HomeActivity.class);
-                    this.startActivity(activityChangeIntent);
+                    if (authAccount.getRole().equals(String.valueOf(Role.USER))) {
+                        Intent activityChangeIntent = new Intent(this, HomeActivity.class);
+                        this.startActivity(activityChangeIntent);
+                    } else if (authAccount.getRole().equals(String.valueOf(Role.ADMIN))) {
+                        Intent activityChangeIntent = new Intent(this, MenuProduct_ProductCategoryActivity.class);
+                        this.startActivity(activityChangeIntent);
+                    }
                     authAccount = null;
                     authUser = null;
                     break;
@@ -210,6 +216,7 @@ public class OtpActivity extends AppCompatActivity {
 
     public boolean insertUserInforToDB(User user, Account account) {
         final User retreivedUser = userService.insertUserToDB(user);
+        System.out.println(retreivedUser);
         if(retreivedUser != null) {
             final Account retreivedAccount = accountService.insertAccountToDB(account);
             return retreivedAccount != null;

@@ -265,7 +265,7 @@ public class SignUpActivity extends AppCompatActivity {
                 newUser.setPhoneNumber(phoneNumber);
                 newUser.setGender(selectedGender);
                 newUser.setDateOfBirth(dateOfBirth);
-                newUser.setAvatar(null);
+                newUser.setAvatar("https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png");
                 newUser.setEmail(email);
 
                 // Create a new Account
@@ -273,7 +273,7 @@ public class SignUpActivity extends AppCompatActivity {
                 Account newAccount = new Account();
                 newAccount.setPhoneNumber(phoneNumber);
                 newAccount.setPassword(hashedPassword);
-                newAccount.setUserRoleId(Role.USER.ordinal());
+                newAccount.setRole(String.valueOf(Role.USER));
                 newAccount.setStatus(String.valueOf(AccountStatus.ACTIVE));
 
                 Intent intent = new Intent(this, OtpActivity.class);

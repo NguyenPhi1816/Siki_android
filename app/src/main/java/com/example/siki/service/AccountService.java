@@ -21,6 +21,7 @@ public class AccountService {
 
         // Insert the new account into the database
         long insertedId = accountDataSource.insertAccount(newAccount);
+        System.out.println(insertedId);
         if (insertedId != -1) {
             System.out.println("Account inserted successfully with ID: " + insertedId);
 

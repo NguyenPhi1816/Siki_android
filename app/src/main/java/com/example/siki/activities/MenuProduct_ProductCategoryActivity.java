@@ -12,8 +12,7 @@ import android.widget.ImageButton;
 import com.example.siki.R;
 
 public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
-    CardView cvSp, cvLoaiSp;
-    ImageButton btnLoaiSp, btnSp, btnSellChart, btnRevenueChart;
+    Button homeBtn, productBtn, productTypeBtn, sellBtn, revenueBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,29 +23,21 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        cvSp.setOnClickListener(new View.OnClickListener() {
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        productBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductListActivity.class);
                 startActivity(intent);
             }
         });
-        btnSp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        cvLoaiSp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, CategoryListActivity.class);
-                startActivity(intent);
-            }
-        });
-        btnLoaiSp.setOnClickListener(new View.OnClickListener() {
+        productTypeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, CategoryListActivity.class);
@@ -54,29 +45,28 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
             }
         });
 
-//        btnSellChart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductSellChartActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        btnRevenueChart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductRevenueChartActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        sellBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductSellChartActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        revenueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductRevenueChartActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setControl() {
-        cvLoaiSp = findViewById(R.id.cvLoaiSp);
-        cvSp = findViewById(R.id.cvSp);
-        btnLoaiSp = findViewById(R.id.btnLoaiSp);
-        btnSp = findViewById(R.id.btnSp);
-//        btnSellChart = findViewById(R.id.btnSellChart);
-//        btnRevenueChart = findViewById(R.id.btnRevenueChart);
+        homeBtn = findViewById(R.id.home_btn);
+        productBtn = findViewById(R.id.product_btn);
+        productTypeBtn = findViewById(R.id.product_type_btn);
+        sellBtn = findViewById(R.id.sell_btn);
+        revenueBtn = findViewById(R.id.revenue_btn);
     }
 }

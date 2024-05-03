@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.siki.R;
@@ -19,6 +20,7 @@ import com.example.siki.model.Account;
 import com.example.siki.model.User;
 import com.example.siki.service.AccountService;
 import com.example.siki.variable.GlobalVariable;
+import com.squareup.picasso.Picasso;
 
 
 public class ProfileFragment extends Fragment {
@@ -32,6 +34,7 @@ public class ProfileFragment extends Fragment {
     }
 
     Button btnBack, btnCart, btnHoVaTen, btnNgaySinh, btnGioiTinh, btnSDT, btnEmail, btnDoiMK;
+    ImageView ivUserImage;
     TextView tvHoVaTen, tvNgaySinh, tvGioiTinh, tvSDT, tvEmail;
     private Button logoutButton;
     @Override
@@ -54,6 +57,7 @@ public class ProfileFragment extends Fragment {
         });
 
         authUser = globalVariable.getAuthUser();
+        Picasso.get().load(authUser.getAvatar()).resize(200, 200).into(ivUserImage);
         tvHoVaTen.setText(authUser.getFirstName() + " " + authUser.getLastName());
         tvNgaySinh.setText(authUser.getDateOfBirth());
         tvGioiTinh.setText(authUser.getGender());
@@ -71,7 +75,7 @@ public class ProfileFragment extends Fragment {
         btnEmail = view.findViewById(R.id.btnEmail);
         btnDoiMK = view.findViewById(R.id.btnDoiMK);
         logoutButton = view.findViewById(R.id.logout_btn);
-
+        ivUserImage = view.findViewById(R.id.user_image);
         tvHoVaTen = view.findViewById(R.id.tvHoVaTen);
         tvNgaySinh = view.findViewById(R.id.tvNgaySinh);
         tvGioiTinh = view.findViewById(R.id.tvGioiTinh);

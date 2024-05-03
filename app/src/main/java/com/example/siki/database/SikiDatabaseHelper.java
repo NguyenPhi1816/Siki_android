@@ -60,7 +60,7 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
         return "CREATE TABLE IF NOT EXISTS Account (" +
                 "PhoneNumber TEXT PRIMARY KEY, " +
                 "Password TEXT, " +
-                "UserRoleId INTEGER, " +
+                "Role TEXT, " +
                 "Status TEXT);";
     }
 

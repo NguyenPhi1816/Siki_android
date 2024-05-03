@@ -45,7 +45,6 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/imgAvatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_below="@+id/ly1"
@@ -54,7 +53,9 @@
             android:background="@drawable/circle_background"
             android:contentDescription="Button Image"
             android:elevation="10dp"
-            android:src="@drawable/box" />
+            android:src="@drawable/box"
+            android:id="@+id/user_image"
+            />
 
 
 

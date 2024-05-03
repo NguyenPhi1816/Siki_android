@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Account implements Serializable {
     private String phoneNumber;
     private String password;
-    private int userRoleId;
+    private String role;
     private String status;
 
     public Account() {
@@ -16,7 +16,7 @@ public class Account implements Serializable {
     public Account(String phoneNumber, String password, int userRoleId, String status) {
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.userRoleId = userRoleId;
+        this.role = role;
         this.status = status;
     }
 
@@ -38,12 +38,12 @@ public class Account implements Serializable {
         this.password = password;
     }
 
-    public int getUserRoleId() {
-        return userRoleId;
+    public String getRole() {
+        return role;
     }
 
-    public void setUserRoleId(int userRoleId) {
-        this.userRoleId = userRoleId;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getStatus() {
@@ -59,7 +59,7 @@ public class Account implements Serializable {
         return "Account{" +
                 "phoneNumber='" + phoneNumber + '\'' +
                 ", password='" + password + '\'' +
-                ", userRoleId=" + userRoleId +
+                ", role=" + role +
                 ", status='" + status + '\'' +
                 '}';
     }

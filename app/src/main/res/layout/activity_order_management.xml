@@ -31,14 +31,15 @@
             android:textColor="#FFFFFF"
             android:textSize="24dp" />
     </LinearLayout>
-    <SearchView
+    <com.google.android.material.search.SearchView
+        android:id="@+id/order_search_view"
         android:background="@drawable/search_view_bg"
         android:layout_width="match_parent"
         app:queryHint="Search here"
         android:layout_margin="5dp"
         android:layout_height="50dp"/>
     <androidx.recyclerview.widget.RecyclerView
-
+        android:id="@+id/order_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="500dp"/>
 </LinearLayout>

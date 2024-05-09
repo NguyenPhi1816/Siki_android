@@ -16,8 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:text="Product name"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:layout_marginBottom="5dp"
-        android:textSize="20sp"/>
+        android:textSize="15sp"/>
     <TextView
         android:id="@+id/tv_productPrice"
         android:text="200.000D"
@@ -41,7 +43,7 @@
         <Button
             android:id="@+id/btn_product_add2Cart"
             android:text="Add to cart"
-            android:textSize="8sp"
+            android:textSize="7sp"
             android:textColor="@color/white"
             android:paddingVertical="5dp"
             android:layout_width="55dp"

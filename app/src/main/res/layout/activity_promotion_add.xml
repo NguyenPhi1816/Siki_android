@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.PromotionAddActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F0739D"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="30dp"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ic_chevron_left" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Thêm khuyến mãi"
+                android:paddingLeft="5dp"
+                android:textColor="@android:color/white"
+                android:textSize="28sp"
+                android:layout_marginTop="4dp"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên khuyến mãi"
+                android:id="@+id/tenKM"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Lý do khuyến mãi"
+                android:id="@+id/lyDoKM"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Phần trăm khuyến mãi"
+                android:id="@+id/phanTramKM"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Ngày bắt đầu"
+                    android:id="@+id/ngayBDKM"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/btnNgayBDKM"
+                    android:backgroundTint="#F0739D"
+                    android:textColor="#FFFFFF"
+                    app:cornerRadius="8dp"
+                    android:text="Chọn"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Ngày kết thúc"
+                    android:id="@+id/ngayKTKM"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/btnNgayKTKM"
+                    android:backgroundTint="#F0739D"
+                    android:textColor="#FFFFFF"
+                    app:cornerRadius="8dp"
+                    android:text="Chọn"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#6A6969"
+                    android:text="Hình ảnh: "
+                    android:textSize="18sp"/>
+
+                <Button
+                    android:id="@+id/btnAnhKM"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Chọn ảnh" />
+            </LinearLayout>
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:id="@+id/imgAnhKM"
+                android:layout_gravity="center"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Loại sản phẩm"
+                    android:paddingLeft="5dp"
+                    android:textSize="18dp"
+                    />
+                <Spinner
+                    android:id="@+id/spLoaiSp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    />
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:id="@+id/ivAnhLoaiSp"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Thêm"
+            android:layout_gravity="center"
+            android:background="@color/main_color"
+            android:textColor="@color/white"
+            android:id="@+id/btnThem"
+            />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -116,7 +116,7 @@ public class CategoryDatabase {
         return rowsAffected;
     }
 
-    public int updateProduct(Category category) {
+    public int updateCategory(Category category) {
         int rowsAffected = -1;
         try {
             ContentValues values = new ContentValues();

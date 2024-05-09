@@ -1,6 +1,7 @@
 package com.example.siki.activities;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,8 +27,17 @@ import com.example.siki.model.Product;
 import com.example.siki.model.ProductCategory;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ProductAddActivity extends AppCompatActivity {
@@ -61,8 +71,11 @@ public class ProductAddActivity extends AppCompatActivity {
             imagePath = selectedImageUri.toString();
             imgAnhSp.setImageURI(selectedImageUri);
 
+
+
         }
     }
+
 
     private void setEvent() {
         ProductDatabase productDatabase = new ProductDatabase(this);
@@ -73,6 +86,7 @@ public class ProductAddActivity extends AppCompatActivity {
         productCategoryDatabase.open();
         Map<Long, String> listCategory = categoryDatabase.getAllCategory();
         List<String> listLoaiSp = new ArrayList<>(listCategory.values()) ;
+        listLoaiSp.add(0, "Chọn loại sản phẩm");
         ArrayAdapter<String> loaiSpAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, listLoaiSp);
         loaiSpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -80,7 +94,6 @@ public class ProductAddActivity extends AppCompatActivity {
 
         List<String> selectedItems = new ArrayList<>();
         spLoaiSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            boolean isFirstSelection = true;
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getItemAtPosition(position);
@@ -90,9 +103,7 @@ public class ProductAddActivity extends AppCompatActivity {
                     }
                 }
 
-
-                if (isFirstSelection) {
-                    isFirstSelection = false;
+                if (selectedItem.equals("Chọn loại sản phẩm")) {
                     return;
                 }
                 if (selectedItems.contains(selectedItem)) {
@@ -188,8 +199,6 @@ public class ProductAddActivity extends AppCompatActivity {
                             }
                             productCategoryDatabase.addProductCategory(productCategory);
                         }
-
-
 
 
                         Intent intent = new Intent(ProductAddActivity.this, ProductListActivity.class);

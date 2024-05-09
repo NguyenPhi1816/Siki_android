@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PromotionDataSource {
     private SQLiteDatabase db;
@@ -106,6 +107,29 @@ public class PromotionDataSource {
             e.printStackTrace();
         }
         return rowsAffected;
+    }
+
+    public Promotion findByIdCategory(Long idCategory) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        String currentDate = dateFormat.format(new Date());
+        try {
+            Cursor cursor = db.query("Promotion", null, "IdCategory = ? AND EndDate >= ?", new String[]{String.valueOf(idCategory), currentDate}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                Promotion promotion = new Promotion();
+                promotion.setId(cursor.getLong(0));
+                promotion.setName(cursor.getString(1));
+                promotion.setReason(cursor.getString(2));
+                promotion.setPercentPromotion(cursor.getInt(3));
+                promotion.setStartDate(convertStringToDate(cursor.getString(4)));
+                promotion.setEndDate(convertStringToDate(cursor.getString(5)));
+                promotion.setIdCategory(cursor.getLong(6));
+                promotion.setImagePath(cursor.getString(7));
+                return promotion;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     public static Date convertStringToDate(String str) {

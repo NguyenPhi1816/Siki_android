@@ -103,9 +103,9 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
                 "Name TEXT," +
                 "Reason TEXT, " +
                 "PercentPromotion INTEGER, " +
-                "StartDate TEXT, " +
-                "EndDate TEXT, " +
-                "NameCategory TEXT, " +
+                "StartDate DATE, " +
+                "EndDate DATE, " +
+                "IdCategory INTEGER, " +
                 "ImagePath TEXT)";
     }
 

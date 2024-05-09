@@ -23,6 +23,7 @@ import com.example.siki.model.Product;
 import com.example.siki.model.Promotion;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PromotionAdapter extends BaseAdapter {
@@ -60,7 +61,9 @@ public class PromotionAdapter extends BaseAdapter {
         Promotion promotion = promotionList.get(i);
         ((TextView) promotionView.findViewById(R.id.promotionName)).setText(promotion.getName());
         ((TextView) promotionView.findViewById(R.id.promotionReason)).setText(promotion.getReason());
-        ((TextView) promotionView.findViewById(R.id.promotionDate)).setText(String.format("HSD: %s", promotion.getEndDate()));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String endDate = sdf.format(promotion.getEndDate());
+        ((TextView) promotionView.findViewById(R.id.promotionDate)).setText(String.format("HSD: %s", endDate));
         ImageView myView = promotionView.findViewById(R.id.promotionImage);
         Picasso.get().load(promotion.getImagePath()).into(myView);
 

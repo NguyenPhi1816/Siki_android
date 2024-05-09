@@ -9,7 +9,10 @@ import com.example.siki.model.Category;
 import com.example.siki.model.Product;
 import com.example.siki.model.Promotion;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PromotionDataSource {
@@ -38,9 +41,9 @@ public class PromotionDataSource {
                 promotion.setName(cursor.getString(1));
                 promotion.setReason(cursor.getString(2));
                 promotion.setPercentPromotion(cursor.getInt(3));
-                promotion.setStartDate(cursor.getString(4));
-                promotion.setEndDate(cursor.getString(5));
-                promotion.setNameCategory(cursor.getString(6));
+                promotion.setStartDate(convertStringToDate(cursor.getString(4)));
+                promotion.setEndDate(convertStringToDate(cursor.getString(5)));
+                promotion.setIdCategory(cursor.getLong(6));
                 promotion.setImagePath(cursor.getString(7));
                 listPromotion.add(promotion);
             } while (cursor.moveToNext());
@@ -56,9 +59,12 @@ public class PromotionDataSource {
             values.put("Name", promotion.getName());
             values.put("Reason", promotion.getReason());
             values.put("PercentPromotion", promotion.getPercentPromotion());
-            values.put("StartDate", promotion.getStartDate());
-            values.put("EndDate", promotion.getEndDate());
-            values.put("NameCategory", promotion.getNameCategory());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String startDate = sdf.format(promotion.getStartDate());
+            String endDate = sdf.format(promotion.getEndDate());
+            values.put("StartDate", startDate);
+            values.put("EndDate", endDate);
+            values.put("IdCategory", promotion.getIdCategory());
             values.put("ImagePath", promotion.getImagePath());
 
             rowsAffected = db.update("Promotion", values, "Id=?", new String[]{String.valueOf(promotion.getId())});
@@ -76,9 +82,12 @@ public class PromotionDataSource {
             values.put("Name", promotion.getName());
             values.put("Reason", promotion.getReason());
             values.put("PercentPromotion", promotion.getPercentPromotion());
-            values.put("StartDate", promotion.getStartDate());
-            values.put("EndDate", promotion.getEndDate());
-            values.put("NameCategory", promotion.getNameCategory());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String startDate = sdf.format(promotion.getStartDate());
+            String endDate = sdf.format(promotion.getEndDate());
+            values.put("StartDate", startDate);
+            values.put("EndDate", endDate);
+            values.put("IdCategory", promotion.getIdCategory());
             values.put("ImagePath", promotion.getImagePath());
             id = db.insert("Promotion", null, values);
         } catch (Exception e) {
@@ -97,6 +106,17 @@ public class PromotionDataSource {
             e.printStackTrace();
         }
         return rowsAffected;
+    }
+
+    public static Date convertStringToDate(String str) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        try {
+            return sdf.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

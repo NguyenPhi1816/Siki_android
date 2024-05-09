@@ -1,6 +1,7 @@
 package com.example.siki.activities;
 
 import static com.example.siki.activities.SignUpActivity.isValidDate;
+import static com.example.siki.database.PromotionDataSource.convertStringToDate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,8 +42,8 @@ public class PromotionAddActivity extends AppCompatActivity {
     Button btnBack, btnThem, btnAnhKM, btnNgayBDKM, btnNgayKTKM;
     ImageView imgAnhKM, ivAnhLoaiSp;
     Spinner spLoaiSp;
-
-    String imagePath, nameCategory;
+    Long idCategory;
+    String imagePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +67,9 @@ public class PromotionAddActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         // Display Selected date in textbox
-                        edtNgayBDKM.setText(dayOfMonth + "-"
-                                + (monthOfYear + 1) + "-" + year);
+                        String formattedDay = String.format("%02d", dayOfMonth); // Định dạng ngày để có hai chữ số
+                        String formattedMonth = String.format("%02d", (monthOfYear + 1)); // Định dạng tháng để có hai chữ số
+                        edtNgayBDKM.setText(formattedDay + "-" + formattedMonth + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -89,9 +91,9 @@ public class PromotionAddActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         // Display Selected date in textbox
-                        edtNgayKTKM.setText("");
-                        edtNgayKTKM.setText(dayOfMonth + "-"
-                                + (monthOfYear + 1) + "-" + year);
+                        String formattedDay = String.format("%02d", dayOfMonth); // Định dạng ngày để có hai chữ số
+                        String formattedMonth = String.format("%02d", (monthOfYear + 1)); // Định dạng tháng để có hai chữ số
+                        edtNgayKTKM.setText(formattedDay + "-" + formattedMonth + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -136,6 +138,7 @@ public class PromotionAddActivity extends AppCompatActivity {
                 String selectedItem = (String) parent.getItemAtPosition(position);
                 for (Map.Entry<Long, String> entry : listCategory.entrySet()) {
                     if (entry.getValue().equals(selectedItem)) {
+                        idCategory = entry.getKey();
                         Picasso.get().load(categoryDatabase.findImagePathById(Math.toIntExact(entry.getKey()))).into(ivAnhLoaiSp);
                     }
                 }
@@ -143,7 +146,6 @@ public class PromotionAddActivity extends AppCompatActivity {
                 if (selectedItem.equals("Chọn loại sản phẩm")) {
                     return;
                 }
-                nameCategory = selectedItem;
             }
 
             @Override
@@ -237,7 +239,7 @@ public class PromotionAddActivity extends AppCompatActivity {
                             dialog.dismiss();
                             return;
                         } else {
-                            promotion.setStartDate(edtNgayBDKM.getText().toString());
+                            promotion.setStartDate(convertStringToDate(edtNgayBDKM.getText().toString()));
                         }
 
                         if (edtNgayKTKM.getText().toString().isEmpty()) {
@@ -251,9 +253,9 @@ public class PromotionAddActivity extends AppCompatActivity {
                             dialog.dismiss();
                             return;
                         } else {
-                            promotion.setEndDate(edtNgayKTKM.getText().toString());
+                            promotion.setEndDate(convertStringToDate(edtNgayKTKM.getText().toString()));
                         }
-                        promotion.setNameCategory(nameCategory);
+                        promotion.setIdCategory(idCategory);
                         promotion.setImagePath(imagePath);
 
                         promotionDataSource.addPromotion(promotion);

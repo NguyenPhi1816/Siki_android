@@ -1,6 +1,7 @@
 package com.example.siki.activities;
 
 import static com.example.siki.activities.SignUpActivity.isValidDate;
+import static com.example.siki.database.PromotionDataSource.convertStringToDate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,6 +30,7 @@ import com.example.siki.model.Category;
 import com.example.siki.model.Promotion;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -40,8 +42,8 @@ public class PromotionDetailActivity extends AppCompatActivity {
     Button btnBack, btnSua, btnAnhKM, btnNgayBDKM, btnNgayKTKM;
     ImageView imgAnhKM, ivAnhLoaiSp;
     Spinner spLoaiSp;
-
-    String imagePath, nameCategory;
+    Long idCategory;
+    String imagePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +67,9 @@ public class PromotionDetailActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         // Display Selected date in textbox
-                        edtNgayBDKM.setText(dayOfMonth + "-"
-                                + (monthOfYear + 1) + "-" + year);
+                        String formattedDay = String.format("%02d", dayOfMonth); // Định dạng ngày để có hai chữ số
+                        String formattedMonth = String.format("%02d", (monthOfYear + 1)); // Định dạng tháng để có hai chữ số
+                        edtNgayBDKM.setText(formattedDay + "-" + formattedMonth + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -88,9 +91,9 @@ public class PromotionDetailActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         // Display Selected date in textbox
-                        edtNgayKTKM.setText("");
-                        edtNgayKTKM.setText(dayOfMonth + "-"
-                                + (monthOfYear + 1) + "-" + year);
+                        String formattedDay = String.format("%02d", dayOfMonth); // Định dạng ngày để có hai chữ số
+                        String formattedMonth = String.format("%02d", (monthOfYear + 1)); // Định dạng tháng để có hai chữ số
+                        edtNgayKTKM.setText(formattedDay + "-" + formattedMonth + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -117,25 +120,32 @@ public class PromotionDetailActivity extends AppCompatActivity {
         PromotionDataSource promotionDataSource = new PromotionDataSource(this);
         promotionDataSource.open();
         Promotion promotion = (Promotion) getIntent().getSerializableExtra("promotion");
+        CategoryDatabase categoryDatabase = new CategoryDatabase(this);
+        categoryDatabase.open();
+        ProductCategoryDatabase productCategoryDatabase = new ProductCategoryDatabase(this);
+        productCategoryDatabase.open();
+
         if (promotion != null) {
             edtMaKM.setText(promotion.getId().toString());
             edtTenKM.setText(promotion.getName());
             edtLyDoKM.setText(promotion.getReason());
             edtPhanTramKM.setText(String.valueOf(promotion.getPercentPromotion()));
-            edtNgayBDKM.setText(promotion.getStartDate());
-            edtNgayKTKM.setText(promotion.getEndDate());
-            edtLoaiSpKM.setText(promotion.getNameCategory());
 
-            nameCategory = promotion.getNameCategory();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String startDate = sdf.format(promotion.getStartDate());
+            String endDate = sdf.format(promotion.getEndDate());
+
+            edtNgayBDKM.setText(startDate);
+            edtNgayKTKM.setText(endDate);
+            Category category = categoryDatabase.findById(promotion.getIdCategory());
+            edtLoaiSpKM.setText(category.getName());
+
+            idCategory = category.getId();
             imgAnhKM.setImageURI(Uri.parse(promotion.getImagePath()));
             imagePath = promotion.getImagePath();
 
         }
 
-        CategoryDatabase categoryDatabase = new CategoryDatabase(this);
-        categoryDatabase.open();
-        ProductCategoryDatabase productCategoryDatabase = new ProductCategoryDatabase(this);
-        productCategoryDatabase.open();
         Map<Long, String> listCategory = categoryDatabase.getAllCategory();
         List<String> listLoaiSp = new ArrayList<>(listCategory.values()) ;
         listLoaiSp.add(0, "Chọn loại sản phẩm");
@@ -150,6 +160,7 @@ public class PromotionDetailActivity extends AppCompatActivity {
                 String selectedItem = (String) parent.getItemAtPosition(position);
                 for (Map.Entry<Long, String> entry : listCategory.entrySet()) {
                     if (entry.getValue().equals(selectedItem)) {
+                        idCategory = entry.getKey();
                         Picasso.get().load(categoryDatabase.findImagePathById(Math.toIntExact(entry.getKey()))).into(ivAnhLoaiSp);
                     }
                 }
@@ -157,7 +168,6 @@ public class PromotionDetailActivity extends AppCompatActivity {
                 if (selectedItem.equals("Chọn loại sản phẩm")) {
                     return;
                 }
-                nameCategory = selectedItem;
             }
 
             @Override
@@ -251,7 +261,7 @@ public class PromotionDetailActivity extends AppCompatActivity {
                             dialog.dismiss();
                             return;
                         } else {
-                            promotion.setStartDate(edtNgayBDKM.getText().toString());
+                            promotion.setStartDate(convertStringToDate(edtNgayBDKM.getText().toString()));
                         }
 
                         if (edtNgayKTKM.getText().toString().isEmpty()) {
@@ -265,9 +275,9 @@ public class PromotionDetailActivity extends AppCompatActivity {
                             dialog.dismiss();
                             return;
                         } else {
-                            promotion.setEndDate(edtNgayKTKM.getText().toString());
+                            promotion.setEndDate(convertStringToDate(edtNgayKTKM.getText().toString()));
                         }
-                        promotion.setNameCategory(nameCategory);
+                        promotion.setIdCategory(idCategory);
                         promotion.setImagePath(imagePath);
 
                         promotionDataSource.updatePromotion(promotion);

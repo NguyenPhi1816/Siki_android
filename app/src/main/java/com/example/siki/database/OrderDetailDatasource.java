@@ -2,7 +2,17 @@ package com.example.siki.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.example.siki.model.Cart;
+import com.example.siki.model.Order;
+import com.example.siki.model.OrderDetail;
+import com.example.siki.model.Product;
+import com.example.siki.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDetailDatasource {
 
@@ -36,5 +46,33 @@ public class OrderDetailDatasource {
             e.printStackTrace();
         }
         return id;
+    }
+
+    /*"CREATE TABLE IF NOT EXISTS `OrderDetail` (\n" +
+            "    Id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+            "    order_id INTEGER,\n" +
+            "    product_id INTEGER,\n" +
+            "    quantity INTEGER,\n" +
+            "    price DOUBLE,\n" +
+            "    FOREIGN KEY (order_id) REFERENCES `Order`(Id),\n" + // corrected table name and enclose in backticks
+            "    FOREIGN KEY (product_id) REFERENCES Product(Id)\n" + // removed unnecessary comma
+            ");\n";*/
+    public List<OrderDetail> findByOrderId(Long orderId, ProductDatabase productDatabase) {
+        String sql = "Select * from OrderDetail od where od.order_id = ?";
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(orderId)});
+        if (cursor.moveToFirst()) {
+            do {
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setId(cursor.getLong(0));
+                orderDetail.setQuantity(cursor.getInt(3));
+                orderDetail.setPrice(cursor.getDouble(4));
+                Long productId = cursor.getLong(2);
+                Product product = productDatabase.findById(productId);
+                orderDetail.setProduct(product);
+                orderDetails.add(orderDetail);
+            } while (cursor.moveToNext());
+        }
+        return orderDetails;
     }
 }

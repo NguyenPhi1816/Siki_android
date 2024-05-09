@@ -2,48 +2,145 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/roundedborder"
-    android:layout_margin="10dp"
+    android:background="@drawable/border"
     android:padding="10dp"
     android:layout_height="wrap_content">
-    <ImageView
-        android:src="@drawable/samsung"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Order id"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_marginBottom="5dp"
-        android:textSize="15sp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Cap nhat"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_marginBottom="5dp"
-        android:textSize="15sp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_height="100dp">
-        <ImageView
-            android:src="@drawable/baseline_create_24"
-            android:layout_width="72dp"
-            android:layout_marginLeft="20dp"
-            android:layout_height="72dp"/>
-        <ImageView
-            android:src="@drawable/delivery_truck"
-            android:layout_width="72dp"
-            android:layout_marginLeft="40dp"
-            android:layout_height="72dp"/>
-        <ImageView
-            android:src="@drawable/check"
-            android:layout_width="72dp"
-            android:layout_marginLeft="40dp"
-            android:layout_height="72dp"/>
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Ma don hang: "
+            android:ellipsize="end"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/tv_order_id"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="asfsafasfasdfasf"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="15sp"/>
+
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Dia chi: "
+            android:ellipsize="end"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/tv_order_address"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="asfsafasfasdfasf"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Ngay dat hang: "
+            android:ellipsize="end"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/tv_order_createdAt"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="12/12/2024"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="15sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Trang thai: "
+            android:ellipsize="end"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/tv_order_status"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="DANG VAN CHUYEN"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="15sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Tong cong: "
+            android:ellipsize="end"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/tv_order_totalPrice"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="100,000d"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="15sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="60dp">
+        <Button
+            android:id="@+id/btn_order_view"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
+            android:textColor="#03A9F4"
+            android:background="@drawable/order_view_bg"
+            android:layout_width="wrap_content"
+            android:text="Xem chi tiet"
+            android:layout_height="50dp"/>
+        <Button
+            android:id="@+id/btn_order_edit"
+            android:layout_marginLeft="10dp"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
+            android:textColor="#FF9800"
+            android:background="@drawable/order_edit_bg"
+            android:layout_width="wrap_content"
+            android:text="Sua"
+            android:layout_height="50dp"/>
+        <Button
+            android:id="@+id/btn_order_delete"
+            android:layout_marginLeft="10dp"
+            android:paddingHorizontal="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/redcart"
+            android:background="@drawable/order_delete_bg"
+            android:layout_width="wrap_content"
+            android:text="Xoa"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+
 </LinearLayout>

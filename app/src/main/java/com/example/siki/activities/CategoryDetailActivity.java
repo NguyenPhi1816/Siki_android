@@ -60,6 +60,7 @@ public class CategoryDetailActivity extends AppCompatActivity {
             edtTenLoaiSp.setText(category.getName());
             edtMoTaLoaiSp.setText(category.getDescription());
             imgAnhLoaiSp.setImageURI(Uri.parse(category.getImagePath()));
+            imagePath = category.getImagePath();
 
         }
 
@@ -117,7 +118,7 @@ public class CategoryDetailActivity extends AppCompatActivity {
                         }
 
                         category.setImagePath(imagePath);
-                        categoryDatabase.updateProduct(category);
+                        categoryDatabase.updateCategory(category);
                         Intent intent = new Intent(CategoryDetailActivity.this, CategoryListActivity.class);
                         startActivity(intent);
                         Toast.makeText(CategoryDetailActivity.this, "Chỉnh sửa thành công", Toast.LENGTH_LONG).show();

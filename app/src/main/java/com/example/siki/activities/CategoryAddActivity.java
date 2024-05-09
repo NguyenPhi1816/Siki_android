@@ -155,8 +155,8 @@ public class CategoryAddActivity extends AppCompatActivity {
     private void setControl() {
         edtTenLoaiSp = findViewById(R.id.tenLoaiSp);
         edtMoTaLoaiSp = findViewById(R.id.moTaLoaiSp);
-        btnAnhLoaiSp = findViewById(R.id.btnAnhLoaiSP);
 
+        btnAnhLoaiSp = findViewById(R.id.btnAnhLoaiSP);
         btnThem = findViewById(R.id.btnThem);
         btnBack = findViewById(R.id.btnBack);
 

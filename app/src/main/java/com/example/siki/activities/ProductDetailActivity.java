@@ -72,7 +72,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         CategoryDatabase categoryDatabase = new CategoryDatabase(this);
         categoryDatabase.open();
         Map<Long, String> listCategory = categoryDatabase.getAllCategory();
-        List<String> listLoaiSp = new ArrayList<>(listCategory.values()) ;
+        List<String> listLoaiSp = new ArrayList<>(listCategory.values());
+        listLoaiSp.add(0, "Chọn loại sản phẩm");
         ArrayAdapter<String> loaiSpAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, listLoaiSp);
         loaiSpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -80,7 +81,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         List<String> selectedItems = new ArrayList<>();
         spLoaiSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            boolean isFirstSelection = true;
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getItemAtPosition(position);
@@ -90,8 +90,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     }
                 }
 
-                if (isFirstSelection) {
-                    isFirstSelection = false;
+                if (selectedItem.equals("Chọn loại sản phẩm")) {
                     return;
                 }
                 if (selectedItems.contains(selectedItem)) {
@@ -134,6 +133,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             edtTenSp.setText(product.getName());
             edtSoLuongSp.setText(product.getQuantity()+"");
             imgAnhSp.setImageURI(Uri.parse(product.getImagePath()));
+            imagePath = product.getImagePath();
             List<String> list = productCategoryDatabase.findNameCategoryByProductId(product.getId());
             StringBuilder rs = new StringBuilder();
             for (int i = 0; i < list.size(); i++) {

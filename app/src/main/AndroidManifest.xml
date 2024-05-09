@@ -19,8 +19,17 @@
         android:theme="@style/Theme.Siki"
         tools:targetApi="31">
         <activity
+            android:name=".activities.PromotionDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.PromotionAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.PromotionListActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.OrderManagementActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_order_management"
             android:theme="@style/Theme.Siki">
             <intent-filter>

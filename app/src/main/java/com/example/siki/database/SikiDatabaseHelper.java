@@ -38,6 +38,7 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createStoreTable());
         db.execSQL(createOrderTable());
         db.execSQL(createOrderDetailTable());
+        db.execSQL(createPromotionTable());
     }
 
     // Define methods to create each table
@@ -94,6 +95,18 @@ public class SikiDatabaseHelper extends SQLiteOpenHelper {
                 "Name TEXT," +
                 "Description TEXT, " +
                 "ImagePath text)";
+    }
+
+    private String createPromotionTable() {
+        return "CREATE TABLE IF NOT EXISTS Promotion (" +
+                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "Name TEXT," +
+                "Reason TEXT, " +
+                "PercentPromotion INTEGER, " +
+                "StartDate DATE, " +
+                "EndDate DATE, " +
+                "IdCategory INTEGER, " +
+                "ImagePath TEXT)";
     }
 
     private String createProductCategoryTable() {

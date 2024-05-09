@@ -1,18 +1,16 @@
 package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 import com.example.siki.R;
 
 public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
-    Button homeBtn, productBtn, productTypeBtn, sellBtn, revenueBtn;
+    Button homeBtn, productBtn, productTypeBtn, sellBtn, revenueBtn, promotionBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +58,14 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        promotionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, PromotionListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setControl() {
@@ -68,5 +74,6 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
         productTypeBtn = findViewById(R.id.product_type_btn);
         sellBtn = findViewById(R.id.sell_btn);
         revenueBtn = findViewById(R.id.revenue_btn);
+        promotionBtn = findViewById(R.id.promotion_btn);
     }
 }

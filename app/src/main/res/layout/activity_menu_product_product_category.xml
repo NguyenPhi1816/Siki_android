@@ -50,6 +50,11 @@
             android:layout_height="wrap_content"
             android:text="Doanh thu"
             android:id="@+id/revenue_btn"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Khuyến mãi"
+            android:id="@+id/promotion_btn"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

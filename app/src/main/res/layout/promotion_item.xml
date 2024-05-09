@@ -6,7 +6,7 @@
     android:paddingRight="10dp"
     android:orientation="horizontal">
     <ImageView
-        android:id="@+id/categoryImage"
+        android:id="@+id/promotionImage"
         android:layout_width="100dp"
         android:layout_height="100dp" />
     <LinearLayout
@@ -18,22 +18,22 @@
         android:layout_weight="1"
         >
         <TextView
-            android:id="@+id/categoryId"
+            android:id="@+id/promotionName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Id"
+            android:text="Tên khuyến mãi"
             />
         <TextView
-            android:id="@+id/categoryName"
+            android:id="@+id/promotionReason"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Tên loại sản phẩm"
+            android:text="Lý do khuyến mãi"
             />
         <TextView
-            android:id="@+id/categoryDescription"
+            android:id="@+id/promotionDate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Mô tả lọai sản phẩm"
+            android:text="Thời hạn khuyến mãi"
             />
     </LinearLayout>
     <Button

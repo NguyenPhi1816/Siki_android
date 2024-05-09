@@ -33,6 +33,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +70,7 @@ public class PromotionAddActivity extends AppCompatActivity {
                         // Display Selected date in textbox
                         String formattedDay = String.format("%02d", dayOfMonth); // Định dạng ngày để có hai chữ số
                         String formattedMonth = String.format("%02d", (monthOfYear + 1)); // Định dạng tháng để có hai chữ số
+                        edtNgayBDKM.setError(null);
                         edtNgayBDKM.setText(formattedDay + "-" + formattedMonth + "-" + year);
 
                     }
@@ -93,6 +95,7 @@ public class PromotionAddActivity extends AppCompatActivity {
                         // Display Selected date in textbox
                         String formattedDay = String.format("%02d", dayOfMonth); // Định dạng ngày để có hai chữ số
                         String formattedMonth = String.format("%02d", (monthOfYear + 1)); // Định dạng tháng để có hai chữ số
+                        edtNgayKTKM.setError(null);
                         edtNgayKTKM.setText(formattedDay + "-" + formattedMonth + "-" + year);
 
                     }
@@ -228,18 +231,27 @@ public class PromotionAddActivity extends AppCompatActivity {
                             promotion.setPercentPromotion(Integer.parseInt(edtPhanTramKM.getText().toString()));
                         }
 
+                        Date currentDate = setTimeToMidNight(new Date());
+                        Date startDate = convertStringToDate(edtNgayBDKM.getText().toString());
+                        Date endDate = convertStringToDate(edtNgayKTKM.getText().toString());
+
                         if (edtNgayBDKM.getText().toString().isEmpty()) {
                             edtNgayBDKM.setError("Trường này là bắt buộc!");
                             edtNgayBDKM.requestFocus();
                             dialog.dismiss();
                             return;
                         } else if (!isValidDate(edtNgayBDKM.getText().toString())) {
-                            edtNgayBDKM.setError("Ngày không hợp lệ");
+                            edtNgayBDKM.setError("Định dạng không hợp lệ!");
+                            edtNgayBDKM.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else if (startDate.compareTo(currentDate) < 0) {
+                            edtNgayBDKM.setError("Ngày BD phải lớn hơn hoặc bằng hôm nay");
                             edtNgayBDKM.requestFocus();
                             dialog.dismiss();
                             return;
                         } else {
-                            promotion.setStartDate(convertStringToDate(edtNgayBDKM.getText().toString()));
+                            promotion.setStartDate(startDate);
                         }
 
                         if (edtNgayKTKM.getText().toString().isEmpty()) {
@@ -249,6 +261,11 @@ public class PromotionAddActivity extends AppCompatActivity {
                             return;
                         } else if (!isValidDate(edtNgayKTKM.getText().toString())) {
                             edtNgayKTKM.setError("Ngày không hợp lệ");
+                            edtNgayKTKM.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else if (startDate.compareTo(endDate) > 0) {
+                            edtNgayKTKM.setError("Ngày KT phải lớn hơn hoặc bằng ngày BD");
                             edtNgayKTKM.requestFocus();
                             dialog.dismiss();
                             return;
@@ -298,5 +315,18 @@ public class PromotionAddActivity extends AppCompatActivity {
         ivAnhLoaiSp = findViewById(R.id.ivAnhLoaiSp);
 
         spLoaiSp = findViewById(R.id.spLoaiSp);
+    }
+
+    public static Date setTimeToMidNight(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        // Đặt giờ, phút và giây thành 00:00:00
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return calendar.getTime();
     }
 }

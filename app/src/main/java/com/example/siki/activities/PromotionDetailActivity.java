@@ -1,5 +1,6 @@
 package com.example.siki.activities;
 
+import static com.example.siki.activities.PromotionAddActivity.setTimeToMidNight;
 import static com.example.siki.activities.SignUpActivity.isValidDate;
 import static com.example.siki.database.PromotionDataSource.convertStringToDate;
 
@@ -33,6 +34,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +71,7 @@ public class PromotionDetailActivity extends AppCompatActivity {
                         // Display Selected date in textbox
                         String formattedDay = String.format("%02d", dayOfMonth); // Định dạng ngày để có hai chữ số
                         String formattedMonth = String.format("%02d", (monthOfYear + 1)); // Định dạng tháng để có hai chữ số
+                        edtNgayBDKM.setError(null);
                         edtNgayBDKM.setText(formattedDay + "-" + formattedMonth + "-" + year);
 
                     }
@@ -93,6 +96,7 @@ public class PromotionDetailActivity extends AppCompatActivity {
                         // Display Selected date in textbox
                         String formattedDay = String.format("%02d", dayOfMonth); // Định dạng ngày để có hai chữ số
                         String formattedMonth = String.format("%02d", (monthOfYear + 1)); // Định dạng tháng để có hai chữ số
+                        edtNgayKTKM.setError(null);
                         edtNgayKTKM.setText(formattedDay + "-" + formattedMonth + "-" + year);
 
                     }
@@ -250,6 +254,10 @@ public class PromotionDetailActivity extends AppCompatActivity {
                             promotion.setPercentPromotion(Integer.parseInt(edtPhanTramKM.getText().toString()));
                         }
 
+                        Date currentDate = setTimeToMidNight(new Date());
+                        Date startDate = convertStringToDate(edtNgayBDKM.getText().toString());
+                        Date endDate = convertStringToDate(edtNgayKTKM.getText().toString());
+
                         if (edtNgayBDKM.getText().toString().isEmpty()) {
                             edtNgayBDKM.setError("Trường này là bắt buộc!");
                             edtNgayBDKM.requestFocus();
@@ -271,6 +279,11 @@ public class PromotionDetailActivity extends AppCompatActivity {
                             return;
                         } else if (!isValidDate(edtNgayKTKM.getText().toString())) {
                             edtNgayKTKM.setError("Ngày không hợp lệ");
+                            edtNgayKTKM.requestFocus();
+                            dialog.dismiss();
+                            return;
+                        } else if (startDate.compareTo(endDate) > 0) {
+                            edtNgayKTKM.setError("Ngày KT phải lớn hơn hoặc bằng ngày BD");
                             edtNgayKTKM.requestFocus();
                             dialog.dismiss();
                             return;

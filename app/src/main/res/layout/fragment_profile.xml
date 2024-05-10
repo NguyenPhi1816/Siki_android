@@ -4,26 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.fragment.ProfileFragment">
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
             android:id="@+id/ly1"
             android:layout_alignParentTop="true"
             android:background="@color/main_color"
             tools:ignore="MissingConstraints">
-
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:background="@android:color/transparent"
-                android:paddingLeft="30dp"
-                android:drawableLeft="@drawable/ic_chevron_left" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -32,43 +25,34 @@
                 android:textSize="28sp"
                 android:layout_marginTop="5dp"
                 />
-
-            <Button
-                android:id="@+id/btnCart"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:background="@android:color/transparent"
-                android:paddingLeft="30dp"
-                android:layout_marginTop="-1dp"
-                android:drawableLeft="@drawable/ic_carts_black_24dp" />
-
         </LinearLayout>
-
-        <ImageButton
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@+id/ly1"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="-50dp"
-            android:background="@drawable/circle_background"
-            android:contentDescription="Button Image"
-            android:elevation="10dp"
-            android:src="@drawable/box"
-            android:id="@+id/user_image"
-            />
-
-
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_below="@+id/ly1"
-            android:paddingTop="80dp"
-            android:background="#D6D3D3"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
             tools:ignore="MissingConstraints">
 
-
+            <ImageButton
+                android:id="@+id/user_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/ly1"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle_background"
+                android:contentDescription="Button Image"
+                android:elevation="10dp"
+                android:src="@drawable/box" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/ly1"
+            android:background="#D6D3D3"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="180dp"
+            tools:ignore="MissingConstraints">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -327,6 +311,46 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
+                    android:src="@drawable/baseline_attach_money_24"
+                    android:padding="10dp"
+                    android:background="@color/white"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/white"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Đơn mua"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:textColor="#666666"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+                <Button
+                    android:id="@+id/btnOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:layout_marginLeft="-80dp"
+                    android:paddingLeft="40dp"
+                    android:drawableTint="#666"
+                    android:drawableLeft="@drawable/ic_arrow_right" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/password"
                     android:padding="10dp"
                     android:background="@color/white"
@@ -360,21 +384,45 @@
                     android:drawableLeft="@drawable/ic_arrow_right" />
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/authenticated_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="10dp">
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/baseline_logout_24"
+                    android:padding="10dp"
+                    android:background="@color/white"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/white"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Đăng xuất"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:textColor="#666666"
+                        android:textSize="16sp"/>
+                </LinearLayout>
                 <Button
                     android:id="@+id/logout_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/main_color"
-                    android:textColor="@color/white"
-                    android:text="Đăng xuất"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:layout_marginLeft="-80dp"
+                    android:paddingLeft="40dp"
+                    android:drawableTint="#666"
+                    android:drawableLeft="@drawable/ic_arrow_right" />
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
-
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

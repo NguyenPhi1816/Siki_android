@@ -33,7 +33,7 @@ public class ProfileFragment extends Fragment {
         this.globalVariable = globalVariable;
     }
 
-    Button btnBack, btnCart, btnHoVaTen, btnNgaySinh, btnGioiTinh, btnSDT, btnEmail, btnDoiMK;
+    Button btnBack, btnHoVaTen, btnNgaySinh, btnGioiTinh, btnSDT, btnEmail, btnDoiMK, btnOrder;
     ImageView ivUserImage;
     TextView tvHoVaTen, tvNgaySinh, tvGioiTinh, tvSDT, tvEmail;
     private Button logoutButton;
@@ -56,6 +56,12 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        btnOrder.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                redirectToOrderView();
+            }
+        });
+
         authUser = globalVariable.getAuthUser();
         Picasso.get().load(authUser.getAvatar()).resize(200, 200).into(ivUserImage);
         tvHoVaTen.setText(authUser.getFirstName() + " " + authUser.getLastName());
@@ -67,7 +73,6 @@ public class ProfileFragment extends Fragment {
     }
     private void setControl(View view) {
         btnBack = view.findViewById(R.id.btnBack);
-        btnCart = view.findViewById(R.id.btnCart);
         btnHoVaTen = view.findViewById(R.id.btnHoVaTen);
         btnNgaySinh = view.findViewById(R.id.btnNgaySinh);
         btnGioiTinh = view.findViewById(R.id.btnGioiTinh);
@@ -81,6 +86,7 @@ public class ProfileFragment extends Fragment {
         tvGioiTinh = view.findViewById(R.id.tvGioiTinh);
         tvSDT = view.findViewById(R.id.tvSDT);
         tvEmail = view.findViewById(R.id.tvEmail);
+        btnOrder = view.findViewById(R.id.btnOrder);
     }
 
     private void redirectToChangePassView () {
@@ -88,6 +94,10 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(context, ChangePasswordActivity.class);
         intent.putExtra("forgotPasswordAccount", account);
         startActivity(intent);
+    }
+
+    private void redirectToOrderView () {
+
     }
 
     private void logout() {

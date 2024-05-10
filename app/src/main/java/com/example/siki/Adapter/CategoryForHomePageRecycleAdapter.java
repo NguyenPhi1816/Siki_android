@@ -57,7 +57,6 @@ public class CategoryForHomePageRecycleAdapter extends RecyclerView.Adapter<Cate
             @Override
             public void onClick(View v) {
                 redirectToListProductByCategory(category.getId());
-
             }
         });
 

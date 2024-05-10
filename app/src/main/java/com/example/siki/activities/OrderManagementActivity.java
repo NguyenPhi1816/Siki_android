@@ -1,10 +1,12 @@
 package com.example.siki.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.example.siki.Adapter.OrderRecycleAdapter;
 import com.example.siki.R;
 import com.example.siki.database.OrderDataSource;
 import com.example.siki.database.OrderDetailDatasource;
@@ -25,6 +27,8 @@ public class OrderManagementActivity extends AppCompatActivity {
     private ProductDatabase productDatabase;
     private OrderDataSource orderDataSource;
     private OrderDetailDatasource orderDetailDatasource;
+
+    private OrderRecycleAdapter orderRecycleAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,13 @@ public class OrderManagementActivity extends AppCompatActivity {
         orderDataSource.open();
         orderDetailDatasource = new OrderDetailDatasource(this);
         orderDetailDatasource.open();
+
+        orders.clear();
+        List<Order> orderList = orderDataSource.findAll(userDataSource, productDatabase, orderDetailDatasource);
+        orders.addAll(orderList);
+        orderRecycleAdapter = new OrderRecycleAdapter(orders, this);
+        order_recycle_view.setAdapter(orderRecycleAdapter);
+        orderRecycleAdapter.notifyDataSetChanged();
     }
 
     private void setControl() {
@@ -58,6 +69,8 @@ public class OrderManagementActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-
+        orderRecycleAdapter = new OrderRecycleAdapter(orders, this);
+        order_recycle_view.setAdapter(orderRecycleAdapter);
+        order_recycle_view.setLayoutManager(new GridLayoutManager(this, 1));
     }
 }

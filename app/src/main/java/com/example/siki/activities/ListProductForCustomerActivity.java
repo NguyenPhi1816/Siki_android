@@ -85,7 +85,6 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
              categoryId = extras.getLong("categoryId");
-        } else {
         }
     }
 }

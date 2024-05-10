@@ -24,7 +24,6 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="15sp"/>
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

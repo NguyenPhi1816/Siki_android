@@ -1,6 +1,8 @@
 package com.example.siki.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
+import com.example.siki.activities.ListProductForCustomerActivity;
+import com.example.siki.activities.OrderDetailActivity;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Order;
 import com.example.siki.model.OrderDetail;
@@ -48,7 +52,22 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
         Double totalPrice = getTotalPriceByOrder(order);
         String totalPriceString = PriceFormatter.formatDouble(totalPrice);
         holder.tv_order_totalPrice.setText(totalPriceString);
+        holder.btn_order_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectToOrderDetailPage(order.getId());
+            }
+        });
     }
+
+    private void redirectToOrderDetailPage(Long orderId) {
+        Intent intent = new Intent(context, OrderDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putLong("orderId", orderId);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
 
     private Double getTotalPriceByOrder(Order order) {
         if (order == null || order.getOrderDetails() == null) {

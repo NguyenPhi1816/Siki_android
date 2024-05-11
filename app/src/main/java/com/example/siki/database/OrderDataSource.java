@@ -150,4 +150,18 @@ public class OrderDataSource {
         return id;
     }
 
+    public int updateOrder(Long id, Order order) {
+        int rowsAffected = -1;
+        try {
+            ContentValues values = new ContentValues();
+            values.put("receiverName", order.getReceiverName());
+            values.put("receiverPhoneNumber", order.getReceiverPhoneNumber());
+            values.put("receiverAddress", order.getReceiverAddress());
+            values.put("status", order.getStatus().toString());
+            rowsAffected = db.update("`Order`", values, "Id=?", new String[]{String.valueOf(id)});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowsAffected;
+    }
 }

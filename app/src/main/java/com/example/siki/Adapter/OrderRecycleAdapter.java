@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.siki.R;
 import com.example.siki.activities.ListProductForCustomerActivity;
 import com.example.siki.activities.OrderDetailActivity;
+import com.example.siki.activities.OrderEditActivity;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Order;
 import com.example.siki.model.OrderDetail;
@@ -58,6 +59,12 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
                 redirectToOrderDetailPage(order.getId());
             }
         });
+        holder.btn_order_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectToOrderEditPage(order);
+            }
+        });
     }
 
     private void redirectToOrderDetailPage(Long orderId) {
@@ -65,6 +72,16 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
         Bundle bundle = new Bundle();
         bundle.putLong("orderId", orderId);
         intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
+
+
+    private void redirectToOrderEditPage(Order order) {
+        Intent intent = new Intent(context, OrderEditActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order", order);
+        intent.putExtra("order", bundle);
         context.startActivity(intent);
     }
 

@@ -1,6 +1,8 @@
 package com.example.siki.model;
 
-public class OrderDetail {
+import java.io.Serializable;
+
+public class OrderDetail implements Serializable {
     private Long id;
 
     private Order order;

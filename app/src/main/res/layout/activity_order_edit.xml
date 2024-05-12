@@ -13,7 +13,7 @@
         android:orientation="horizontal"
         >
         <Button
-            android:id="@+id/btn_order_detail_back"
+            android:id="@+id/btn_order_edit_back_order_management"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

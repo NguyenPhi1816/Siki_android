@@ -87,7 +87,7 @@ public class OrderEditActivity extends AppCompatActivity {
                 redirectToOrderDetailPage(order.getId());
             }
         });
-        btn_order_edit_back.setOnClickListener(new View.OnClickListener() {
+        btn_order_edit_back_order_management.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(OrderEditActivity.this, OrderManagementActivity.class);
@@ -149,6 +149,7 @@ public class OrderEditActivity extends AppCompatActivity {
         btn_order_save = findViewById(R.id.btn_order_save);
         btn_order_back_to_order_detail = findViewById(R.id.btn_order_back_to_order_detail);
         btn_order_edit_back_order_management = findViewById(R.id.btn_order_edit_back_order_management);
+
         ed_order_edit_totalPrice.setEnabled(false);
         ed_order_edit_created_at.setEnabled(false);
         Intent intent = getIntent();

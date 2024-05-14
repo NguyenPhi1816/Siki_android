@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#F0739D"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:id="@+id/ll_info"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thông tin đơn hàng"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thông tin"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tvOrderId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trạng thái đơn hàng"
+                android:layout_centerHorizontal="true"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/tvCreateAt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trạng thái đơn hàng"
+                android:layout_centerHorizontal="true"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trạng thái đơn hàng"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trạng thái đơn hàng"
+                android:layout_centerHorizontal="true"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Địa chỉ nhận hàng"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tvReceiverName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trạng thái đơn hàng"
+                android:layout_centerHorizontal="true"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/tvReceiverPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trạng thái đơn hàng"
+                android:layout_centerHorizontal="true"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/tvReceiverAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trạng thái đơn hàng"
+                android:layout_centerHorizontal="true"
+                android:textSize="16sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thành tiền: "
+                android:layout_centerHorizontal="true"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/tvTotalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10000đ"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvUserOrderDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:scrollbars="vertical"
+        android:layout_below="@id/ll_info"
+        android:layout_marginTop="8dp"/>
+</RelativeLayout>

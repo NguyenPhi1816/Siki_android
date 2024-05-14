@@ -19,6 +19,12 @@
         android:theme="@style/Theme.Siki"
         tools:targetApi="31">
         <activity
+            android:name=".activities.UserOrderDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.UserOrdersActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.OrderDetailActivity"
             android:exported="false" />
         <activity

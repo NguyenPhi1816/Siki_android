@@ -10,6 +10,8 @@ import android.os.Build;
 
 import com.example.siki.enums.OrderStatus;
 import com.example.siki.model.Order;
+import com.example.siki.model.OrderDetail;
+import com.example.siki.model.Product;
 import com.example.siki.model.User;
 
 import java.time.LocalDateTime;
@@ -150,4 +152,35 @@ public class OrderDataSource {
         return id;
     }
 
+    @SuppressLint("NewApi")
+    public List<Order> findByUserId (OrderDetailDatasource orderDetailDatasource, ProductDatabase productDatabase, UserDataSource userDataSource, int userId) {
+        String sql = "Select * from 'Order' ord where ord.user_id = ?";
+
+        List<Order> orders = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)});
+        if (cursor.moveToFirst()) {
+            do {
+                Order order = new Order();
+                Long orderId = cursor.getLong(0);
+                order.setId(orderId);
+                order.setReceiverPhoneNumber(cursor.getString(1));
+                order.setReceiverAddress(cursor.getString(2));
+                order.setReceiverName(cursor.getString(3));
+                order.setNote(cursor.getString(4));
+                String createdAt = cursor.getString(5);
+                /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+                // Parse the string to LocalDateTime
+                LocalDateTime localDateTime = LocalDateTime.parse(createdAt, formatter);*/
+                order.setCreatedAt(LocalDateTime.of(2024,12,12, 12,12));
+                order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
+                order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
+                User user = userDataSource.getUserById(userId);
+                order.setUser(user);
+                orders.add(order);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return orders;
+    }
 }

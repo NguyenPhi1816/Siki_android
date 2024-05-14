@@ -8,7 +8,10 @@
       <entry key="MenuProduct_ProductCategoryActivity">
         <State />
       </entry>
-      <entry key="OrderManagementActivity">
+      <entry key="UserOrderDetailActivity">
+        <State />
+      </entry>
+      <entry key="UserOrdersActivity">
         <State />
       </entry>
     </value>

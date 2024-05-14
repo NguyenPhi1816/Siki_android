@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="15dp"
@@ -80,8 +81,7 @@
         android:background="@color/border"
         android:layout_height="1dp"/>
         <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+            android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingVertical="10dp"
@@ -95,17 +95,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             />
-        <TextView
-            android:id="@+id/payment_totalPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="300 000 d"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/main_color"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/payment_totalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="300 000 d"
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"

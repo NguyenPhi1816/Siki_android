@@ -1,7 +1,9 @@
 package com.example.siki.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +13,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
 import com.example.siki.activities.ListProductForCustomerActivity;
 import com.example.siki.activities.OrderDetailActivity;
+import com.example.siki.activities.OrderEditActivity;
+import com.example.siki.database.OrderDataSource;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Order;
 import com.example.siki.model.OrderDetail;
 import com.example.siki.model.Product;
+import com.example.siki.utils.DateFormatter;
 import com.example.siki.utils.PriceFormatter;
+import com.saadahmedev.popupdialog.PopupDialog;
+import com.saadahmedev.popupdialog.listener.StandardDialogActionListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +50,13 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
         return new OrderHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull OrderHolder holder, int position) {
         Order order = orders.get(position);
         holder.tv_order_id.setText(order.getId() + "");
         holder.tv_order_address.setText(order.getReceiverAddress());
-        holder.tv_order_createdAt.setText(order.getCreatedAt().toString());
+        holder.tv_order_createdAt.setText(DateFormatter.formatLocalDateTimeToString(order.getCreatedAt()));
         holder.tv_order_status.setText(order.getStatus().toString());
         Double totalPrice = getTotalPriceByOrder(order);
         String totalPriceString = PriceFormatter.formatDouble(totalPrice);
@@ -58,6 +67,24 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
                 redirectToOrderDetailPage(order.getId());
             }
         });
+        holder.btn_order_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectToOrderEditPage(order);
+            }
+        });
+        holder.btn_order_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showConfirmDialog(order.getId());
+            }
+        });
+    }
+
+    private void deleteOrder(Long orderId) {
+        OrderDataSource orderDataSource = new OrderDataSource(context);
+        orderDataSource.open();
+        orderDataSource.deleteOrder(orderId);
     }
 
     private void redirectToOrderDetailPage(Long orderId) {
@@ -65,6 +92,16 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
         Bundle bundle = new Bundle();
         bundle.putLong("orderId", orderId);
         intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
+
+
+    private void redirectToOrderEditPage(Order order) {
+        Intent intent = new Intent(context, OrderEditActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order", order);
+        intent.putExtra("order", bundle);
         context.startActivity(intent);
     }
 
@@ -83,6 +120,26 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
         return totalPrice;
     }
 
+    private void showConfirmDialog (Long orderId) {
+        PopupDialog.getInstance(context)
+                .standardDialogBuilder()
+                .createIOSDialog()
+                .setHeading("Lưu ý")
+                .setDescription("Bạn có chắc chắn muốn thực hiện không?")
+                .build(new StandardDialogActionListener() {
+                    @Override
+                    public void onPositiveButtonClicked(Dialog dialog) {
+                        deleteOrder(orderId);
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked(Dialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
 
     @Override
     public int getItemCount() {

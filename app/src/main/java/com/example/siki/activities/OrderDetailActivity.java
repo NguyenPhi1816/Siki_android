@@ -1,10 +1,12 @@
 package com.example.siki.activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +21,7 @@ import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
 import com.example.siki.model.Order;
 import com.example.siki.model.OrderDetail;
+import com.example.siki.utils.DateFormatter;
 import com.example.siki.utils.PriceFormatter;
 
 import java.util.List;
@@ -73,12 +76,14 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
         super.onResume();
         readDb();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void readDb() {
         if (orderId != 0L) {
             userDataSource = new UserDataSource(this);
@@ -93,7 +98,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             if (newOrder.isPresent()) {
                 order = newOrder.get();
                 tv_orderDetail_order_id.setText(order.getId() + "");
-                tv_orderDetail_order_createdAt.setText(order.getCreatedAt().toString());
+                tv_orderDetail_order_createdAt.setText(DateFormatter.formatLocalDateTimeToString(order.getCreatedAt()));
                 tv_orderDetail_order_status.setText(order.getStatus().toString());
                 tv_order_detail_receiverName.setText(order.getReceiverName());
                 tv_order_detail_receiverPhoneNumber.setText(order.getReceiverPhoneNumber());

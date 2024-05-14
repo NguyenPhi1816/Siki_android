@@ -25,6 +25,9 @@
             android:name=".activities.UserOrdersActivity"
             android:exported="true" />
         <activity
+            android:name=".activities.OrderEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.OrderDetailActivity"
             android:exported="false" />
         <activity

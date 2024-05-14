@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -62,12 +63,13 @@ public class StoreSoldProductChartActivity extends AppCompatActivity {
         storeid = 2;
         SetControl();
         SetEvent();
-        SetDefaul();
-        initData();
+//        initData();
+        System.out.println("Hello");
         SQLiteDatabase db;
         SikiDatabaseHelper helper;
         helper= new SikiDatabaseHelper(this);
         db = helper.getWritableDatabase();
+        SetDefaul();
     }
 
     private void SetDefaul() {
@@ -114,6 +116,7 @@ public class StoreSoldProductChartActivity extends AppCompatActivity {
         imageStore = findViewById(R.id.image_store);
         btnBack = findViewById(R.id.btn_back);
         btn_pdf = findViewById(R.id.btnXuat_pdf);
+        mplineChart = findViewById(R.id.lineChart);
     }
 
     private void ChartSetting() {

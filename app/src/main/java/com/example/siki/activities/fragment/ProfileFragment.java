@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.example.siki.R;
 import com.example.siki.activities.ChangePasswordActivity;
 import com.example.siki.activities.HomeActivity;
+import com.example.siki.activities.UserOrderDetailActivity;
+import com.example.siki.activities.UserOrdersActivity;
 import com.example.siki.model.Account;
 import com.example.siki.model.User;
 import com.example.siki.service.AccountService;
@@ -33,7 +35,7 @@ public class ProfileFragment extends Fragment {
         this.globalVariable = globalVariable;
     }
 
-    Button btnBack, btnHoVaTen, btnNgaySinh, btnGioiTinh, btnSDT, btnEmail, btnDoiMK, btnOrder;
+    Button btnBack, btnHoVaTen, btnNgaySinh, btnGioiTinh, btnSDT, btnEmail, btnDoiMK, btnUserOrders;
     ImageView ivUserImage;
     TextView tvHoVaTen, tvNgaySinh, tvGioiTinh, tvSDT, tvEmail;
     private Button logoutButton;
@@ -42,6 +44,8 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         setControl(view);
+
+        authUser = globalVariable.getAuthUser();
 
         btnDoiMK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,13 +60,12 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        btnOrder.setOnClickListener(new View.OnClickListener() {
+        btnUserOrders.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                redirectToOrderView();
+                redirectToUserOrdersView(authUser.getId());
             }
         });
 
-        authUser = globalVariable.getAuthUser();
         Picasso.get().load(authUser.getAvatar()).resize(200, 200).into(ivUserImage);
         tvHoVaTen.setText(authUser.getFirstName() + " " + authUser.getLastName());
         tvNgaySinh.setText(authUser.getDateOfBirth());
@@ -86,7 +89,7 @@ public class ProfileFragment extends Fragment {
         tvGioiTinh = view.findViewById(R.id.tvGioiTinh);
         tvSDT = view.findViewById(R.id.tvSDT);
         tvEmail = view.findViewById(R.id.tvEmail);
-        btnOrder = view.findViewById(R.id.btnOrder);
+        btnUserOrders = view.findViewById(R.id.btnUserOrders);
     }
 
     private void redirectToChangePassView () {
@@ -96,8 +99,10 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void redirectToOrderView () {
-
+    private void redirectToUserOrdersView (int userId) {
+        Intent intent = new Intent(context, UserOrdersActivity.class);
+        intent.putExtra("user_id", userId); // Đặt orderId vào Intent
+        startActivity(intent);
     }
 
     private void logout() {

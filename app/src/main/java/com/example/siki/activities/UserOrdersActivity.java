@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.siki.Adapter.OnOrderButtonClickListener;
 import com.example.siki.Adapter.UserOrdersAdapter;
@@ -43,8 +44,20 @@ public class UserOrdersActivity extends AppCompatActivity {
         readDb();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to previous one if there is any
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void readDb () {
-        int userId = 1;
+        Intent intent = getIntent();
+        int userId = intent.getIntExtra("user_id", 0);
 
         userDataSource = new UserDataSource(this);
         userDataSource.open();

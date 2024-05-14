@@ -120,6 +120,7 @@ public class StoreSoldProductChartActivity extends AppCompatActivity {
     }
 
     private void ChartSetting() {
+        mplineChart = findViewById(R.id.lineChart);
         YAxis yAxis = mplineChart.getAxisRight();
         yAxis.setEnabled(false);
 

@@ -28,6 +28,8 @@ public class OrderDataSource {
     private SQLiteDatabase db;
     private SikiDatabaseHelper dbHelper;
 
+    private final String ALL = "ALL";
+
 
     public OrderDataSource(Context context) {
         dbHelper = new SikiDatabaseHelper(context);
@@ -142,6 +144,48 @@ public class OrderDataSource {
         String sql = "Select * from `Order` Where user_id = ?";
         List<Order> orders = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)});
+        if (cursor.moveToFirst()) {
+            do {
+                Order order = new Order();
+                Long orderId = cursor.getLong(0);
+                order.setId(orderId);
+                order.setReceiverPhoneNumber(cursor.getString(1));
+                order.setReceiverAddress(cursor.getString(2));
+                order.setReceiverName(cursor.getString(3));
+                order.setNote(cursor.getString(4));
+                String createdAt = cursor.getString(5);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy", Locale.US);
+                Date date = null;
+                try {
+                    date = dateFormat.parse(createdAt);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                LocalDateTime localDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+                order.setCreatedAt(localDateTime);
+                order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
+                order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
+                User user = userDataSource.getUserById(cursor.getInt(7));
+                order.setUser(user);
+                orders.add(order);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return orders;
+    }
+
+    @SuppressLint("NewApi")
+    public List<Order> findAllByOrderStatus(UserDataSource userDataSource,
+                                               ProductDatabase productDatabase,
+                                               OrderDetailDatasource orderDetailDatasource,
+                                               String status
+    ) {
+        if (status.equals(ALL)) {
+           return this.findAll(userDataSource, productDatabase, orderDetailDatasource);
+        }
+        String sql = "Select * from `Order` Where status = ?";
+        List<Order> orders = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, new String[]{status});
         if (cursor.moveToFirst()) {
             do {
                 Order order = new Order();

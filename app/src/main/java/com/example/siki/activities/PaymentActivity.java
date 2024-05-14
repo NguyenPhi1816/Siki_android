@@ -133,7 +133,8 @@ public class PaymentActivity extends AppCompatActivity {
                     productDatabase.updateQuantityProduct(cart.getProduct().getId(), updateQuantity);
                     cartDatasource.remove(cart.getId());
                 });
-                showSuccessMessage();
+                showSuccessMessage(orderId);
+
             }
         }
     }
@@ -156,15 +157,26 @@ public class PaymentActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+
     }
 
-    private void showSuccessMessage() {
+    private void navigateToUserOrderDetailActivity(Long orderId) {
+        Intent intent = new Intent(PaymentActivity.this, UserOrderDetailActivity.class);
+        intent.putExtra("order_id", orderId); // Đặt orderId vào Intent
+        startActivity(intent);
+    }
+
+    private void showSuccessMessage(Long orderId) {
         PopupDialog.getInstance(this)
                 .statusDialogBuilder()
                 .createSuccessDialog()
                 .setHeading("Thành công")
                 .setDescription("Bạn đã đặt hàng thành công")
-                .build(Dialog::dismiss)
+                .setActionButtonText("Xem đơn hàng")
+                .build(dialog -> {
+                    dialog.dismiss();
+                    navigateToUserOrderDetailActivity(orderId);
+                })
                 .show();
     }
 

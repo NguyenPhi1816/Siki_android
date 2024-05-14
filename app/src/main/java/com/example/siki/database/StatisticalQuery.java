@@ -167,4 +167,65 @@ public class StatisticalQuery {
         Collections.reverse(listStatisticalModels);
         return listStatisticalModels;
     }
+
+    public List<String> getAllMonthOrderSuccess(Long store_id) {
+        String sql = "SELECT DISTINCT  \n" +
+                "    substr(createAt, 4, 2) AS month, \n" +
+                "    substr(createAt, 7, 4) AS year \n" +
+                "FROM `Order` o\n" +
+                "JOIN OrderDetail od ON o.Id = od.order_id\n" +
+                "JOIN Product p ON od.product_id = p.Id\n" +
+                "JOIN Store s ON p.StoreId = s.Id\n" +
+                "WHERE o.status = 'Success' AND s.Id = ?" +
+                "ORDER BY month DESC, year DESC\n" +
+                "LIMIT 6;";
+        List<String> data = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(store_id)});
+        if (cursor.moveToFirst()){
+            do {
+                data.add(cursor.getString(0)+"-"+cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        Collections.reverse(data);
+        return data;
+    }
+
+    public List<String> getAllYearOrderSuccess(Long store_id) {
+        String sql = "SELECT DISTINCT  \n" +
+                "    substr(createAt, 7, 4) AS year\n" +
+                "FROM `Order` o\n" +
+                "JOIN OrderDetail od ON o.Id = od.order_id\n" +
+                "JOIN Product p ON od.product_id = p.Id\n" +
+                "JOIN Store s ON p.StoreId = s.Id\n" +
+                "WHERE o.status = 'Success' AND s.Id = ?" +
+                "ORDER BY " +
+                "date DESC\n" +
+                "LIMIT 5;";
+        List<String> data = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(store_id)});
+        if (cursor.moveToFirst()){
+            do {
+                data.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        Collections.reverse(data);
+        return data;
+    }
+
+    public List<Long> getAllIDProductStore(Long store_id) {
+        String sql = "SELECT p.Id\n" +
+                "FROM Product p\n" +
+                "WHERE p.StoreId = ?;";
+        List<Long> data = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(store_id)});
+        if (cursor.moveToFirst()){
+            do {
+                data.add(cursor.getLong(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return data;
+    }
 }

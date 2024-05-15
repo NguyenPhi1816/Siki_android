@@ -169,7 +169,7 @@ public class StatisticalQuery {
     }
 
     public List<String> getAllMonthOrderSuccess(Long store_id) {
-        String sql = "SELECT DISTINCT  \n" +
+        String sql = "SELECT  \n" +
                 "    substr(createAt, 4, 2) AS month, \n" +
                 "    substr(createAt, 7, 4) AS year \n" +
                 "FROM `Order` o\n" +
@@ -192,7 +192,7 @@ public class StatisticalQuery {
     }
 
     public List<String> getAllYearOrderSuccess(Long store_id) {
-        String sql = "SELECT DISTINCT  \n" +
+        String sql = "SELECT  \n" +
                 "    substr(createAt, 7, 4) AS year\n" +
                 "FROM `Order` o\n" +
                 "JOIN OrderDetail od ON o.Id = od.order_id\n" +

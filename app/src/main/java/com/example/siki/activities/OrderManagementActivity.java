@@ -3,7 +3,6 @@ package com.example.siki.activities;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.util.Pair;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,10 +24,8 @@ import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
 import com.example.siki.enums.OrderStatus;
 import com.example.siki.model.Order;
-import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.example.siki.variable.GlobalVariable;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -90,7 +87,8 @@ public class OrderManagementActivity extends AppCompatActivity {
         List<Order> orderList = orderDataSource.findAllByOrderStatus(userDataSource, productDatabase, orderDetailDatasource, currentStatus);
         orders.addAll(orderList);
         data_all.addAll(orderList);
-        orderRecycleAdapter = new OrderRecycleAdapter(orders, this);
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+        orderRecycleAdapter = new OrderRecycleAdapter(orders, this, globalVariable);
         order_recycle_view.setAdapter(orderRecycleAdapter);
         orderRecycleAdapter.notifyDataSetChanged();
     }
@@ -103,6 +101,8 @@ public class OrderManagementActivity extends AppCompatActivity {
         tv_order_status_pending = findViewById(R.id.tv_order_status_pending);
         tv_order_status_shipping = findViewById(R.id.tv_order_status_shipping);
         tv_order_status_success = findViewById(R.id.tv_order_status_success);
+
+
 
     }
 
@@ -176,9 +176,10 @@ public class OrderManagementActivity extends AppCompatActivity {
                 return false;
             }
         });
-        orderRecycleAdapter = new OrderRecycleAdapter(orders, this);
-        order_recycle_view.setAdapter(orderRecycleAdapter);
-        order_recycle_view.setLayoutManager(new GridLayoutManager(this, 1));
+         GlobalVariable globalVariable = (GlobalVariable) getApplication();
+         orderRecycleAdapter = new OrderRecycleAdapter(orders, this, globalVariable);
+         order_recycle_view.setAdapter(orderRecycleAdapter);
+         order_recycle_view.setLayoutManager(new GridLayoutManager(this, 1));
     }
 
     @SuppressLint("ResourceAsColor")

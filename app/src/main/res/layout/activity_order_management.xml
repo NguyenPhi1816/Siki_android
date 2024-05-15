@@ -43,13 +43,18 @@
             android:queryHint="Tim kiem theo ma don hang" />
         <Button
             android:focusable="false"
+            android:backgroundTint="#EDCED8"
             android:id="@+id/btn_filter_date"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@color/white"
             android:drawableRight="@drawable/ic_filter"
             android:gravity="center"/>
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:background="@color/grey"
+        android:layout_height="1dp"/>
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="30dp">
@@ -94,6 +99,10 @@
                 android:text="Thanh cong"/>
         </LinearLayout>
     </HorizontalScrollView>
+    <TextView
+        android:layout_width="match_parent"
+        android:background="@color/grey"
+        android:layout_height="1dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/order_recycle_view"
         android:layout_width="match_parent"

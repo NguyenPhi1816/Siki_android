@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,16 +16,17 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
-import com.example.siki.activities.ListProductForCustomerActivity;
 import com.example.siki.activities.OrderDetailActivity;
 import com.example.siki.activities.OrderEditActivity;
+import com.example.siki.database.AccountDataSource;
 import com.example.siki.database.OrderDataSource;
-import com.example.siki.model.Cart;
+import com.example.siki.enums.Role;
+import com.example.siki.model.Account;
 import com.example.siki.model.Order;
 import com.example.siki.model.OrderDetail;
-import com.example.siki.model.Product;
 import com.example.siki.utils.DateFormatter;
 import com.example.siki.utils.PriceFormatter;
+import com.example.siki.variable.GlobalVariable;
 import com.saadahmedev.popupdialog.PopupDialog;
 import com.saadahmedev.popupdialog.listener.StandardDialogActionListener;
 
@@ -36,11 +36,14 @@ import java.util.List;
 public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapter.OrderHolder> {
     private List<Order> orders = new ArrayList<>();
 
-    private Context context ;
 
-    public OrderRecycleAdapter(List<Order> orders, Context context) {
+    private Context context ;
+    private GlobalVariable globalVariable;
+
+    public OrderRecycleAdapter(List<Order> orders, Context context, GlobalVariable globalVariable) {
         this.orders = orders;
         this.context = context;
+        this.globalVariable = globalVariable;
     }
 
     @NonNull
@@ -53,6 +56,22 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull OrderHolder holder, int position) {
+        if (globalVariable.isLoggedIn()) {
+            AccountDataSource accountDataSource = new AccountDataSource(context);
+            accountDataSource.open();
+            String phoneNumber = globalVariable.getAuthUser().getPhoneNumber();
+            Account account = accountDataSource.getAccountByPhoneNumber(phoneNumber);
+            if (account != null) {
+                if (account.getRole().equals(Role.USER)) {
+                    holder.btn_order_edit.setVisibility(View.INVISIBLE);
+                    holder.btn_order_delete.setVisibility(View.INVISIBLE);
+                }else {
+                    holder.btn_order_edit.setVisibility(View.VISIBLE);
+                    holder.btn_order_delete.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+
         Order order = orders.get(position);
         holder.tv_order_id.setText(order.getId() + "");
         holder.tv_order_address.setText(order.getReceiverAddress());

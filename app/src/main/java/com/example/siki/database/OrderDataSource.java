@@ -8,11 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 
 
+import androidx.annotation.RequiresApi;
+
 import com.example.siki.enums.OrderStatus;
 import com.example.siki.model.Order;
 import com.example.siki.model.OrderDetail;
 import com.example.siki.model.Product;
 import com.example.siki.model.User;
+import com.example.siki.utils.DateFormatter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +47,7 @@ public class OrderDataSource {
         dbHelper.close();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Long createOrder (String receiverPhoneNumber,
                              String receiverAddress,
                              String receiverName,
@@ -57,7 +61,7 @@ public class OrderDataSource {
             values.put("receiverAddress", receiverAddress);
             values.put("receiverName", receiverName);
             values.put("status", OrderStatus.Pending.toString());
-            values.put("createAt", Calendar.getInstance().getTime().toString());
+            values.put("createAt", LocalDateTime.now().toString());
             values.put("note", note);
             values.put("user_id", userId);
             id = db.insert("`Order`", null, values);
@@ -66,13 +70,6 @@ public class OrderDataSource {
         }
         return id;
     }
-  /*  "    receiverPhoneNumber TEXT,\n" +
-            "    receiverAddress TEXT,\n" +
-            "    receiverName TEXT,\n" +
-            "    note TEXT,\n" +
-            "    createAt TEXT,\n" +
-            "    status TEXT,\n" +
-            "    user_id INTEGER,\n" +*/
     @SuppressLint("NewApi")
     public List<Order> findAll(UserDataSource userDataSource,
                                ProductDatabase productDatabase,
@@ -90,14 +87,7 @@ public class OrderDataSource {
                 order.setReceiverName(cursor.getString(3));
                 order.setNote(cursor.getString(4));
                 String createdAt = cursor.getString(5);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy", Locale.US);
-                Date date = null;
-                try {
-                    date = dateFormat.parse(createdAt);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                LocalDateTime localDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+                LocalDateTime localDateTime = DateFormatter.formatStringToLocalDateTime(createdAt);
                 order.setCreatedAt(localDateTime);
                 order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
                 order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
@@ -123,11 +113,8 @@ public class OrderDataSource {
             order.setReceiverName(cursor.getString(3));
             order.setNote(cursor.getString(4));
             String createdAt = cursor.getString(5);
-                /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-                // Parse the string to LocalDateTime
-                LocalDateTime localDateTime = LocalDateTime.parse(createdAt, formatter);*/
-            order.setCreatedAt(LocalDateTime.of(2024,12,12, 12,12));
+            LocalDateTime localDateTime = DateFormatter.formatStringToLocalDateTime(createdAt);
+            order.setCreatedAt(localDateTime);
             order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
             order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
             int userId = cursor.getInt(7);
@@ -155,14 +142,41 @@ public class OrderDataSource {
                 order.setReceiverName(cursor.getString(3));
                 order.setNote(cursor.getString(4));
                 String createdAt = cursor.getString(5);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy", Locale.US);
-                Date date = null;
-                try {
-                    date = dateFormat.parse(createdAt);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                LocalDateTime localDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+                LocalDateTime localDateTime = DateFormatter.formatStringToLocalDateTime(createdAt);
+                order.setCreatedAt(localDateTime);
+                order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
+                order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
+                User user = userDataSource.getUserById(cursor.getInt(7));
+                order.setUser(user);
+                orders.add(order);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return orders;
+    }
+
+    @SuppressLint("NewApi")
+    public List<Order> findAllByUserIdWithStatus(UserDataSource userDataSource,
+                                       ProductDatabase productDatabase,
+                                       OrderDetailDatasource orderDetailDatasource,
+                                       int userId,String status) {
+        if (status.equals(ALL)) {
+            return this.findAllByUserId(userDataSource, productDatabase, orderDetailDatasource, userId);
+        }
+        String sql = "Select * from `Order` Where user_id = ? and status = ?";
+        List<Order> orders = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId), status});
+        if (cursor.moveToFirst()) {
+            do {
+                Order order = new Order();
+                Long orderId = cursor.getLong(0);
+                order.setId(orderId);
+                order.setReceiverPhoneNumber(cursor.getString(1));
+                order.setReceiverAddress(cursor.getString(2));
+                order.setReceiverName(cursor.getString(3));
+                order.setNote(cursor.getString(4));
+                String createdAt = cursor.getString(5);
+                LocalDateTime localDateTime = DateFormatter.formatStringToLocalDateTime(createdAt);
                 order.setCreatedAt(localDateTime);
                 order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
                 order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
@@ -197,14 +211,7 @@ public class OrderDataSource {
                 order.setReceiverName(cursor.getString(3));
                 order.setNote(cursor.getString(4));
                 String createdAt = cursor.getString(5);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy", Locale.US);
-                Date date = null;
-                try {
-                    date = dateFormat.parse(createdAt);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                LocalDateTime localDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+                LocalDateTime localDateTime = DateFormatter.formatStringToLocalDateTime(createdAt);
                 order.setCreatedAt(localDateTime);
                 order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
                 order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
@@ -259,11 +266,8 @@ public class OrderDataSource {
                 order.setReceiverName(cursor.getString(3));
                 order.setNote(cursor.getString(4));
                 String createdAt = cursor.getString(5);
-                /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-                // Parse the string to LocalDateTime
-                LocalDateTime localDateTime = LocalDateTime.parse(createdAt, formatter);*/
-                order.setCreatedAt(LocalDateTime.of(2024,12,12, 12,12));
+                LocalDateTime localDateTime = DateFormatter.formatStringToLocalDateTime(createdAt);
+                order.setCreatedAt(localDateTime);
                 order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
                 order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
                 User user = userDataSource.getUserById(userId);

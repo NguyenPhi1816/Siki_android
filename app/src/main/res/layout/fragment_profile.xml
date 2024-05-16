@@ -392,6 +392,46 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
+                    android:src="@drawable/signature"
+                    android:padding="10dp"
+                    android:background="@color/white"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/white"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Đơn hàng của bạn"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:textColor="#666666"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+                <Button
+                    android:id="@+id/btn_my_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:layout_marginLeft="-80dp"
+                    android:paddingLeft="40dp"
+                    android:drawableTint="#666"
+                    android:drawableLeft="@drawable/ic_arrow_right" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/baseline_logout_24"
                     android:padding="10dp"
                     android:background="@color/white"

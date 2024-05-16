@@ -1,11 +1,13 @@
 package com.example.siki.activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -107,6 +109,7 @@ public class PaymentActivity extends AppCompatActivity {
         paymentRecycle.setLayoutManager(new GridLayoutManager(this, 1));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void saveOrder() {
         GlobalVariable globalVariable = (GlobalVariable) getApplication();
         OrderDataSource orderDataSource = new OrderDataSource(this);
@@ -145,6 +148,7 @@ public class PaymentActivity extends AppCompatActivity {
                 .setHeading("Thanh toán")
                 .setDescription("Bạn có chắc chắn muốn đặt hàng không?")
                 .build(new StandardDialogActionListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onPositiveButtonClicked(Dialog dialog) {
                         saveOrder();

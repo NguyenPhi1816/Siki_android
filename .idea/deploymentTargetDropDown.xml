@@ -5,10 +5,16 @@
       <entry key="HomeActivity">
         <State />
       </entry>
+      <entry key="LoginActivity">
+        <State />
+      </entry>
       <entry key="MenuProduct_ProductCategoryActivity">
         <State />
       </entry>
       <entry key="OrderManagementActivity">
+        <State />
+      </entry>
+      <entry key="SignUpActivity">
         <State />
       </entry>
     </value>

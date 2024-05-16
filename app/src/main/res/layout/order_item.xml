@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="Ma don hang: "
+            android:text="Mã đơn hàng: "
             android:ellipsize="end"
             android:textSize="14sp"/>
         <TextView
@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="Dia chi: "
+            android:text="Địa chỉ: "
             android:ellipsize="end"
             android:textSize="14sp"/>
         <TextView
@@ -54,7 +54,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="Ngay dat hang: "
+            android:text="Ngày đặt hàng: "
             android:ellipsize="end"
             android:textSize="15sp"/>
         <TextView
@@ -74,7 +74,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="Trang thai: "
+            android:text="Trạng thái: "
             android:ellipsize="end"
             android:textSize="15sp"/>
         <TextView
@@ -94,7 +94,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="Tong cong: "
+            android:text="Tổng cộng: "
             android:ellipsize="end"
             android:textSize="15sp"/>
         <TextView
@@ -111,15 +111,17 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="60dp">
+
         <Button
             android:id="@+id/btn_order_view"
-            android:paddingHorizontal="10dp"
-            android:textStyle="bold"
-            android:textColor="#03A9F4"
-            android:background="@drawable/order_view_bg"
             android:layout_width="wrap_content"
-            android:text="Xem chi tiet"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp"
+            android:background="@drawable/order_view_bg"
+            android:paddingHorizontal="10dp"
+            android:text="Xem chi tiết"
+            android:textColor="#03A9F4"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/btn_order_edit"
             android:layout_marginLeft="10dp"
@@ -128,7 +130,7 @@
             android:textColor="#FF9800"
             android:background="@drawable/order_edit_bg"
             android:layout_width="wrap_content"
-            android:text="Sua"
+            android:text="Sửa"
             android:layout_height="50dp"/>
         <Button
             android:id="@+id/btn_order_delete"
@@ -138,7 +140,7 @@
             android:textColor="@color/redcart"
             android:background="@drawable/order_delete_bg"
             android:layout_width="wrap_content"
-            android:text="Xoa"
+            android:text="Xóa"
             android:layout_height="50dp"/>
     </LinearLayout>
 

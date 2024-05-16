@@ -20,6 +20,7 @@ import com.example.siki.activities.OrderDetailActivity;
 import com.example.siki.activities.OrderEditActivity;
 import com.example.siki.database.AccountDataSource;
 import com.example.siki.database.OrderDataSource;
+import com.example.siki.enums.OrderStatus;
 import com.example.siki.enums.Role;
 import com.example.siki.model.Account;
 import com.example.siki.model.Order;
@@ -38,12 +39,12 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
 
 
     private Context context ;
-    private GlobalVariable globalVariable;
+    private Account account;
 
-    public OrderRecycleAdapter(List<Order> orders, Context context, GlobalVariable globalVariable) {
+    public OrderRecycleAdapter(List<Order> orders, Context context, Account account) {
         this.orders = orders;
         this.context = context;
-        this.globalVariable = globalVariable;
+        this.account = account;
     }
 
     @NonNull
@@ -56,19 +57,13 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull OrderHolder holder, int position) {
-        if (globalVariable.isLoggedIn()) {
-            AccountDataSource accountDataSource = new AccountDataSource(context);
-            accountDataSource.open();
-            String phoneNumber = globalVariable.getAuthUser().getPhoneNumber();
-            Account account = accountDataSource.getAccountByPhoneNumber(phoneNumber);
-            if (account != null) {
-                if (account.getRole().equals(Role.USER)) {
-                    holder.btn_order_edit.setVisibility(View.INVISIBLE);
-                    holder.btn_order_delete.setVisibility(View.INVISIBLE);
-                }else {
-                    holder.btn_order_edit.setVisibility(View.VISIBLE);
-                    holder.btn_order_delete.setVisibility(View.VISIBLE);
-                }
+        if (account != null) {
+            if (account.getRole().equals(Role.USER.toString())) {
+                holder.btn_order_edit.setVisibility(View.INVISIBLE);
+                holder.btn_order_delete.setVisibility(View.INVISIBLE);
+            }else {
+                holder.btn_order_edit.setVisibility(View.VISIBLE);
+                holder.btn_order_delete.setVisibility(View.VISIBLE);
             }
         }
 
@@ -76,7 +71,7 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
         holder.tv_order_id.setText(order.getId() + "");
         holder.tv_order_address.setText(order.getReceiverAddress());
         holder.tv_order_createdAt.setText(DateFormatter.formatLocalDateTimeToString(order.getCreatedAt()));
-        holder.tv_order_status.setText(order.getStatus().toString());
+        holder.tv_order_status.setText(translateStatus(order.getStatus()));
         Double totalPrice = getTotalPriceByOrder(order);
         String totalPriceString = PriceFormatter.formatDouble(totalPrice);
         holder.tv_order_totalPrice.setText(totalPriceString);
@@ -98,6 +93,20 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
                 showConfirmDialog(order.getId());
             }
         });
+    }
+
+    private String translateStatus (OrderStatus orderStatus) {
+        switch(orderStatus) {
+            case Pending:
+                return "CHỜ THANH TOÁN";
+            case Shipping:
+                return "ĐANG VẬN CHUYỂN";
+            case Success:
+                return "THÀNH CÔNG";
+            default:
+                break;
+        }
+        return "";
     }
 
     private void deleteOrder(Long orderId) {

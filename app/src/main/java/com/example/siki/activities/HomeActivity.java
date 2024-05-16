@@ -42,7 +42,6 @@ public class HomeActivity extends AppCompatActivity  {
                 .replace(R.id.fragment_container, new HomeFragment(this))
                 .commit();
         setControl();
-
         setEvent() ;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -50,8 +49,9 @@ public class HomeActivity extends AppCompatActivity  {
             if (fragment == R.id.nav_cart) {
                 redirectCartFragment();
                 bottom_navigation.setSelectedItemId(R.id.nav_cart);
-            }else {
-                // Todo: another fragment
+            }else if (fragment == R.id.nav_profile){
+                redirectProfileFragment();
+                bottom_navigation.setSelectedItemId(R.id.nav_profile);
             }
         }
     }

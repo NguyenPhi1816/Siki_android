@@ -99,6 +99,8 @@
         <activity
             android:name=".activities.ProductRevenueChartActivity"
             android:exported="true" />
+        <activity android:name=".activities.TotalProductMonthSold"
+            android:exported="true"/>
         <activity
             android:name=".activities.MainActivity"
             android:exported="true">

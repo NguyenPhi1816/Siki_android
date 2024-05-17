@@ -1,6 +1,5 @@
 package com.example.siki.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -36,29 +35,5 @@ public class StoreDataSource {
             e.printStackTrace();
         }
         return store;
-    }
-
-    public Long createStore(Long id,
-                            String name,
-                            Long userId,
-                            String description,
-                            String avatar,
-                            String status,
-                            String backgroundImage) {
-        Long code = -1L;
-        try {
-            ContentValues values = new ContentValues();
-            values.put("Id", id);
-            values.put("Name", name);
-            values.put("UserId", userId);
-            values.put("Description", description);
-            values.put("Avatar", avatar);
-            values.put(" BackgroundImage", backgroundImage);
-            values.put("Status", status);
-            code = db.insert("Store", null, values);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return code;
     }
 }

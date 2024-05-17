@@ -48,15 +48,7 @@ public class OrderDetailDatasource {
         return id;
     }
 
-    /*"CREATE TABLE IF NOT EXISTS `OrderDetail` (\n" +
-            "    Id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-            "    order_id INTEGER,\n" +
-            "    product_id INTEGER,\n" +
-            "    quantity INTEGER,\n" +
-            "    price DOUBLE,\n" +
-            "    FOREIGN KEY (order_id) REFERENCES `Order`(Id),\n" + // corrected table name and enclose in backticks
-            "    FOREIGN KEY (product_id) REFERENCES Product(Id)\n" + // removed unnecessary comma
-            ");\n";*/
+
     public List<OrderDetail> findByOrderId(Long orderId, ProductDatabase productDatabase) {
         String sql = "Select * from OrderDetail od where od.order_id = ?";
         List<OrderDetail> orderDetails = new ArrayList<>();
@@ -74,5 +66,16 @@ public class OrderDetailDatasource {
             } while (cursor.moveToNext());
         }
         return orderDetails;
+    }
+
+    public int deleteByOrder(Long orderId) {
+        int rowsAffected = -1;
+        try {
+            rowsAffected = db.delete("`OrderDetail`", "order_id=?", new String[]{String.valueOf(orderId)});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowsAffected;
+
     }
 }

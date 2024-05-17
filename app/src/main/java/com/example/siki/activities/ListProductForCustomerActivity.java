@@ -14,6 +14,7 @@ import com.example.siki.Adapter.ProductListForCustomerRecycleAdapter;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.database.ProductCategoryDatabase;
+import com.example.siki.database.PromotionDataSource;
 import com.example.siki.model.Category;
 import com.example.siki.model.Product;
 import com.example.siki.variable.GlobalVariable;
@@ -26,6 +27,8 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
     TextView tv_categoryName;
     RecyclerView rv_product_list_customer;
     private ProductCategoryDatabase productCategoryDatabase;
+
+    private PromotionDataSource promotionDataSource;
     private CategoryDatabase categoryDatabase;
     private Category category = new Category();
     private Long categoryId;
@@ -68,12 +71,15 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
         productCategoryDatabase = new ProductCategoryDatabase(this);
         productCategoryDatabase.open();
 
+        promotionDataSource = new PromotionDataSource(this);
+        promotionDataSource.open();
+
         productList.clear();
         category = categoryDatabase.findById(categoryId);
         if (category != null) {
             tv_categoryName.setText(category.getName());
         }
-        productList.addAll(productCategoryDatabase.findByCategoryId(categoryId));
+        productList.addAll(productCategoryDatabase.findByCategoryId(categoryId, promotionDataSource));
         productListForCustomerRecycleAdapter.notifyDataSetChanged();
     }
 

@@ -123,7 +123,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         Double totalPrice = 0.0;
         for (OrderDetail orderDetail : order.getOrderDetails()) {
             if (orderDetail != null && orderDetail.getPrice() != null) {
-                totalPrice += orderDetail.getPrice();
+                totalPrice += orderDetail.getPrice() * orderDetail.getQuantity();
             }
         }
         return totalPrice;

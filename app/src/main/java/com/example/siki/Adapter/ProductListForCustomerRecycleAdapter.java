@@ -54,7 +54,16 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
         Product product = productList.get(position);
         Picasso.get().load(product.getImagePath()).into(holder.iv_product);
         holder.tv_productName.setText(product.getName());
-        holder.tv_productPrice.setText(PriceFormatter.formatDouble(product.getPrice()));
+
+
+        if (!product.getPrice().equals(product.getOldPrice())) {
+            holder.tv_productPrice.setText(PriceFormatter.formatDouble(product.getPrice()));
+            holder.tv_productPromotionPrice.setText( PriceFormatter.formatDouble(product.getOldPrice()) + "      -->");
+        }else {
+            holder.tv_productPrice.setText(PriceFormatter.formatDouble(product.getPrice()));
+            holder.tv_productPromotionPrice.setVisibility(View.INVISIBLE);
+        }
+
         holder.tv_productQuantity.setText(String.format(quantityFormat, product.getQuantity()));
         CartDatasource cartDatasource = new CartDatasource(context);
         cartDatasource.open();
@@ -89,10 +98,11 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
 
     class ProductHolder extends RecyclerView.ViewHolder{
         ImageView iv_product;
-        TextView tv_productName, tv_productPrice, tv_productQuantity;
+        TextView tv_productName, tv_productPrice, tv_productQuantity , tv_productPromotionPrice;
         Button btn_product_add2Cart;
         public ProductHolder(@NonNull View itemView) {
             super(itemView);
+            tv_productPromotionPrice = itemView.findViewById(R.id.tv_productPromotionPrice);
             iv_product = itemView.findViewById(R.id.iv_product);
             tv_productName = itemView.findViewById(R.id.tv_productName);
             tv_productPrice = itemView.findViewById(R.id.tv_productPrice);

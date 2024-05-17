@@ -77,7 +77,7 @@ public class OrderManagementActivity extends AppCompatActivity {
         readDb();
     }
 
-    private void readDb() {
+    public void readDb() {
         // get all order
         userDataSource = new UserDataSource(this);
         userDataSource.open();

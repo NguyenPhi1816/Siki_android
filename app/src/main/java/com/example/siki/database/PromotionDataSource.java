@@ -109,27 +109,28 @@ public class PromotionDataSource {
         return rowsAffected;
     }
 
-    public Promotion findByIdCategory(Long idCategory) {
+    public Promotion findByIdCategory(long idCategory) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String currentDate = dateFormat.format(new Date());
-        try {
-            Cursor cursor = db.query("Promotion", null, "IdCategory = ? AND EndDate >= ?", new String[]{String.valueOf(idCategory), currentDate}, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                Promotion promotion = new Promotion();
-                promotion.setId(cursor.getLong(0));
-                promotion.setName(cursor.getString(1));
-                promotion.setReason(cursor.getString(2));
-                promotion.setPercentPromotion(cursor.getInt(3));
-                promotion.setStartDate(convertStringToDate(cursor.getString(4)));
-                promotion.setEndDate(convertStringToDate(cursor.getString(5)));
-                promotion.setIdCategory(cursor.getLong(6));
-                promotion.setImagePath(cursor.getString(7));
-                return promotion;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+
+        Cursor cursor = null;
+        Promotion promotion = new Promotion();
+
+        String sql = "SELECT * FROM Promotion WHERE IdCategory = ? AND EndDate >= ?";
+        cursor = db.rawQuery(sql, new String[]{String.valueOf(idCategory), currentDate});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            promotion = new Promotion();
+            promotion.setId(cursor.getLong(0));
+            promotion.setName(cursor.getString(1));
+            promotion.setReason(cursor.getString(2));
+            promotion.setPercentPromotion(cursor.getInt(3));
+            promotion.setStartDate(convertStringToDate(cursor.getString(4)));
+            promotion.setEndDate(convertStringToDate(cursor.getString(5)));
+            promotion.setIdCategory(cursor.getLong(6));
         }
-        return null;
+
+        return promotion;
     }
 
     public static Date convertStringToDate(String str) {

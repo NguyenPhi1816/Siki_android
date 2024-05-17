@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.siki.R;
 import com.example.siki.activities.OrderDetailActivity;
 import com.example.siki.activities.OrderEditActivity;
+import com.example.siki.activities.OrderManagementActivity;
 import com.example.siki.database.AccountDataSource;
 import com.example.siki.database.OrderDataSource;
+import com.example.siki.database.OrderDetailDatasource;
 import com.example.siki.enums.OrderStatus;
 import com.example.siki.enums.Role;
 import com.example.siki.model.Account;
@@ -112,7 +114,48 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
     private void deleteOrder(Long orderId) {
         OrderDataSource orderDataSource = new OrderDataSource(context);
         orderDataSource.open();
-        orderDataSource.deleteOrder(orderId);
+        OrderDetailDatasource orderDetailDatasource = new OrderDetailDatasource(context);
+        orderDetailDatasource.open();
+
+        int deleteOrderStatus = orderDetailDatasource.deleteByOrder(orderId);
+        if (deleteOrderStatus != -1) {
+            int rowAffected = orderDataSource.deleteOrder(orderId);
+            if (rowAffected != -1) {
+                showSuccessMessage();
+            }else {
+                showErrorMessage();
+            }
+        }else {
+            showErrorMessage();
+        }
+
+    }
+
+    private void showSuccessMessage() {
+        PopupDialog.getInstance(context)
+                .statusDialogBuilder()
+                .createSuccessDialog()
+                .setHeading("Thành công")
+                .setDescription("Bạn đã xóa thành công")
+                .build(dialog -> {
+                    if (context instanceof OrderManagementActivity) {
+                        ((OrderManagementActivity) context).readDb();
+                    }
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
+    private void showErrorMessage() {
+        PopupDialog.getInstance(context)
+                .statusDialogBuilder()
+                .createErrorDialog()
+                .setHeading("Thất bại")
+                .setDescription("Có lỗi xảy ra trong quá trình xóa")
+                .build(dialog -> {
+                    dialog.dismiss();
+                })
+                .show();
     }
 
     private void redirectToOrderDetailPage(Long orderId) {
@@ -142,7 +185,7 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
         Double totalPrice = 0.0;
         for (OrderDetail orderDetail : order.getOrderDetails()) {
             if (orderDetail != null && orderDetail.getPrice() != null) {
-                totalPrice += orderDetail.getPrice();
+                totalPrice += orderDetail.getPrice() * orderDetail.getQuantity();
             }
         }
         return totalPrice;

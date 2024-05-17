@@ -10,7 +10,27 @@ public class Product implements Serializable {
     private int quantity;
     private Store store;
 
+    private Double oldPrice;
+
     public Product() {
+    }
+
+    public Double getOldPrice() {
+        return oldPrice;
+    }
+
+    public Product(Long id, String name, String imagePath, Double price, int quantity, Store store, Double oldPrice) {
+        this.id = id;
+        this.name = name;
+        this.imagePath = imagePath;
+        this.price = price;
+        this.quantity = quantity;
+        this.store = store;
+        this.oldPrice = oldPrice;
+    }
+
+    public void setOldPrice(Double oldPrice) {
+        this.oldPrice = oldPrice;
     }
 
     public Product(Long id, String name, String imagePath, Double price, int quantity, Store store) {

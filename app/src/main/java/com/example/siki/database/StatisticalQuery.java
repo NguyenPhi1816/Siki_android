@@ -6,9 +6,15 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.StatisticalModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class StatisticalQuery {
 
@@ -166,5 +172,58 @@ public class StatisticalQuery {
         cursor.close();
         Collections.reverse(listStatisticalModels);
         return listStatisticalModels;
+    }
+
+    public List<String> getAllMonthOrderSuccess() {
+        String sql = "SELECT  \n" +
+                "    substr(createAt, 4, 7) AS monthyear \n" +
+                "FROM `Order` o\n" +
+                "WHERE o.status = 'Success'";
+        Set<String> dataset = new HashSet<>();
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()){
+            do {
+                dataset.add(cursor.getString(0));
+
+            } while (cursor.moveToNext());
+        }
+        List<String> data = new ArrayList<>(dataset);
+        cursor.close();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
+        Collections.sort(data, new Comparator<String>() {
+            @Override
+            public int compare(String dateStr1, String dateStr2) {
+                try {
+                    Date date1 = dateFormat.parse(dateStr1);
+                    Date date2 = dateFormat.parse(dateStr2);
+                    return date1.compareTo(date2);
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+        Collections.reverse(data);
+        return data.subList(0,6);
+    }
+
+    public List<StatisticalModel> getProductSoldByMonth(String month){
+        String sql = "SELECT\n" +
+                "    p.Name AS ProductName,\n" +
+                "    SUM(od.quantity) AS TotalQuantity\n" +
+                "FROM `Order` o\n" +
+                "JOIN OrderDetail od ON o.Id = od.order_id\n" +
+                "JOIN Product p ON od.product_id = p.Id\n" +
+                "WHERE o.status = 'Success'\n" +
+                "  AND substr(o.createAt, 4, 7) = ?\n" +
+                "GROUP BY p.Name\n" +
+                "ORDER BY ProductName DESC;";
+        Cursor cursor = db.rawQuery(sql, new String[]{month});
+        List<StatisticalModel> data = new ArrayList<>();
+        if (cursor.moveToFirst()){
+            do {
+                data.add(new StatisticalModel(cursor.getString(0),cursor.getDouble(1)));
+            } while (cursor.moveToNext());
+        }
+        return data;
     }
 }

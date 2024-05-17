@@ -17,4 +17,13 @@ public class DateFormatter {
         String formattedDateTime = time.format(outputFormatter);
         return formattedDateTime;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static LocalDateTime formatStringToLocalDateTime(String time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        // Parse the string to a LocalDateTime object
+        LocalDateTime localDateTime = LocalDateTime.parse(time, formatter);
+        return localDateTime;
+    }
 }

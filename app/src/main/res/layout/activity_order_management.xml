@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         >
         <Button
-            android:id="@+id/btn_back_to_cart"
+            android:id="@+id/btn_order_management_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_gravity="center"
-            android:text="Don hang"
+            android:text="ĐƠN HÀNG"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="24dp" />
@@ -70,7 +70,7 @@
                 android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Tat ca"/>
+                android:text="TÂT CẢ"/>
             <TextView
                 android:id="@+id/tv_order_status_pending"
 
@@ -79,7 +79,7 @@
                 android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Cho thanh toan"/>
+                android:text="CHỜ THANH TOÁN"/>
             <TextView
                 android:id="@+id/tv_order_status_shipping"
 
@@ -88,7 +88,7 @@
                 android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Dang van chuyen"/>
+                android:text="ĐANG GIAO HÀNG"/>
             <TextView
                 android:id="@+id/tv_order_status_success"
                 android:textStyle="bold"
@@ -96,7 +96,7 @@
                 android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Thanh cong"/>
+                android:text="THÀNH CÔNG"/>
         </LinearLayout>
     </HorizontalScrollView>
     <TextView

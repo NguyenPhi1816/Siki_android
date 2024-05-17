@@ -5,10 +5,12 @@
       <entry key="ProductSellChartActivity">
         <State />
       </entry>
-      <entry key="TotalProductMonthSold">
         <State />
       </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="SignUpActivity">
         <State />
       </entry>
     </value>

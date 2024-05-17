@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -18,11 +19,14 @@ import android.widget.TextView;
 
 import com.example.siki.Adapter.OrderRecycleAdapter;
 import com.example.siki.R;
+import com.example.siki.database.AccountDataSource;
 import com.example.siki.database.OrderDataSource;
 import com.example.siki.database.OrderDetailDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
 import com.example.siki.enums.OrderStatus;
+import com.example.siki.enums.Role;
+import com.example.siki.model.Account;
 import com.example.siki.model.Order;
 import com.example.siki.variable.GlobalVariable;
 
@@ -46,8 +50,10 @@ public class OrderManagementActivity extends AppCompatActivity {
     private OrderDataSource orderDataSource;
     private OrderDetailDatasource orderDetailDatasource;
 
+    private Account account = new Account();
+
     private OrderRecycleAdapter orderRecycleAdapter;
-    private Button btn_filter_date;
+    private Button btn_filter_date, btn_order_management_back;
     private SearchView sv_order;
     final Calendar c = Calendar.getInstance();
     int mYear = c.get(Calendar.YEAR);
@@ -84,13 +90,26 @@ public class OrderManagementActivity extends AppCompatActivity {
         orderDetailDatasource.open();
 
         orders.clear();
-        List<Order> orderList = orderDataSource.findAllByOrderStatus(userDataSource, productDatabase, orderDetailDatasource, currentStatus);
-        orders.addAll(orderList);
-        data_all.addAll(orderList);
+        data_all.clear();
         GlobalVariable globalVariable = (GlobalVariable) getApplication();
-        orderRecycleAdapter = new OrderRecycleAdapter(orders, this, globalVariable);
-        order_recycle_view.setAdapter(orderRecycleAdapter);
-        orderRecycleAdapter.notifyDataSetChanged();
+        List<Order> orderList = new ArrayList<>();
+        if (globalVariable.isLoggedIn()) {
+            AccountDataSource accountDataSource = new AccountDataSource(this);
+            accountDataSource.open();
+            String phoneNumber = globalVariable.getAuthUser().getPhoneNumber();
+            account = accountDataSource.getAccountByPhoneNumber(phoneNumber);
+            if (account.getRole().equals(Role.USER.toString())) {
+                orderList = orderDataSource.findAllByUserIdWithStatus(userDataSource, productDatabase, orderDetailDatasource, globalVariable.getAuthUser().getId(), currentStatus);
+            }else if (account.getRole().equals(Role.ADMIN.toString())) {
+                orderList = orderDataSource.findAllByOrderStatus(userDataSource, productDatabase, orderDetailDatasource, currentStatus);
+            }
+            orders.addAll(orderList);
+            data_all.addAll(orderList);
+
+            orderRecycleAdapter = new OrderRecycleAdapter(orders, this, account);
+            order_recycle_view.setAdapter(orderRecycleAdapter);
+            orderRecycleAdapter.notifyDataSetChanged();
+        }
     }
 
     private void setControl() {
@@ -101,9 +120,7 @@ public class OrderManagementActivity extends AppCompatActivity {
         tv_order_status_pending = findViewById(R.id.tv_order_status_pending);
         tv_order_status_shipping = findViewById(R.id.tv_order_status_shipping);
         tv_order_status_success = findViewById(R.id.tv_order_status_success);
-
-
-
+        btn_order_management_back= findViewById(R.id.btn_order_management_back);
     }
 
     @SuppressLint("ResourceAsColor")
@@ -113,6 +130,22 @@ public class OrderManagementActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setDateOfBirth();
+            }
+        });
+
+        btn_order_management_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (account != null) {
+                    if (account.getRole().equals(Role.ADMIN.toString())) {
+                        Intent intent = new Intent(OrderManagementActivity.this, MenuProduct_ProductCategoryActivity.class);
+                        startActivity(intent);
+                    } else if (account.getRole().equals(Role.USER.toString())){
+                        Intent intent = new Intent(OrderManagementActivity.this, HomeActivity.class);
+                        intent.putExtra("fragment", R.id.nav_profile);
+                        startActivity(intent);
+                    }
+                }
             }
         });
         tv_order_status_all.setOnClickListener(new View.OnClickListener() {
@@ -176,15 +209,13 @@ public class OrderManagementActivity extends AppCompatActivity {
                 return false;
             }
         });
-         GlobalVariable globalVariable = (GlobalVariable) getApplication();
-         orderRecycleAdapter = new OrderRecycleAdapter(orders, this, globalVariable);
+         orderRecycleAdapter = new OrderRecycleAdapter(orders, this, account);
          order_recycle_view.setAdapter(orderRecycleAdapter);
          order_recycle_view.setLayoutManager(new GridLayoutManager(this, 1));
     }
 
     @SuppressLint("ResourceAsColor")
     private void resetOrderStatusTextView () {
-
         tv_order_status_all.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
         tv_order_status_pending.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
         tv_order_status_shipping.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));

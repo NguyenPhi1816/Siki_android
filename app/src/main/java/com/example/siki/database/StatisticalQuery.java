@@ -203,7 +203,7 @@ public class StatisticalQuery {
             }
         });
         Collections.reverse(data);
-        return data.subList(0,6);
+        return data.size()>6?data.subList(0,6):data;
     }
 
     public List<StatisticalModel> getProductSoldByMonth(String month){

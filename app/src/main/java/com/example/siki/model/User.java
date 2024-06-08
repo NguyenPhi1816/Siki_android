@@ -1,17 +1,37 @@
 package com.example.siki.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class User implements Serializable {
+    @SerializedName("id")
     private int id;
+
+    @SerializedName("firstName")
     private String firstName;
+
+    @SerializedName("lastName")
     private String lastName;
+
+    @SerializedName("address")
     private String address;
+
+    @SerializedName("phoneNumber")
     private String phoneNumber;
+
+    @SerializedName("gender")
     private String gender;
+
+    @SerializedName("dateOfBirth")
     private String dateOfBirth;
+
+    @SerializedName("avatar")
     private String avatar;
+
+    @SerializedName("email")
     private String email;
+
 
     public User() {
     }

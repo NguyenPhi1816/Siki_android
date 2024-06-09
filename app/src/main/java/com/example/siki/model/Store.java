@@ -14,6 +14,11 @@ public class Store implements Serializable {
     public Store() {
     }
 
+    public Store(Long id, String name) {
+        Id = id;
+        Name = name;
+    }
+
     public Store(Long id, String name, User user, String description, String avatar, String backgroundImage, boolean status) {
         Id = id;
         Name = name;

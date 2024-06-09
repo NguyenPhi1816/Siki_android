@@ -19,12 +19,14 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.siki.API.CartApi;
 import com.example.siki.Adapter.StoreRecycleAdapter;
 import com.example.siki.R;
 import com.example.siki.activities.PaymentActivity;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
+import com.example.siki.dto.cart.CartDto;
 import com.example.siki.model.Cart;
 import com.example.siki.model.User;
 import com.example.siki.utils.PriceFormatter;
@@ -37,6 +39,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CartFragment extends Fragment {
     private List<Cart> cartList = new ArrayList<>();
@@ -175,19 +181,33 @@ public class CartFragment extends Fragment {
             cartList.clear();
             CartDatasource cartDatasource = new CartDatasource(context);
             cartDatasource.open();
-            cartList.addAll(cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource));
-            storeProductMap = cartList.stream()
-                    .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
 
-            tv_cart_totalPrice.setText(getTotalOfCartIsSelected());
-            btn_cart_order.setEnabled(cartList.size() > 0);
-            int selectingCart = (int) cartList.stream().filter(Cart::isChosen).count();
-            cb_cart_total.setText(String.format(cartMessage, cartList.size()));
-            cb_cart_total.setChecked(isAllSelected(cartList));
-            btn_cart_order.setText(String.format(btnOrderMessage, selectingCart));
-            storeAdapter = new StoreRecycleAdapter(storeProductMap, context, this);
-            storeRecycle.setAdapter(storeAdapter);
-            storeAdapter.notifyDataSetChanged();
+            CartApi.cartApi.getCartByUserId(currentUser.getId(), globalVariable.getAccess_token()).enqueue(new Callback<List<CartDto>>() {
+                @Override
+                public void onResponse(Call<List<CartDto>> call, Response<List<CartDto>> response) {
+                    List<CartDto> cartDtos = response.body();
+
+                    List<Cart> carts = cartDtos.stream().map(cartDto -> new Cart(cartDto)).collect(Collectors.toList());
+                    cartList.addAll(carts);
+                    storeProductMap = cartList.stream()
+                            .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
+
+                    tv_cart_totalPrice.setText(getTotalOfCartIsSelected());
+                    btn_cart_order.setEnabled(cartList.size() > 0);
+                    int selectingCart = (int) cartList.stream().filter(Cart::isChosen).count();
+                    cb_cart_total.setText(String.format(cartMessage, cartList.size()));
+                    cb_cart_total.setChecked(isAllSelected(cartList));
+                    btn_cart_order.setText(String.format(btnOrderMessage, selectingCart));
+                    storeAdapter = new StoreRecycleAdapter(storeProductMap, context, CartFragment.this);
+                    storeRecycle.setAdapter(storeAdapter);
+                    storeAdapter.notifyDataSetChanged();
+                }
+                @Override
+                public void onFailure(Call<List<CartDto>> call, Throwable t) {
+
+                }
+            });
+
         }
     }
 

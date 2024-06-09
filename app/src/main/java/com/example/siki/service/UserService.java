@@ -20,11 +20,11 @@ public class UserService {
         userDataSource.open();
 
         // Insert the new user into the database
-        long userId = userDataSource.insertUser(newUser);
+        String userId = userDataSource.insertUser(newUser);
         System.out.println("New user ID: " + userId);
 
         // Retrieve the user from the database using the ID
-        User retrievedUser = userDataSource.getUserById((int) userId);
+        User retrievedUser = userDataSource.getUserById( userId);
         if (retrievedUser != null) {
             System.out.println("Retrieved user: " + retrievedUser.toString());
         } else {

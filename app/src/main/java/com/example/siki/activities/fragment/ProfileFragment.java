@@ -116,7 +116,7 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void redirectToUserOrdersView (int userId) {
+    private void redirectToUserOrdersView (String userId) {
         Intent intent = new Intent(context, UserOrdersActivity.class);
         intent.putExtra("user_id", userId); // Đặt orderId vào Intent
         startActivity(intent);

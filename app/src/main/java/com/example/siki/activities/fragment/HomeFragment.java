@@ -16,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.siki.API.CategoryApi;
 import com.example.siki.Adapter.CategoryForHomePageRecycleAdapter;
 import com.example.siki.Adapter.GridListSPApdapter;
 import com.example.siki.Adapter.ListViewSearchApdapter;
@@ -26,11 +28,17 @@ import com.example.siki.R;
 import com.example.siki.customgridview.ExpandableHeightGridView;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.database.ProductDatabase;
+import com.example.siki.dto.category.CategoryDto;
 import com.example.siki.model.Category;
 import com.example.siki.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
     private Context context;
@@ -130,28 +138,34 @@ public class HomeFragment extends Fragment {
         db.close();
     }
     private void setCategoryList() {
-        CategoryDatabase db = new CategoryDatabase(context);
-        db.open();
-        categoryList.addAll(db.readDb());
-        db.close();
+        CategoryApi.categoryApi.findAllParents().enqueue(new Callback<List<CategoryDto>>() {
+            @Override
+            public void onResponse(Call<List<CategoryDto>> call, Response<List<CategoryDto>> response) {
+                List<CategoryDto> categoryDtos = response.body();
+                List<Category> categories = categoryDtos.stream().map(categoryDto -> {
+                    Category category = new Category();
+                    category.setId(categoryDto.getId());
+                    category.setName(categoryDto.getName());
+                    category.setDescription("");
+                    category.setImagePath(categoryDto.getImage());
+                    return category;
+                }).collect(Collectors.toList());
+
+                categoryList.addAll(categories);
+                categoryForHomePageRecycleAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<CategoryDto>> call, Throwable t) {
+                Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT);
+            }
+        });
     }
 
     private void addAllProduct(){
         ProductDatabase db = new ProductDatabase(context);
         db.open();
         allProduct.addAll(db.readDb());
-        db.close();
-    }
-
-    private void intitDatabaseData(){
-        ProductDatabase db = new ProductDatabase(context);
-        db.open();
-        db.addProduct(new Product(1L,"Card 4090","https://product.hstatic.net/200000722513/product/1024_db714ed2cb1e4e6fa1d6ebec4cd92fb9_af81e6f9d5294638a9587f509a69c660_1024x1024.jpg",4800000d,200, null));
-        db.addProduct(new Product(2L,"Iphone 15pro","https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-card-40-iphone15prohero-202309_FMT_WHH?wid=508&hei=472&fmt=p-jpg&qlt=95&.v=1693086369818",1500000d,200, null));
-        db.addProduct(new Product(3L,"Can cau ca","https://img.lazcdn.com/g/p/0c2a6e13ce8653ce5268d9c9d28d5823.jpg_720x720q80.jpg",200000d,200,null));
-        db.addProduct(new Product(4L,"May hut bui","tekavietnam.vn/Uploads/may-hut-bui-electrolux-zap9910-Electrolux%20ZAP9910.PNG",1200000d,200, null));
-        db.addProduct(new Product(5L,"Bep hong ngoai","https://bizweb.dktcdn.net/thumb/grande/100/304/653/products/hong-ngoai-80dm-jpg.jpg?v=1543307446560",600000d,200, null));
-        db.addProduct(new Product(6L,"Laptop","https://i5.walmartimages.com/seo/HP-Stream-14-Laptop-Intel-Celeron-N4000-4GB-SDRAM-32GB-eMMC-Office-365-1-yr-Royal-Blue_4f941fe6-0cf3-42af-a06c-7532138492fc_2.cb8e85270e731cb1ef85d431e49f0bf2.jpeg",1200000d,200, null));
         db.close();
     }
 

@@ -57,7 +57,7 @@ public class UserOrdersActivity extends AppCompatActivity {
 
     private void readDb () {
         Intent intent = getIntent();
-        int userId = intent.getIntExtra("user_id", 0);
+        String userId = intent.getStringExtra("user_id");
 
         userDataSource = new UserDataSource(this);
         userDataSource.open();

@@ -37,7 +37,7 @@ public class CategoryDatabase {
         if (cursor.moveToFirst()) {
             do {
                 Category category = new Category();
-                category.setId(cursor.getLong(0));
+                category.setId(cursor.getInt(0));
                 category.setName(cursor.getString(1));
                 category.setDescription(cursor.getString(2));
                 category.setImagePath(cursor.getString(3));
@@ -47,11 +47,11 @@ public class CategoryDatabase {
         cursor.close();
         return listCategory;
     }
-    public Category findById(Long categoryId) {
+    public Category findById(Integer categoryId) {
         Category category = new Category();
         try (Cursor cursor = db.query("Category", null, "Id=?", new String[]{String.valueOf(categoryId)}, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
-                category.setId(cursor.getLong(0));
+                category.setId(cursor.getInt(0));
                 category.setName(cursor.getString(1));
                 category.setDescription(cursor.getString(2));
                 category.setImagePath(cursor.getString(3));
@@ -76,13 +76,13 @@ public class CategoryDatabase {
         return rs;
     }
 
-    public Map<Long, String> getAllCategory() {
+    public Map<Integer, String> getAllCategory() {
         String sql = "Select * from Category";
-        Map<Long, String> listCategory = new HashMap<>();
+        Map<Integer, String> listCategory = new HashMap<>();
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToFirst()) {
             do {
-                listCategory.put(cursor.getLong(0), cursor.getString(1));
+                listCategory.put(cursor.getInt(0), cursor.getString(1));
             } while (cursor.moveToNext());
         }
         cursor.close();

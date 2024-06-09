@@ -44,7 +44,7 @@ public class PromotionDataSource {
                 promotion.setPercentPromotion(cursor.getInt(3));
                 promotion.setStartDate(convertStringToDate(cursor.getString(4)));
                 promotion.setEndDate(convertStringToDate(cursor.getString(5)));
-                promotion.setIdCategory(cursor.getLong(6));
+                promotion.setIdCategory(cursor.getInt(6));
                 promotion.setImagePath(cursor.getString(7));
                 listPromotion.add(promotion);
             } while (cursor.moveToNext());
@@ -127,7 +127,7 @@ public class PromotionDataSource {
             promotion.setPercentPromotion(cursor.getInt(3));
             promotion.setStartDate(convertStringToDate(cursor.getString(4)));
             promotion.setEndDate(convertStringToDate(cursor.getString(5)));
-            promotion.setIdCategory(cursor.getLong(6));
+            promotion.setIdCategory(cursor.getInt(6));
         }
 
         return promotion;

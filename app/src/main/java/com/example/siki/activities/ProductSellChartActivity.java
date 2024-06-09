@@ -272,7 +272,7 @@ public class ProductSellChartActivity extends AppCompatActivity {
         mplineChart.invalidate();
     }
 
-    private void initData(){
+  /*  private void initData(){
         UserDataSource userDataSource = new UserDataSource(this);
         userDataSource.open();
         userDataSource.insertUser(new User(1,"Huy","Nguyen","32F10","01234567890","male","06-04-2002","none","a@gmail.com"));
@@ -310,5 +310,5 @@ public class ProductSellChartActivity extends AppCompatActivity {
         orderDetailDatasource.save(1L,9L,275, 14000000d);
         orderDetailDatasource.save(1L,10L,150, 24000000d);
         orderDetailDatasource.close();
-    }
+    }*/
 }

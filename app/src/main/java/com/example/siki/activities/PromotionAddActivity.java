@@ -43,7 +43,7 @@ public class PromotionAddActivity extends AppCompatActivity {
     Button btnBack, btnThem, btnAnhKM, btnNgayBDKM, btnNgayKTKM;
     ImageView imgAnhKM, ivAnhLoaiSp;
     Spinner spLoaiSp;
-    Long idCategory;
+    Integer idCategory;
     String imagePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +127,7 @@ public class PromotionAddActivity extends AppCompatActivity {
         categoryDatabase.open();
         ProductCategoryDatabase productCategoryDatabase = new ProductCategoryDatabase(this);
         productCategoryDatabase.open();
-        Map<Long, String> listCategory = categoryDatabase.getAllCategory();
+        Map<Integer, String> listCategory = categoryDatabase.getAllCategory();
         List<String> listLoaiSp = new ArrayList<>(listCategory.values()) ;
         listLoaiSp.add(0, "Chọn loại sản phẩm");
         ArrayAdapter<String> loaiSpAdapter = new ArrayAdapter<>(this,
@@ -139,7 +139,7 @@ public class PromotionAddActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getItemAtPosition(position);
-                for (Map.Entry<Long, String> entry : listCategory.entrySet()) {
+                for (Map.Entry<Integer, String> entry : listCategory.entrySet()) {
                     if (entry.getValue().equals(selectedItem)) {
                         idCategory = entry.getKey();
                         Picasso.get().load(categoryDatabase.findImagePathById(Math.toIntExact(entry.getKey()))).into(ivAnhLoaiSp);

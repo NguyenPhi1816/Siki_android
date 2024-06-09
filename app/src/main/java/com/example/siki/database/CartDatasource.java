@@ -28,7 +28,7 @@ public class CartDatasource {
         dbHelper.close();
     }
 
-    public List<Cart> findByUser(int userId, ProductDatabase productDatabase, UserDataSource userDataSource) {
+    public List<Cart> findByUser(String userId, ProductDatabase productDatabase, UserDataSource userDataSource) {
         String sql = "Select * from Cart c where c.user_id = ?";
         List<Cart> listCart = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)});
@@ -51,7 +51,7 @@ public class CartDatasource {
         return listCart;
     }
 
-    public Cart findByProductAndUser(Long productId, int userId, UserDataSource userDataSource, ProductDatabase productDatabase) {
+    public Cart findByProductAndUser(Long productId, String userId, UserDataSource userDataSource, ProductDatabase productDatabase) {
         String sql = "Select * from Cart c where c.user_id = ? and c.product_id = ?";
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId), String.valueOf(productId)});
         if (cursor.moveToFirst()) {
@@ -70,7 +70,7 @@ public class CartDatasource {
         return null;
     }
 
-    public long addToCart (Long productId, int userId, UserDataSource userDataSource, ProductDatabase productDatabase) {
+    public long addToCart (Long productId, String userId, UserDataSource userDataSource, ProductDatabase productDatabase) {
         long id = -1;
         Cart cart = findByProductAndUser(productId, userId, userDataSource, productDatabase );
         if ( cart != null) {
@@ -131,7 +131,7 @@ public class CartDatasource {
         return rowsAffected;
     }
 
-    public int removeByUserId (Integer userId) {
+    public int removeByUserId (String userId) {
         int rowsAffected = -1;
         try {
             rowsAffected = db.delete("Cart", "user_id=?", new String[]{String.valueOf(userId)});
@@ -145,7 +145,7 @@ public class CartDatasource {
     // Todo: Update selection by shop id
 
 
-    public int updateSelectedCartByUser(int userId, boolean isSelected) {
+    public int updateSelectedCartByUser(String userId, boolean isSelected) {
         int rowsAffected = -1;
         try {
             ContentValues values = new ContentValues();

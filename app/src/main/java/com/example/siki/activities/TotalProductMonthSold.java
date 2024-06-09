@@ -196,7 +196,7 @@ public class TotalProductMonthSold extends AppCompatActivity {
         pdfGen = findViewById(R.id.xuatpdf);
     }
 
-    private void initData(){
+   /* private void initData(){
         UserDataSource userDataSource = new UserDataSource(this);
         userDataSource.open();
         userDataSource.insertUser(new User(1,"Huy","Nguyen","32F10","01234567890","male","06-04-2002","none","a@gmail.com"));
@@ -261,5 +261,5 @@ public class TotalProductMonthSold extends AppCompatActivity {
         orderDetailDatasource.save(3L,10L,150, 24000000d);
         orderDetailDatasource.save(1L,10L,100, 10000000d);
         orderDetailDatasource.close();
-    }
+    }*/
 }

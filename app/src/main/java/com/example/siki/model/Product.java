@@ -1,5 +1,8 @@
 package com.example.siki.model;
 
+import com.example.siki.dto.product.ProductDto;
+import com.example.siki.dto.product.ProductVariantDto;
+
 import java.io.Serializable;
 
 public class Product implements Serializable {
@@ -10,28 +13,9 @@ public class Product implements Serializable {
     private int quantity;
     private Store store;
 
-    private Double oldPrice;
-
     public Product() {
     }
 
-    public Double getOldPrice() {
-        return oldPrice;
-    }
-
-    public Product(Long id, String name, String imagePath, Double price, int quantity, Store store, Double oldPrice) {
-        this.id = id;
-        this.name = name;
-        this.imagePath = imagePath;
-        this.price = price;
-        this.quantity = quantity;
-        this.store = store;
-        this.oldPrice = oldPrice;
-    }
-
-    public void setOldPrice(Double oldPrice) {
-        this.oldPrice = oldPrice;
-    }
 
     public Product(Long id, String name, String imagePath, Double price, int quantity, Store store) {
         this.id = id;
@@ -40,6 +24,24 @@ public class Product implements Serializable {
         this.price = price;
         this.quantity = quantity;
         this.store = store;
+    }
+
+    public Product(ProductDto productDto) {
+        this.id = productDto.getProductId();
+        this.name = productDto.getName();
+        this.imagePath = productDto.getImage();
+        this.price = productDto.getPrice();
+        this.quantity = 100;
+        this.store = new Store(1L, "Tikishop");
+    }
+
+    public Product(ProductVariantDto productDto) {
+        this.id = productDto.getId();
+        this.name = productDto.getName();
+        this.imagePath = productDto.getImage();
+        this.price = productDto.getPrice();
+        this.quantity = 100;
+        this.store = productDto.getStore();
     }
 
     @Override

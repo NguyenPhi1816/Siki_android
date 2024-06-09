@@ -3,9 +3,9 @@ package com.example.siki.model;
 public class ProductCategory {
     private Long id;
     private Long productId;
-    private Long categoryId;
+    private Integer categoryId;
 
-    public ProductCategory(Long id, Long productId, Long categoryId) {
+    public ProductCategory(Long id, Long productId, Integer categoryId) {
         this.id = id;
         this.productId = productId;
         this.categoryId = categoryId;
@@ -30,11 +30,11 @@ public class ProductCategory {
         this.productId = productId;
     }
 
-    public Long getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 }

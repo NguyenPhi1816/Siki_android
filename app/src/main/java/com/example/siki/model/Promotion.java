@@ -10,12 +10,13 @@ public class Promotion implements Serializable {
     private int percentPromotion;
     private Date startDate;
     private Date endDate;
-    private Long idCategory;
+    private Integer idCategory;
     private String imagePath;
     public Promotion() {
     }
 
-    public Promotion(String name, String reason, int percentPromotion, Date startDate, Date endDate, Long idCategory, String imagePath) {
+    public Promotion(Long id, String name, String reason, int percentPromotion, Date startDate, Date endDate, Integer idCategory, String imagePath) {
+        this.id = id;
         this.name = name;
         this.reason = reason;
         this.percentPromotion = percentPromotion;
@@ -23,6 +24,14 @@ public class Promotion implements Serializable {
         this.endDate = endDate;
         this.idCategory = idCategory;
         this.imagePath = imagePath;
+    }
+
+    public Integer getIdCategory() {
+        return idCategory;
+    }
+
+    public void setIdCategory(Integer idCategory) {
+        this.idCategory = idCategory;
     }
 
     public Long getId() {
@@ -65,13 +74,6 @@ public class Promotion implements Serializable {
         this.endDate = endDate;
     }
 
-    public Long getIdCategory() {
-        return idCategory;
-    }
-
-    public void setIdCategory(Long idCategory) {
-        this.idCategory = idCategory;
-    }
 
     public String getImagePath() {
         return imagePath;

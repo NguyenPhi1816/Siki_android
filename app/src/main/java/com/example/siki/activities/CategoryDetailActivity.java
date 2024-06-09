@@ -97,7 +97,7 @@ public class CategoryDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Category category = new Category();
-                        category.setId(Long.valueOf(edtMaLoaiSp.getText().toString()));
+                        category.setId(Integer.valueOf(edtMaLoaiSp.getText().toString()));
 
                         if (edtTenLoaiSp.getText().toString().isEmpty()) {
                             edtTenLoaiSp.setError("Trường này là bắt buộc!");

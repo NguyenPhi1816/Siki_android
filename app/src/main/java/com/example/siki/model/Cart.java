@@ -1,5 +1,7 @@
 package com.example.siki.model;
 
+import com.example.siki.dto.cart.CartDto;
+
 import java.io.Serializable;
 
 public class Cart implements Serializable {
@@ -19,6 +21,14 @@ public class Cart implements Serializable {
         this.user = user;
         this.quantity = quantity;
         this.isChosen = isChosen;
+    }
+
+    public Cart(CartDto cartDto) {
+        this.id = cartDto.getId();
+        this.product = new Product(cartDto.getProduct());
+        this.user = null;
+        this.quantity = cartDto.getQuantity();
+        this.isChosen = cartDto.isSelected();
     }
 
     public boolean isChosen() {

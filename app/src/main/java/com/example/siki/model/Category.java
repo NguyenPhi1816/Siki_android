@@ -3,28 +3,30 @@ package com.example.siki.model;
 import java.io.Serializable;
 
 public class Category implements Serializable {
-    private Long id;
+    private Integer id;
     private String name;
     private String description;
     private String imagePath;
 
 
 
-    public Category(Long id, String name, String description, String imagePath) {
+
+
+    public Category() {
+    }
+
+    public Category(Integer id, String name, String description, String imagePath) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.imagePath = imagePath;
     }
 
-    public Category() {
-    }
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

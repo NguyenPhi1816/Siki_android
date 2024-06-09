@@ -1,12 +1,13 @@
 package com.example.siki.model;
 
+import com.example.siki.dto.user.UserProfile;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 public class User implements Serializable {
     @SerializedName("id")
-    private int id;
+    private String id;
 
     @SerializedName("firstName")
     private String firstName;
@@ -36,7 +37,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(int id, String firstName, String lastName, String address, String phoneNumber, String gender, String dateOfBirth, String avatar, String email) {
+    public User(String id, String firstName, String lastName, String address, String phoneNumber, String gender, String dateOfBirth, String avatar, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,11 +49,26 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public int getId() {
+    public User(UserProfile userProfile) {
+        this.id = userProfile.getId();
+        this.firstName = userProfile.getFirstName();
+        this.lastName = userProfile.getLastName();
+        this.address = userProfile.getAddress();
+        this.phoneNumber = userProfile.getPhoneNumber();
+        this.gender = "Male";
+        this.dateOfBirth = userProfile.getDateOfBirth();
+        this.avatar = userProfile.getAvatar() == null ? "" : userProfile.getAvatar();
+        this.email = userProfile.getEmail();
+    }
+
+
+
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

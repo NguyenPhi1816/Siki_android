@@ -126,7 +126,7 @@ public class PaymentActivity extends AppCompatActivity {
             String receiverAddress= currentUser.getAddress();
             String receiverName = currentUser.getFirstName().concat(" ").concat(currentUser.getLastName());
             String note = tv_payment_note.getText().toString().trim();
-            int userId = currentUser.getId();
+            String userId = currentUser.getId();
             Long orderId = orderDataSource.createOrder(receiverPhoneNumber, receiverAddress, receiverName, note, userId);
             if (orderId != -1) {
                 selectingCarts.forEach(cart -> {

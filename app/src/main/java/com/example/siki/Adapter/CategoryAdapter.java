@@ -3,8 +3,6 @@ package com.example.siki.Adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -13,18 +11,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.siki.API.CategoryApiService;
+import com.example.siki.API.dto.CategoryDto;
+import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
+import com.example.siki.activities.CategoryAddActivity;
 import com.example.siki.activities.CategoryDetailActivity;
 import com.example.siki.activities.CategoryListActivity;
-import com.example.siki.activities.ProductDetailActivity;
-import com.example.siki.activities.ProductListActivity;
 import com.example.siki.database.CategoryDatabase;
-import com.example.siki.database.ProductDatabase;
 import com.example.siki.model.Category;
-import com.example.siki.model.Product;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CategoryAdapter extends BaseAdapter {
     private Context context;
@@ -63,7 +65,7 @@ public class CategoryAdapter extends BaseAdapter {
         ((TextView) categoryView.findViewById(R.id.categoryName)).setText(String.format("Tên loại: %s", category.getName()));
         ((TextView) categoryView.findViewById(R.id.categoryDescription)).setText(String.format("Mô tả: %s", category.getDescription()));
         ImageView myView = categoryView.findViewById(R.id.categoryImage);
-        Picasso.get().load(category.getImagePath()).into(myView);
+        Picasso.get().load(category.getImage()).into(myView);
 
 
         Button btnEdit = categoryView.findViewById(R.id.btnEdit);
@@ -90,13 +92,11 @@ public class CategoryAdapter extends BaseAdapter {
                 btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Category ca = new Category();
-                        ca.setId(category.getId());
-                        categoryDatabase.deleteProduct(ca);
-                        dialog.dismiss();
+
+                        callApi(Math.toIntExact(category.getId()));
+
                         Intent intent = new Intent(context, CategoryListActivity.class);
                         context.startActivity(intent);
-                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -112,6 +112,26 @@ public class CategoryAdapter extends BaseAdapter {
             }
         });
         return categoryView;
+    }
+
+    private void callApi(Integer id) {
+        CategoryApiService categoryApiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
+        categoryApiService.deleteCategory(id).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 400) {
+                    Toast.makeText(context, "Không thể xóa loại sản phẩm", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Category call api delete failed!");
+            }
+        });
     }
 
 

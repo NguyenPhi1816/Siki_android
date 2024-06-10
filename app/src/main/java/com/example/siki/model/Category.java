@@ -6,15 +6,15 @@ public class Category implements Serializable {
     private Long id;
     private String name;
     private String description;
-    private String imagePath;
+    private String image;
 
 
 
-    public Category(Long id, String name, String description, String imagePath) {
+    public Category(Long id, String name, String description, String image) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.imagePath = imagePath;
+        this.image = image;
     }
 
     public Category() {
@@ -40,12 +40,12 @@ public class Category implements Serializable {
         return description;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getImage() {
+        return image;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setDescription(String description) {

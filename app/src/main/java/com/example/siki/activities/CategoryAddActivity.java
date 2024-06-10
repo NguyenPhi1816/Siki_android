@@ -2,13 +2,9 @@ package com.example.siki.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,23 +13,20 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.esafirm.imagepicker.features.ImagePicker;
-import com.esafirm.imagepicker.model.Image;
+import com.example.siki.API.CategoryApiService;
+import com.example.siki.API.dto.CategoryDto;
+import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Category;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CategoryAddActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -107,14 +100,14 @@ public class CategoryAddActivity extends AppCompatActivity {
                 btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Category category = new Category();
+                        CategoryDto categoryDto = new CategoryDto();
                         if (edtTenLoaiSp.getText().toString().isEmpty()) {
                             edtTenLoaiSp.setError("Trường này là bắt buộc!");
                             edtTenLoaiSp.requestFocus();
                             dialog.dismiss();
                             return;
                         } else {
-                            category.setName(edtTenLoaiSp.getText().toString());
+                            categoryDto.setName(edtTenLoaiSp.getText().toString());
                         }
 
                         if (edtMoTaLoaiSp.getText().toString().isEmpty()) {
@@ -123,18 +116,16 @@ public class CategoryAddActivity extends AppCompatActivity {
                             dialog.dismiss();
                             return;
                         } else {
-                            category.setDescription(edtMoTaLoaiSp.getText().toString());
+                            categoryDto.setDescription(edtMoTaLoaiSp.getText().toString());
                         }
 
-                        category.setImagePath(imagePath);
+                        categoryDto.setImage(imagePath);
 
-                        //imgAnhSp.setImageResource(imagePath);
 
-                        categoryDatabase.addCategory(category);
+                        callApi(categoryDto);
+
                         Intent intent = new Intent(CategoryAddActivity.this, CategoryListActivity.class);
                         startActivity(intent);
-                        Toast.makeText(CategoryAddActivity.this, "Thêm loại sản phẩm thành công", Toast.LENGTH_LONG).show();
-
 
                     }
                 });
@@ -148,6 +139,21 @@ public class CategoryAddActivity extends AppCompatActivity {
                 });
 
                 dialog.show();
+            }
+        });
+    }
+
+    private void callApi(CategoryDto categoryDto) {
+        CategoryApiService categoryApiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
+        categoryApiService.saveCategory(categoryDto).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(CategoryAddActivity.this, "Thêm loại sản phẩm thành công", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Category call api add failed!");
             }
         });
     }

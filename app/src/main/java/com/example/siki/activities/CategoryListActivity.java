@@ -8,16 +8,19 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.siki.API.CategoryApiService;
+import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.Adapter.CategoryAdapter;
-import com.example.siki.Adapter.ProductAdapter;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
-import com.example.siki.database.ProductDatabase;
 import com.example.siki.model.Category;
-import com.example.siki.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CategoryListActivity extends AppCompatActivity {
     private List<Category> categoryList = new ArrayList<>();
@@ -57,7 +60,7 @@ public class CategoryListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        readDb();
+        callApi();
     }
 
     private void readDb() {
@@ -66,6 +69,26 @@ public class CategoryListActivity extends AppCompatActivity {
         categoryDatabase.open();
         categoryList.addAll(categoryDatabase.readDb());
         categoryAdapter.notifyDataSetChanged();
+    }
+
+    private void callApi() {
+        categoryList.clear();
+        CategoryApiService categoryApiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
+        categoryApiService.getListCategory().enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                List<Category> listCategoryGet = response.body();
+                if (listCategoryGet != null) {
+                    categoryList.addAll(listCategoryGet);
+                    categoryAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                System.out.println("Category call api list failed!");
+            }
+        });
     }
 
     private void setControl() {

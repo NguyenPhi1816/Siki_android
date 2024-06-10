@@ -14,10 +14,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.siki.API.CategoryApiService;
+import com.example.siki.API.dto.CategoryDto;
+import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Category;
-import com.squareup.picasso.Picasso;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CategoryDetailActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -59,8 +65,8 @@ public class CategoryDetailActivity extends AppCompatActivity {
             edtMaLoaiSp.setText(category.getId().toString());
             edtTenLoaiSp.setText(category.getName());
             edtMoTaLoaiSp.setText(category.getDescription());
-            imgAnhLoaiSp.setImageURI(Uri.parse(category.getImagePath()));
-            imagePath = category.getImagePath();
+            imgAnhLoaiSp.setImageURI(Uri.parse(category.getImage()));
+            imagePath = category.getImage();
 
         }
 
@@ -96,8 +102,8 @@ public class CategoryDetailActivity extends AppCompatActivity {
                 btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Category category = new Category();
-                        category.setId(Long.valueOf(edtMaLoaiSp.getText().toString()));
+                        CategoryDto categoryDto = new CategoryDto();
+                        Long id = (Long.valueOf(edtMaLoaiSp.getText().toString()));
 
                         if (edtTenLoaiSp.getText().toString().isEmpty()) {
                             edtTenLoaiSp.setError("Trường này là bắt buộc!");
@@ -105,7 +111,7 @@ public class CategoryDetailActivity extends AppCompatActivity {
                             dialog.dismiss();
                             return;
                         } else {
-                            category.setName(edtTenLoaiSp.getText().toString());
+                            categoryDto.setName(edtTenLoaiSp.getText().toString());
                         }
 
                         if (edtMoTaLoaiSp.getText().toString().isEmpty()) {
@@ -114,14 +120,15 @@ public class CategoryDetailActivity extends AppCompatActivity {
                             dialog.dismiss();
                             return;
                         } else {
-                            category.setDescription(edtMoTaLoaiSp.getText().toString());
+                            categoryDto.setDescription(edtMoTaLoaiSp.getText().toString());
                         }
 
-                        category.setImagePath(imagePath);
-                        categoryDatabase.updateCategory(category);
+                        categoryDto.setImage(imagePath);
+
+                        callApi(Math.toIntExact(id), categoryDto);
+
                         Intent intent = new Intent(CategoryDetailActivity.this, CategoryListActivity.class);
                         startActivity(intent);
-                        Toast.makeText(CategoryDetailActivity.this, "Chỉnh sửa thành công", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -134,6 +141,21 @@ public class CategoryDetailActivity extends AppCompatActivity {
                 });
 
                 dialog.show();
+            }
+        });
+    }
+
+    private void callApi(Integer id, CategoryDto categoryDto) {
+        CategoryApiService categoryApiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
+        categoryApiService.updateCategory(id, categoryDto).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(CategoryDetailActivity.this, "Chỉnh sửa thành công", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Category call api update failed!");
             }
         });
     }

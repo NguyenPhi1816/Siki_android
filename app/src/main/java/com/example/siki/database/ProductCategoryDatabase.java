@@ -72,7 +72,7 @@ public class ProductCategoryDatabase {
     }
 
 
-    public List<Product> findByCategoryId(Long categoryId, PromotionDataSource promotionDataSource) {
+    public List<Product> findByCategoryId(Integer categoryId, PromotionDataSource promotionDataSource) {
         List<Product> productList = new ArrayList<>();
         String sql = "select p.Id, p.Name, p.ImagePath, p.ProductPrice, p.Quantity " +
                 "from Product p " +
@@ -102,7 +102,6 @@ public class ProductCategoryDatabase {
                     product.setId(productId);
                     product.setName(cursor.getString(1));
                     product.setImagePath(cursor.getString(2));
-                    product.setOldPrice(price);
                     product.setQuantity(cursor.getInt(4));
                     productList.add(product);
                 } while (cursor.moveToNext());

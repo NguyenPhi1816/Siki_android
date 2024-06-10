@@ -84,7 +84,7 @@ public class ProductAddActivity extends AppCompatActivity {
         categoryDatabase.open();
         ProductCategoryDatabase productCategoryDatabase = new ProductCategoryDatabase(this);
         productCategoryDatabase.open();
-        Map<Long, String> listCategory = categoryDatabase.getAllCategory();
+        Map<Integer, String> listCategory = categoryDatabase.getAllCategory();
         List<String> listLoaiSp = new ArrayList<>(listCategory.values()) ;
         listLoaiSp.add(0, "Chọn loại sản phẩm");
         ArrayAdapter<String> loaiSpAdapter = new ArrayAdapter<>(this,
@@ -97,7 +97,7 @@ public class ProductAddActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getItemAtPosition(position);
-                for (Map.Entry<Long, String> entry : listCategory.entrySet()) {
+                for (Map.Entry<Integer, String> entry : listCategory.entrySet()) {
                     if (entry.getValue().equals(selectedItem)) {
                         Picasso.get().load(categoryDatabase.findImagePathById(Math.toIntExact(entry.getKey()))).into(ivAnhSp);
                     }
@@ -192,7 +192,7 @@ public class ProductAddActivity extends AppCompatActivity {
                         for (String item : selectedItems) {
                             ProductCategory productCategory = new ProductCategory();
                             productCategory.setProductId(id);
-                            for (Map.Entry<Long, String> entry : listCategory.entrySet()) {
+                            for (Map.Entry<Integer, String> entry : listCategory.entrySet()) {
                                 if (entry.getValue().equals(item)) {
                                     productCategory.setCategoryId(entry.getKey());
                                 }

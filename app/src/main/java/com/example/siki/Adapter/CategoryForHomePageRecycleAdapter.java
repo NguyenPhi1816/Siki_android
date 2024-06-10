@@ -53,16 +53,16 @@ public class CategoryForHomePageRecycleAdapter extends RecyclerView.Adapter<Cate
         holder.ln_home_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectToListProductByCategory(category.getId());
+                redirectToListProductByCategory(category);
             }
         });
 
     }
 
-    private void redirectToListProductByCategory(Long categoryId) {
+    private void redirectToListProductByCategory(Category category) {
         Intent intent = new Intent(context, ListProductForCustomerActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putLong("categoryId", categoryId);
+        bundle.putSerializable("category", category);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

@@ -98,7 +98,7 @@ public class ProductDatabase {
         return product;
     }
 
-    public long addProduct(Product product) {
+    public Long addProduct(Product product) {
         long id = -1;
         try {
             ContentValues values = new ContentValues();

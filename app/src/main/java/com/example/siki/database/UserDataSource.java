@@ -23,7 +23,7 @@ public class UserDataSource {
         dbHelper.close();
     }
 
-    public long insertUser(User user) {
+    public String insertUser(User user) {
         long id = -1;
         try {
             ContentValues values = new ContentValues();
@@ -41,16 +41,16 @@ public class UserDataSource {
             // Handle any exceptions
             e.printStackTrace();
         }
-        return id;
+        return id + "";
     }
 
     @SuppressLint("Range")
-    public User getUserById(int userId) {
+    public User getUserById(String userId) {
         User user = null;
         try (Cursor cursor = db.query("User", null, "Id=?", new String[]{String.valueOf(userId)}, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 user = new User();
-                user.setId(cursor.getInt(cursor.getColumnIndex("Id")));
+                user.setId(cursor.getString(cursor.getColumnIndex("Id")));
                 user.setFirstName(cursor.getString(cursor.getColumnIndex("FirstName")));
                 user.setLastName(cursor.getString(cursor.getColumnIndex("LastName")));
                 user.setAddress(cursor.getString(cursor.getColumnIndex("Address")));
@@ -73,7 +73,7 @@ public class UserDataSource {
         try (Cursor cursor = db.query("User", null, "PhoneNumber=?", new String[]{phoneNumber}, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 user = new User();
-                user.setId(cursor.getInt(cursor.getColumnIndex("Id")));
+                user.setId(cursor.getString(cursor.getColumnIndex("Id")));
                 user.setFirstName(cursor.getString(cursor.getColumnIndex("FirstName")));
                 user.setLastName(cursor.getString(cursor.getColumnIndex("LastName")));
                 user.setAddress(cursor.getString(cursor.getColumnIndex("Address")));

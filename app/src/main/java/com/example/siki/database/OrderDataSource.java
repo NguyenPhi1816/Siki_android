@@ -52,7 +52,7 @@ public class OrderDataSource {
                              String receiverAddress,
                              String receiverName,
                              String note,
-                             int userId
+                             String userId
     ) {
         long id = -1;
         try {
@@ -91,7 +91,7 @@ public class OrderDataSource {
                 order.setCreatedAt(localDateTime);
                 order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
                 order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
-                int userId = cursor.getInt(7);
+                String userId = cursor.getString(7);
                 User user = userDataSource.getUserById(userId);
                 order.setUser(user);
                 orders.add(order);
@@ -117,7 +117,7 @@ public class OrderDataSource {
             order.setCreatedAt(localDateTime);
             order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
             order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
-            int userId = cursor.getInt(7);
+            String userId = cursor.getString(7);
             User user = userDataSource.getUserById(userId);
             order.setUser(user);
             return Optional.of(order);
@@ -128,7 +128,7 @@ public class OrderDataSource {
     public List<Order> findAllByUserId(UserDataSource userDataSource,
                                ProductDatabase productDatabase,
                                OrderDetailDatasource orderDetailDatasource,
-                                       int userId) {
+                                       String userId) {
         String sql = "Select * from `Order` Where user_id = ?";
         List<Order> orders = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)});
@@ -146,7 +146,7 @@ public class OrderDataSource {
                 order.setCreatedAt(localDateTime);
                 order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
                 order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
-                User user = userDataSource.getUserById(cursor.getInt(7));
+                User user = userDataSource.getUserById(cursor.getString(7));
                 order.setUser(user);
                 orders.add(order);
             } while (cursor.moveToNext());
@@ -159,7 +159,7 @@ public class OrderDataSource {
     public List<Order> findAllByUserIdWithStatus(UserDataSource userDataSource,
                                        ProductDatabase productDatabase,
                                        OrderDetailDatasource orderDetailDatasource,
-                                       int userId,String status) {
+                                       String userId,String status) {
         if (status.equals(ALL)) {
             return this.findAllByUserId(userDataSource, productDatabase, orderDetailDatasource, userId);
         }
@@ -180,7 +180,7 @@ public class OrderDataSource {
                 order.setCreatedAt(localDateTime);
                 order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
                 order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
-                User user = userDataSource.getUserById(cursor.getInt(7));
+                User user = userDataSource.getUserById(cursor.getString(7));
                 order.setUser(user);
                 orders.add(order);
             } while (cursor.moveToNext());
@@ -215,7 +215,7 @@ public class OrderDataSource {
                 order.setCreatedAt(localDateTime);
                 order.setStatus(OrderStatus.valueOf(cursor.getString(6)));
                 order.setOrderDetails(orderDetailDatasource.findByOrderId(orderId, productDatabase));
-                User user = userDataSource.getUserById(cursor.getInt(7));
+                User user = userDataSource.getUserById(cursor.getString(7));
                 order.setUser(user);
                 orders.add(order);
             } while (cursor.moveToNext());
@@ -251,7 +251,7 @@ public class OrderDataSource {
     }
 
     @SuppressLint("NewApi")
-    public List<Order> findByUserId (OrderDetailDatasource orderDetailDatasource, ProductDatabase productDatabase, UserDataSource userDataSource, int userId) {
+    public List<Order> findByUserId (OrderDetailDatasource orderDetailDatasource, ProductDatabase productDatabase, UserDataSource userDataSource, String userId) {
         String sql = "Select * from 'Order' ord where ord.user_id = ?";
 
         List<Order> orders = new ArrayList<>();

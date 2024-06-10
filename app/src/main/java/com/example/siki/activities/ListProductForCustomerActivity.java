@@ -10,17 +10,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.siki.API.ProductApi;
 import com.example.siki.Adapter.ProductListForCustomerRecycleAdapter;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.database.ProductCategoryDatabase;
 import com.example.siki.database.PromotionDataSource;
+import com.example.siki.dto.product.ProductDto;
 import com.example.siki.model.Category;
 import com.example.siki.model.Product;
 import com.example.siki.variable.GlobalVariable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ListProductForCustomerActivity extends AppCompatActivity {
     private List<Product> productList = new ArrayList<>();
@@ -31,7 +38,6 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
     private PromotionDataSource promotionDataSource;
     private CategoryDatabase categoryDatabase;
     private Category category = new Category();
-    private Long categoryId;
     private Button btn_list_product_back;
 
     private ProductListForCustomerRecycleAdapter productListForCustomerRecycleAdapter;
@@ -75,12 +81,25 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
         promotionDataSource.open();
 
         productList.clear();
-        category = categoryDatabase.findById(categoryId);
         if (category != null) {
             tv_categoryName.setText(category.getName());
         }
-        productList.addAll(productCategoryDatabase.findByCategoryId(categoryId, promotionDataSource));
-        productListForCustomerRecycleAdapter.notifyDataSetChanged();
+
+        ProductApi.productApi.getByCategoryId(category.getId()).enqueue(new Callback<List<ProductDto>>() {
+            @Override
+            public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> response) {
+                List<ProductDto> productDtos = response.body();
+                List<Product> products = productDtos.stream().map(productDto -> new Product(productDto)).collect(Collectors.toList());
+                productList.addAll(products);
+                productListForCustomerRecycleAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<ProductDto>> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void setControl() {
@@ -90,7 +109,7 @@ public class ListProductForCustomerActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-             categoryId = extras.getLong("categoryId");
+             category = (Category) extras.getSerializable("category");
         }
     }
 }

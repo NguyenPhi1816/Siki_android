@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.siki.API.CartApi;
 import com.example.siki.R;
 import com.example.siki.activities.LoginActivity;
 import com.example.siki.database.CartDatasource;
@@ -54,16 +55,7 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
         Product product = productList.get(position);
         Picasso.get().load(product.getImagePath()).into(holder.iv_product);
         holder.tv_productName.setText(product.getName());
-
-
-        if (!product.getPrice().equals(product.getOldPrice())) {
-            holder.tv_productPrice.setText(PriceFormatter.formatDouble(product.getPrice()));
-            holder.tv_productPromotionPrice.setText( PriceFormatter.formatDouble(product.getOldPrice()) + "      -->");
-        }else {
-            holder.tv_productPrice.setText(PriceFormatter.formatDouble(product.getPrice()));
-            holder.tv_productPromotionPrice.setVisibility(View.INVISIBLE);
-        }
-
+        holder.tv_productPrice.setText(PriceFormatter.formatDouble(product.getPrice()));
         holder.tv_productQuantity.setText(String.format(quantityFormat, product.getQuantity()));
         CartDatasource cartDatasource = new CartDatasource(context);
         cartDatasource.open();
@@ -76,11 +68,9 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
             public void onClick(View v) {
                 // Todo: link activity
                if (globalVariable.getAuthUser() != null) {
-                   Integer userId = globalVariable.getAuthUser().getId();
-                   long isAddSuccess = cartDatasource.addToCart(product.getId(), userId, userDataSource, productDatabase);
-                   if (isAddSuccess != -1) {
-                       showSuccessMessage();
-                   }
+                   String userId = globalVariable.getAuthUser().getId();
+                   CartApi.cartApi.getCartByUserId(userId, globalVariable.getAccess_token());
+                   showSuccessMessage();
                } else {
                    Intent intent = new Intent(context, LoginActivity.class);
                    startActivity(context, intent, null);

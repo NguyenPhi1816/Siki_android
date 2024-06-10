@@ -22,7 +22,13 @@
         android:theme="@style/Theme.Siki"
         tools:targetApi="31">
         <activity
-            android:name=".API.retrofit.MainActivity"
+            android:name=".activities.BrandAddActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.BrandDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.BrandListActivity"
             android:exported="true" />
         <activity
             android:name=".activities.UserOrderDetailActivity"

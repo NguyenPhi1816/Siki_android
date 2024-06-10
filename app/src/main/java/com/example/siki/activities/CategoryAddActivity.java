@@ -21,6 +21,7 @@ import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Category;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -57,7 +58,8 @@ public class CategoryAddActivity extends AppCompatActivity {
             getContentResolver().takePersistableUriPermission(selectedImageUri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             imagePath = selectedImageUri.toString();
-            imgAnhLoaiSp.setImageURI(selectedImageUri);
+            //imgAnhLoaiSp.setImageURI(selectedImageUri);
+            Picasso.get().load(selectedImageUri).into(imgAnhLoaiSp);
 
         }
     }
@@ -65,8 +67,6 @@ public class CategoryAddActivity extends AppCompatActivity {
 
 
     private void setEvent() {
-        CategoryDatabase categoryDatabase = new CategoryDatabase(this);
-        categoryDatabase.open();
 
         btnAnhLoaiSp.setOnClickListener(new View.OnClickListener() {
             @Override

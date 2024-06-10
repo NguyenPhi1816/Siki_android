@@ -14,11 +14,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.siki.API.BrandApiService;
 import com.example.siki.API.CategoryApiService;
 import com.example.siki.API.dto.CategoryDto;
 import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
+import com.example.siki.model.Brand;
 import com.example.siki.model.Category;
 import com.squareup.picasso.Picasso;
 
@@ -26,17 +28,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryDetailActivity extends AppCompatActivity {
+public class BrandDetailActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     String imagePath;
-    EditText edtMaLoaiSp, edtTenLoaiSp, edtMoTaLoaiSp;
-    Button btnBack, btnSua, btnAnhLoaiSp;
-    ImageView imgAnhLoaiSp;
+    EditText edtMaTH, edtTenTH;
+    Button btnBack, btnSua, btnLogoTh;
+    ImageView imgLogoTh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category_detail);
+        setContentView(R.layout.activity_brand_detail);
         setControl();
         setEvent();
 
@@ -53,26 +55,25 @@ public class CategoryDetailActivity extends AppCompatActivity {
             getContentResolver().takePersistableUriPermission(selectedImageUri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             imagePath = selectedImageUri.toString();
-            //imgAnhLoaiSp.setImageURI(selectedImageUri);
-            Picasso.get().load(selectedImageUri).into(imgAnhLoaiSp);
+            //imgLogoTh.setImageURI(selectedImageUri);
+            Picasso.get().load(selectedImageUri).into(imgLogoTh);
+
 
         }
     }
 
     private void setEvent() {
-        Category category = (Category) getIntent().getSerializableExtra("category");
-        if (category != null) {
-            edtMaLoaiSp.setText(category.getId().toString());
-            edtTenLoaiSp.setText(category.getName());
-            edtMoTaLoaiSp.setText(category.getDescription());
-            //imgAnhLoaiSp.setImageURI(Uri.parse(category.getImage()));
-            Picasso.get().load(category.getImage()).into(imgAnhLoaiSp);
-
-            imagePath = category.getImage();
+        Brand brand = (Brand) getIntent().getSerializableExtra("brand");
+        if (brand != null) {
+            edtMaTH.setText(brand.getId().toString());
+            edtTenTH.setText(brand.getName());
+            //imgLogoTh.setImageURI(Uri.parse(brand.getLogo()));
+            Picasso.get().load(brand.getLogo()).into(imgLogoTh);
+            imagePath = brand.getLogo();
 
         }
 
-        btnAnhLoaiSp.setOnClickListener(new View.OnClickListener() {
+        btnLogoTh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -88,8 +89,8 @@ public class CategoryDetailActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(CategoryDetailActivity.this, CategoryListActivity.class);
-                CategoryDetailActivity.this.startActivity(intent);
+                Intent intent = new Intent(BrandDetailActivity.this, BrandListActivity.class);
+                BrandDetailActivity.this.startActivity(intent);
             }
         });
         Dialog dialog = new Dialog(this);
@@ -104,32 +105,23 @@ public class CategoryDetailActivity extends AppCompatActivity {
                 btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        CategoryDto categoryDto = new CategoryDto();
-                        Long id = (Long.valueOf(edtMaLoaiSp.getText().toString()));
+                        Brand brand1 = new Brand();
+                        Long id = (Long.valueOf(edtMaTH.getText().toString()));
 
-                        if (edtTenLoaiSp.getText().toString().isEmpty()) {
-                            edtTenLoaiSp.setError("Trường này là bắt buộc!");
-                            edtTenLoaiSp.requestFocus();
+                        if (edtTenTH.getText().toString().isEmpty()) {
+                            edtTenTH.setError("Trường này là bắt buộc!");
+                            edtTenTH.requestFocus();
                             dialog.dismiss();
                             return;
                         } else {
-                            categoryDto.setName(edtTenLoaiSp.getText().toString());
+                            brand1.setName(edtTenTH.getText().toString());
                         }
 
-                        if (edtMoTaLoaiSp.getText().toString().isEmpty()) {
-                            edtMoTaLoaiSp.setError("Trường này là bắt buộc!");
-                            edtMoTaLoaiSp.requestFocus();
-                            dialog.dismiss();
-                            return;
-                        } else {
-                            categoryDto.setDescription(edtMoTaLoaiSp.getText().toString());
-                        }
+                        brand1.setLogo(imagePath);
 
-                        categoryDto.setImage(imagePath);
+                        callApi(Math.toIntExact(id), brand1);
 
-                        callApi(Math.toIntExact(id), categoryDto);
-
-                        Intent intent = new Intent(CategoryDetailActivity.this, CategoryListActivity.class);
+                        Intent intent = new Intent(BrandDetailActivity.this, BrandListActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -147,30 +139,29 @@ public class CategoryDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void callApi(Integer id, CategoryDto categoryDto) {
-        CategoryApiService categoryApiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
-        categoryApiService.updateCategory(id, categoryDto).enqueue(new Callback<Void>() {
+    private void callApi(Integer id, Brand brand) {
+        BrandApiService brandApiService = RetrofitClient.getRetrofitInstance().create(BrandApiService.class);
+        brandApiService.updateBrand(id, brand).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(CategoryDetailActivity.this, "Chỉnh sửa thành công", Toast.LENGTH_LONG).show();
+                Toast.makeText(BrandDetailActivity.this, "Chỉnh sửa thành công", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                System.out.println("Category call api update failed!");
+                System.out.println("Brand call api update failed!");
             }
         });
     }
 
     private void setControl() {
-        edtMaLoaiSp = findViewById(R.id.maLoaiSp);
-        edtTenLoaiSp = findViewById(R.id.tenLoaiSp);
-        edtMoTaLoaiSp = findViewById(R.id.moTaLoaiSp);
+        edtMaTH = findViewById(R.id.maTH);
+        edtTenTH = findViewById(R.id.tenTH);
 
-        btnAnhLoaiSp = findViewById(R.id.btnAnhLoaiSp);
+        btnLogoTh = findViewById(R.id.btnLogoTH);
         btnSua = findViewById(R.id.btnSua);
         btnBack = findViewById(R.id.btnBack);
 
-        imgAnhLoaiSp = findViewById(R.id.imgAnhLoaiSp);
+        imgLogoTh = findViewById(R.id.imgLogoTH);
     }
 }

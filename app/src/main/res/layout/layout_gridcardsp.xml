@@ -8,17 +8,25 @@
     android:background="@android:color/white"
     android:elevation="4dp"
     >
-    <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:id="@+id/gridimagesp"
-        android:src="@drawable/dientu"
-        android:background="@drawable/borderimageview"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/primary">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:id="@+id/gridimagesp"
+            android:src="@drawable/dientu"
+            android:background="@drawable/borderimageview"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <TextView
+            android:textSize="10sp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:id="@+id/gridtextnamesp"
@@ -34,7 +42,9 @@
             android:text="SL: 200"
             android:layout_margin="10dp"
             android:textStyle="italic"
-            android:textSize="12dp"
+            android:textSize="10sp"
+            android:ellipsize="end"
+            android:maxLines="1"
             />
     </LinearLayout>
 

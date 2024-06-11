@@ -38,7 +38,6 @@ public class OrderDetailRecycleAdapter extends RecyclerView.Adapter<OrderDetailR
     @Override
     public void onBindViewHolder(@NonNull OrderDetailHolder holder, int position) {
         OrderDetail orderDetail = orderDetails.get(position);
-
         Product product = orderDetail.getProduct();
         Picasso.get().load(product.getImagePath()).into(holder.payment_product_image);
         double productPrice = orderDetail.getProduct().getPrice();

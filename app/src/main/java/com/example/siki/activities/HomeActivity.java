@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.example.siki.API.CartApi;
 import com.example.siki.R;
 import com.example.siki.activities.fragment.CartFragment;
 import com.example.siki.activities.fragment.HomeFragment;
@@ -15,6 +17,7 @@ import com.example.siki.activities.fragment.ProfileFragment;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
+import com.example.siki.dto.cart.CartDto;
 import com.example.siki.model.Cart;
 import com.example.siki.model.User;
 import com.example.siki.variable.GlobalVariable;
@@ -27,6 +30,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity  {
     private List<Cart> cartList = new ArrayList<>();
@@ -94,7 +101,7 @@ public class HomeActivity extends AppCompatActivity  {
     @Override
     protected void onResume() {
         super.onResume();
-        readCartDb();
+        /*readCartDb();*/
     }
 
     public void readCartDb() {
@@ -104,21 +111,29 @@ public class HomeActivity extends AppCompatActivity  {
         productDatabase.open();
 
         GlobalVariable globalVariable = (GlobalVariable) getApplication();
-
-        // mock data
-   /*     User user = userDataSource.getUserById(2);
-        globalVariable.setAuthUser(user);
-        globalVariable.setLoggedIn(true);
-*/
         if (globalVariable.isLoggedIn()) {
             if (globalVariable.getAuthUser() != null) {
                 User currentUser = globalVariable.getAuthUser();
                 cartList.clear();
                 CartDatasource cartDatasource = new CartDatasource(this);
                 cartDatasource.open();
-                cartList.addAll(cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource));
-                storeProductMap = cartList.stream()
-                        .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
+
+                CartApi.cartApi.getCartByUserId(currentUser.getId(), globalVariable.getAccess_token()).enqueue(new Callback<List<CartDto>>() {
+                    @Override
+                    public void onResponse(Call<List<CartDto>> call, Response<List<CartDto>> response) {
+                        List<CartDto> cartDtos = response.body();
+                        List<Cart> carts = cartDtos.stream().map(cartDto -> new Cart(cartDto)).collect(Collectors.toList());
+                        cartList.addAll(carts);
+                        storeProductMap = cartList.stream()
+                                .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore().getName()));
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<CartDto>> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT);
+                    }
+                });
+
             }else {
                 cartList = new ArrayList<>();
                 storeProductMap = new HashMap<>();

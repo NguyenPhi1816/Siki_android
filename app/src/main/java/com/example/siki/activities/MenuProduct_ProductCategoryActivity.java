@@ -35,13 +35,13 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        productBtn.setOnClickListener(new View.OnClickListener() {
+       /* productBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductListActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
         productTypeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,38 +50,34 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
             }
         });
 
-        sellBtn.setOnClickListener(new View.OnClickListener() {
+       /* sellBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductSellChartActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
-        revenueBtn.setOnClickListener(new View.OnClickListener() {
+    /*    revenueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductRevenueChartActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
-        promotionBtn.setOnClickListener(new View.OnClickListener() {
+      /*  promotionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, PromotionListActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     private void setControl() {
         btn_order_management = findViewById(R.id.btn_order_management);
         homeBtn = findViewById(R.id.home_btn);
-        productBtn = findViewById(R.id.product_btn);
         productTypeBtn = findViewById(R.id.product_type_btn);
-        sellBtn = findViewById(R.id.sell_btn);
-        revenueBtn = findViewById(R.id.revenue_btn);
-        promotionBtn = findViewById(R.id.promotion_btn);
     }
 }

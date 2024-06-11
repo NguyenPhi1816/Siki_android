@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.siki.API.CartApi;
+import com.example.siki.API.OrderApi;
 import com.example.siki.Adapter.PaymentRecycleAdapter;
 import com.example.siki.R;
 import com.example.siki.database.CartDatasource;
@@ -25,6 +27,9 @@ import com.example.siki.database.OrderDataSource;
 import com.example.siki.database.OrderDetailDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
+import com.example.siki.dto.cart.CartDto;
+import com.example.siki.dto.order.OrderDetailPostDto;
+import com.example.siki.dto.order.OrderPostDto;
 import com.example.siki.model.Cart;
 import com.example.siki.model.User;
 import com.example.siki.utils.PriceFormatter;
@@ -36,6 +41,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PaymentActivity extends AppCompatActivity {
     private List<Cart> selectingCarts = new ArrayList<>() ;
@@ -103,10 +112,6 @@ public class PaymentActivity extends AppCompatActivity {
                 showCustomDialog(currentNote);
             }
         });
-
-        paymentRecycleAdapter = new PaymentRecycleAdapter(selectingCarts);
-        paymentRecycle.setAdapter(paymentRecycleAdapter);
-        paymentRecycle.setLayoutManager(new GridLayoutManager(this, 1));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -126,19 +131,36 @@ public class PaymentActivity extends AppCompatActivity {
             String receiverAddress= currentUser.getAddress();
             String receiverName = currentUser.getFirstName().concat(" ").concat(currentUser.getLastName());
             String note = tv_payment_note.getText().toString().trim();
-            String userId = currentUser.getId();
-            Long orderId = orderDataSource.createOrder(receiverPhoneNumber, receiverAddress, receiverName, note, userId);
-            if (orderId != -1) {
-                selectingCarts.forEach(cart -> {
-                    orderDetailDatasource.save(cart.getProduct().getId(),
-                            orderId, cart.getQuantity(), cart.getProduct().getPrice());
-                    int updateQuantity = cart.getProduct().getQuantity() - cart.getQuantity();
-                    productDatabase.updateQuantityProduct(cart.getProduct().getId(), updateQuantity);
-                    cartDatasource.remove(cart.getId());
-                });
-                showSuccessMessage(orderId);
 
-            }
+            List<OrderDetailPostDto> orderDetailPostDtos = selectingCarts.stream().map(cart -> new OrderDetailPostDto(cart)).collect(Collectors.toList());
+
+            OrderPostDto orderPostDto = new OrderPostDto(receiverPhoneNumber, receiverAddress, receiverName, note, orderDetailPostDtos);
+            OrderApi.orderApi.createOrder(globalVariable.getAccess_token(), orderPostDto).enqueue(new Callback<Long>() {
+                @Override
+                public void onResponse(Call<Long> call, Response<Long> response) {
+                    selectingCarts.forEach(cart -> {
+                        CartApi.cartApi.deleteCartById(cart.getId(), globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                System.out.println("delete cart success");
+                            }
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT);
+                            }
+                        });
+                    });
+                    Long orderId = response.body();
+                    showSuccessMessage(orderId);
+                }
+
+                @Override
+                public void onFailure(Call<Long> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT);
+
+                }
+            });
+
         }
     }
     private void showConfirmDialog () {
@@ -165,8 +187,8 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void navigateToUserOrderDetailActivity(Long orderId) {
-        Intent intent = new Intent(PaymentActivity.this, UserOrderDetailActivity.class);
-        intent.putExtra("order_id", orderId); // Đặt orderId vào Intent
+        Intent intent = new Intent(PaymentActivity.this, OrderDetailActivity.class);
+        intent.putExtra("orderId", orderId);
         startActivity(intent);
     }
 
@@ -219,13 +241,27 @@ public class PaymentActivity extends AppCompatActivity {
             cartDatasource.open();
             ProductDatabase productDatabase = new ProductDatabase(this);
             productDatabase.open();
-            List<Cart> cartList = cartDatasource.findByUser(currentUser.getId(), productDatabase, userDataSource);
-            cartList.forEach(cart -> {
-                if (cart.isChosen()) {
-                    selectingCarts.add(cart);
+
+            CartApi.cartApi.getCartByUserId(currentUser.getId(), globalVariable.getAccess_token()).enqueue(new Callback<List<CartDto>>() {
+                @Override
+                public void onResponse(Call<List<CartDto>> call, Response<List<CartDto>> response) {
+                    List<CartDto> cartDtos = response.body();
+                    List<Cart> carts = cartDtos.stream().map(cartDto -> new Cart(cartDto)).collect(Collectors.toList());
+                    carts.forEach(cart -> {
+                        if (cart.isChosen()) {
+                            selectingCarts.add(cart);
+                        }
+                    });
+                    paymentRecycleAdapter.notifyDataSetChanged();
+                    paymentTotal.setText(getTotalPricePayment());
+                }
+
+                @Override
+                public void onFailure(Call<List<CartDto>> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT);
                 }
             });
-            paymentTotal.setText(getTotalPricePayment());
+
         }
     }
 
@@ -256,6 +292,9 @@ public class PaymentActivity extends AppCompatActivity {
         if (selectingCartBundle != null) {
             selectingCarts.clear();
             selectingCarts.addAll((Collection<? extends Cart>) selectingCartBundle.getSerializable("selectingCarts"));
+            paymentRecycleAdapter = new PaymentRecycleAdapter(selectingCarts);
+            paymentRecycle.setAdapter(paymentRecycleAdapter);
+            paymentRecycle.setLayoutManager(new GridLayoutManager(this, 1));
         }
         initPaymentTypeData();
         paymentTypeAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, paymentTypes);

@@ -16,7 +16,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.siki.API.OrderApi;
 import com.example.siki.Adapter.OrderRecycleAdapter;
 import com.example.siki.R;
 import com.example.siki.database.AccountDataSource;
@@ -24,15 +26,23 @@ import com.example.siki.database.OrderDataSource;
 import com.example.siki.database.OrderDetailDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
+import com.example.siki.dto.order.OrderDto;
+import com.example.siki.dto.order.OrderStatusDto;
 import com.example.siki.enums.OrderStatus;
 import com.example.siki.enums.Role;
 import com.example.siki.model.Account;
 import com.example.siki.model.Order;
+import com.example.siki.model.User;
 import com.example.siki.variable.GlobalVariable;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderManagementActivity extends AppCompatActivity {
     private RecyclerView order_recycle_view;
@@ -43,6 +53,8 @@ public class OrderManagementActivity extends AppCompatActivity {
     private final String all = "ALL";
     private final String shipping = "SHIPPING";
     private final String success = "SUCCESS";
+    private static final String CUSTOMER = "CUSTOMER";
+    private static final String ADMIN = "ADMIN";
     private String currentStatus = all;
 
     private UserDataSource userDataSource ;
@@ -92,23 +104,82 @@ public class OrderManagementActivity extends AppCompatActivity {
         orders.clear();
         data_all.clear();
         GlobalVariable globalVariable = (GlobalVariable) getApplication();
-        List<Order> orderList = new ArrayList<>();
         if (globalVariable.isLoggedIn()) {
-            AccountDataSource accountDataSource = new AccountDataSource(this);
-            accountDataSource.open();
-            String phoneNumber = globalVariable.getAuthUser().getPhoneNumber();
-            account = accountDataSource.getAccountByPhoneNumber(phoneNumber);
-            if (account.getRole().equals(Role.USER.toString())) {
-                orderList = orderDataSource.findAllByUserIdWithStatus(userDataSource, productDatabase, orderDetailDatasource, globalVariable.getAuthUser().getId(), currentStatus);
-            }else if (account.getRole().equals(Role.ADMIN.toString())) {
-                orderList = orderDataSource.findAllByOrderStatus(userDataSource, productDatabase, orderDetailDatasource, currentStatus);
-            }
-            orders.addAll(orderList);
-            data_all.addAll(orderList);
+            if (globalVariable.getAuthUser().getRole().equals(CUSTOMER)) {
 
-            orderRecycleAdapter = new OrderRecycleAdapter(orders, this, account);
-            order_recycle_view.setAdapter(orderRecycleAdapter);
-            orderRecycleAdapter.notifyDataSetChanged();
+                if (currentStatus != all) {
+                    OrderApi.orderApi.getByUserAndStatus(globalVariable.getAccess_token(), OrderStatusDto.valueOf(currentStatus)).enqueue(new Callback<List<OrderDto>>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+                            List<OrderDto> orderDtos = response.body();
+                            List<Order> orders1 = orderDtos.stream().map(orderDto -> new Order(orderDto)).collect(Collectors.toList());
+                            orders.addAll(orders1);
+                            data_all.addAll(orders1);
+                            orderRecycleAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT);
+                        }
+                    });
+                }else {
+                    OrderApi.orderApi.getOrderOfUser(globalVariable.getAccess_token()).enqueue(new Callback<List<OrderDto>>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+                            List<OrderDto> orderDtos = response.body();
+                            List<Order> orders1 = orderDtos.stream().map(orderDto -> new Order(orderDto)).collect(Collectors.toList());
+                            orders.addAll(orders1);
+                            data_all.addAll(orders1);
+                            orderRecycleAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT);
+
+                        }
+                    });
+                }
+            }else if (globalVariable.getAuthUser().getRole().equals(ADMIN)) {
+                if (currentStatus != all) {
+                    OrderApi.orderApi.getAllByStatus(globalVariable.getAccess_token(), OrderStatusDto.valueOf(currentStatus)).enqueue(new Callback<List<OrderDto>>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+                            List<OrderDto> orderDtos = response.body();
+                            List<Order> orders1 = orderDtos.stream().map(orderDto -> new Order(orderDto)).collect(Collectors.toList());
+                            orders.addAll(orders1);
+                            data_all.addAll(orders1);
+                            orderRecycleAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT);
+                        }
+                    });
+                } else {
+                    OrderApi.orderApi.getAll(globalVariable.getAccess_token()).enqueue(new Callback<List<OrderDto>>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+                            List<OrderDto> orderDtos = response.body();
+                            List<Order> orders1 = orderDtos.stream().map(orderDto -> new Order(orderDto)).collect(Collectors.toList());
+                            orders.addAll(orders1);
+                            data_all.addAll(orders1);
+                            orderRecycleAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<OrderDto>> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT);
+                        }
+                    });
+                }
+            }
         }
     }
 
@@ -125,6 +196,7 @@ public class OrderManagementActivity extends AppCompatActivity {
 
     @SuppressLint("ResourceAsColor")
     private void setEvent() {
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
 
         btn_filter_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,11 +208,12 @@ public class OrderManagementActivity extends AppCompatActivity {
         btn_order_management_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (account != null) {
-                    if (account.getRole().equals(Role.ADMIN.toString())) {
+                User currentUser = globalVariable.getAuthUser();
+                if (currentUser != null) {
+                    if (currentUser.getRole().equals(Role.ADMIN.toString())) {
                         Intent intent = new Intent(OrderManagementActivity.this, MenuProduct_ProductCategoryActivity.class);
                         startActivity(intent);
-                    } else if (account.getRole().equals(Role.USER.toString())){
+                    } else if (currentUser.getRole().equals(Role.CUSTOMER.toString())){
                         Intent intent = new Intent(OrderManagementActivity.this, HomeActivity.class);
                         intent.putExtra("fragment", R.id.nav_profile);
                         startActivity(intent);
@@ -162,7 +235,7 @@ public class OrderManagementActivity extends AppCompatActivity {
             public void onClick(View v) {
                 resetOrderStatusTextView();
                 tv_order_status_pending.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.main_color));
-                currentStatus = OrderStatus.Pending.toString();
+                currentStatus = OrderStatusDto.PENDING.toString();
                 readDb();
             }
         });
@@ -171,7 +244,7 @@ public class OrderManagementActivity extends AppCompatActivity {
             public void onClick(View v) {
                 resetOrderStatusTextView();
                 tv_order_status_shipping.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.main_color));
-                currentStatus = OrderStatus.Shipping.toString();
+                currentStatus = OrderStatusDto.SHIPPING.toString();
                 readDb();
             }
         });
@@ -180,7 +253,7 @@ public class OrderManagementActivity extends AppCompatActivity {
             public void onClick(View v) {
                 resetOrderStatusTextView();
                 tv_order_status_success.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.main_color));
-                currentStatus = OrderStatus.Success.toString();
+                currentStatus = OrderStatusDto.SUCCESS.toString();
                 readDb();
             }
         });
@@ -209,7 +282,7 @@ public class OrderManagementActivity extends AppCompatActivity {
                 return false;
             }
         });
-         orderRecycleAdapter = new OrderRecycleAdapter(orders, this, account);
+         orderRecycleAdapter = new OrderRecycleAdapter(orders, this, globalVariable);
          order_recycle_view.setAdapter(orderRecycleAdapter);
          order_recycle_view.setLayoutManager(new GridLayoutManager(this, 1));
     }

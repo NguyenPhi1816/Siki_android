@@ -32,6 +32,10 @@ public class User implements Serializable {
 
     @SerializedName("email")
     private String email;
+    @SerializedName("password")
+    private String password;
+
+    private String role;
 
 
     public User() {
@@ -49,6 +53,14 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public User(UserProfile userProfile) {
         this.id = userProfile.getId();
         this.firstName = userProfile.getFirstName();
@@ -59,10 +71,16 @@ public class User implements Serializable {
         this.dateOfBirth = userProfile.getDateOfBirth();
         this.avatar = userProfile.getAvatar() == null ? "" : userProfile.getAvatar();
         this.email = userProfile.getEmail();
+        this.role = userProfile.getRole();
     }
 
+    public String getRole() {
+        return role;
+    }
 
-
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getId() {
         return id;

@@ -11,21 +11,28 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.siki.API.CartApi;
 import com.example.siki.R;
 import com.example.siki.activities.fragment.CartFragment;
 import com.example.siki.database.CartDatasource;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Product;
 import com.example.siki.utils.PriceFormatter;
+import com.example.siki.variable.GlobalVariable;
 import com.saadahmedev.popupdialog.PopupDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.CartHolder> {
     private List<Cart> cartList ;
@@ -34,11 +41,13 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
 
     private CartFragment cartFragment;
 
+    private GlobalVariable globalVariable;
 
-    public CartRecycleAdapter(List<Cart> cartList, Context context, CartFragment cartFragment) {
+    public CartRecycleAdapter(List<Cart> cartList, Context context, CartFragment cartFragment, GlobalVariable globalVariable) {
         this.cartList = cartList;
         this.context = context;
         this.cartFragment = cartFragment;
+        this.globalVariable = globalVariable;
     }
 
     @NonNull
@@ -68,16 +77,35 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
             public void onClick(View v) {
                 boolean isChecked = holder.cartCheckbox.isChecked();
                 holder.cartCheckbox.setChecked(isChecked);
-                cartDatasource.updateSelectedCart(cart.getId(), isChecked);
-                cartFragment.readDb();
+                CartApi.cartApi.updateCartSelection(cart.getId(), isChecked, globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        cartFragment.readDb();
+                    }
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT);
+                    }
+                });
             }
         });
         holder.btn_cart_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 holder.tv_cart_quantity.setText((currentQuantity + 1)+"");
-                cartDatasource.updateCartQuantity(cart.getId(), currentQuantity + 1 );
-                cartFragment.readDb();
+
+                CartApi.cartApi.updateCartQuantity(cart.getId(), currentQuantity + 1, globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        cartFragment.readDb();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT);
+
+                    }
+                });
             }
         });
 
@@ -85,8 +113,18 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
             @Override
             public void onClick(View v) {
                 holder.tv_cart_quantity.setText((currentQuantity - 1)+"");
-                cartDatasource.updateCartQuantity(cart.getId(), currentQuantity - 1 );
-                cartFragment.readDb();
+                CartApi.cartApi.updateCartQuantity(cart.getId(), currentQuantity - 1, globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        cartFragment.readDb();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT);
+
+                    }
+                });
             }
         });
 
@@ -98,11 +136,20 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
                         .setCancelable(true).setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                int removeCheck = cartDatasource.remove(cart.getId());
-                                if (removeCheck != -1) {
-                                    showAlertMessage("Xóa sản phẩm thành công");
-                                    cartFragment.readDb();
-                                }
+
+                                CartApi.cartApi.deleteCartById(cart.getId(), globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        showAlertMessage("Xóa sản phẩm thành công");
+                                        cartFragment.readDb();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT);
+
+                                    }
+                                });
                             }
                         })
                         .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {

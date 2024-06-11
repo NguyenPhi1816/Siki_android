@@ -12,21 +12,30 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.siki.API.OrderApi;
 import com.example.siki.R;
 import com.example.siki.database.OrderDataSource;
+import com.example.siki.dto.order.OrderDto;
+import com.example.siki.dto.order.OrderStatusDto;
 import com.example.siki.enums.OrderStatus;
 import com.example.siki.model.Cart;
 import com.example.siki.model.Order;
 import com.example.siki.model.OrderDetail;
 import com.example.siki.utils.DateFormatter;
 import com.example.siki.utils.PriceFormatter;
+import com.example.siki.variable.GlobalVariable;
 import com.saadahmedev.popupdialog.PopupDialog;
 import com.saadahmedev.popupdialog.listener.StandardDialogActionListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderEditActivity extends AppCompatActivity {
 
@@ -118,10 +127,40 @@ public class OrderEditActivity extends AppCompatActivity {
         order.setReceiverAddress(ed_order_edit_receiverAddress.getText().toString());
         order.setStatus(OrderStatus.valueOf(spinner_order_status.getSelectedItem().toString()));
         order.setNote(ed_order_edit_note.getText().toString());
-        int rowAffected = orderDataSource.updateOrder(updateOrder.getId(), order);
-        if (rowAffected != -1) {
-            showSuccessMessage();
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+
+        OrderStatusDto orderStatusDto = getFromSpinner();
+        if (globalVariable != null) {
+            OrderApi.orderApi.updateStatusByOrderId(globalVariable.getAccess_token(), updateOrder.getId(), orderStatusDto).enqueue(new Callback<OrderDto>() {
+                @Override
+                public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                    if (response.isSuccessful()) {
+                        showSuccessMessage();
+                    }else {
+                        Toast.makeText(globalVariable, "Khong the cap nhap trang thai", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<OrderDto> call, Throwable t) {
+                    Toast.makeText(globalVariable, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+    }
+
+    private OrderStatusDto getFromSpinner() {
+        switch (spinner_order_status.getSelectedItem().toString()) {
+            case "Pending":
+                return OrderStatusDto.PENDING;
+            case "Success":
+                return OrderStatusDto.SUCCESS;
+            case "Shipping":
+                return OrderStatusDto.SHIPPING;
+            default:
+                break;
+        }
+        return OrderStatusDto.PENDING;
     }
 
     private void showSuccessMessage() {

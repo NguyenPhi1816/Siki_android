@@ -41,7 +41,7 @@ public class Product implements Serializable {
         this.imagePath = productDto.getImage();
         this.price = productDto.getPrice();
         this.quantity = 100;
-        this.store = productDto.getStore();
+        this.store = new Store(productDto.getStore());
     }
 
     @Override

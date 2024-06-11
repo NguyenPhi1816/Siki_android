@@ -12,6 +12,15 @@ public class UserProfile {
     private String phoneNumber;
     private String dateOfBirth;
 
+    private String role ;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public UserProfile(String id, String username, String email, String firstName, String lastName, String address, String avatar, String phoneNumber, String dateOfBirth) {
         this.id = id;

@@ -168,7 +168,7 @@ public class HomeFragment extends Fragment {
                     category.setId(categoryDto.getId());
                     category.setName(categoryDto.getName());
                     category.setDescription("");
-                    category.setImagePath(categoryDto.getImage());
+                    category.setImage(categoryDto.getImage());
                     return category;
                 }).collect(Collectors.toList());
 

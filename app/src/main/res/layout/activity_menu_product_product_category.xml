@@ -40,6 +40,12 @@
             android:layout_height="wrap_content"
             android:text="Đơn hàng"
             android:id="@+id/btn_order_management"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thương hiệu"
+            android:id="@+id/brand_btn"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,14 +5,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.siki.API.BrandApiService;
 import com.example.siki.API.CategoryApiService;
 import com.example.siki.API.retrofit.RetrofitClient;
+import com.example.siki.Adapter.BrandAdapter;
 import com.example.siki.Adapter.CategoryAdapter;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
+import com.example.siki.model.Brand;
 import com.example.siki.model.Category;
 
 import java.util.ArrayList;
@@ -22,28 +26,28 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryListActivity extends AppCompatActivity {
-    private List<Category> categoryList = new ArrayList<>();
-    private ListView listViewCategory;
-    private CategoryAdapter categoryAdapter;
+public class BrandListActivity extends AppCompatActivity {
+    private List<Brand> brandList = new ArrayList<>();
+    private ListView listViewBrand;
+    private BrandAdapter brandAdapter;
     Button btnThem, btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category_list);
+        setContentView(R.layout.activity_brand_list);
         setControl();
         setEvent();
 
     }
 
     private void setEvent() {
-        categoryAdapter = new CategoryAdapter(this, categoryList);
-        listViewCategory = findViewById(R.id.category_lv);
-        listViewCategory.setAdapter(categoryAdapter);
+        brandAdapter = new BrandAdapter(this, brandList);
+        listViewBrand = findViewById(R.id.brand_lv);
+        listViewBrand.setAdapter(brandAdapter);
         btnThem.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(CategoryListActivity.this, CategoryAddActivity.class);
+                Intent intent = new Intent(BrandListActivity.this, BrandAddActivity.class);
                 startActivity(intent);
             }
         });
@@ -51,7 +55,7 @@ public class CategoryListActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CategoryListActivity.this, MenuProduct_ProductCategoryActivity.class);
+                Intent intent = new Intent(BrandListActivity.this, MenuProduct_ProductCategoryActivity.class);
                 startActivity(intent);
             }
         });
@@ -64,7 +68,7 @@ public class CategoryListActivity extends AppCompatActivity {
     }
 
 //    private void readDb() {
-//        categoryList.clear();
+//        brandList.clear();
 //        CategoryDatabase categoryDatabase = new CategoryDatabase(this);
 //        categoryDatabase.open();
 //        categoryList.addAll(categoryDatabase.readDb());
@@ -72,21 +76,21 @@ public class CategoryListActivity extends AppCompatActivity {
 //    }
 
     private void callApi() {
-        categoryList.clear();
-        CategoryApiService categoryApiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
-        categoryApiService.getListCategory().enqueue(new Callback<List<Category>>() {
+        brandList.clear();
+        BrandApiService brandApiService = RetrofitClient.getRetrofitInstance().create(BrandApiService.class);
+        brandApiService.getAllBrands().enqueue(new Callback<List<Brand>>() {
             @Override
-            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                List<Category> listCategoryGet = response.body();
-                if (listCategoryGet != null) {
-                    categoryList.addAll(listCategoryGet);
-                    categoryAdapter.notifyDataSetChanged();
+            public void onResponse(Call<List<Brand>> call, Response<List<Brand>> response) {
+                List<Brand> listBrandGet = response.body();
+                if (listBrandGet != null) {
+                    brandList.addAll(listBrandGet);
+                    brandAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Category>> call, Throwable t) {
-                System.out.println("Category call api list failed!");
+            public void onFailure(Call<List<Brand>> call, Throwable t) {
+                System.out.println("Brand call api list failed!");
             }
         });
     }

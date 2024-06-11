@@ -11,14 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.siki.API.BrandApiService;
 import com.example.siki.API.CategoryApiService;
-import com.example.siki.API.dto.CategoryDto;
 import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
-import com.example.siki.activities.CategoryAddActivity;
+import com.example.siki.activities.BrandDetailActivity;
+import com.example.siki.activities.BrandListActivity;
 import com.example.siki.activities.CategoryDetailActivity;
 import com.example.siki.activities.CategoryListActivity;
 import com.example.siki.database.CategoryDatabase;
+import com.example.siki.model.Brand;
 import com.example.siki.model.Category;
 import com.squareup.picasso.Picasso;
 
@@ -28,57 +30,56 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryAdapter extends BaseAdapter {
+public class BrandAdapter extends BaseAdapter {
     private Context context;
-    private List<Category> categoryList;
+    private List<Brand> brandList;
 
-    public CategoryAdapter(Context context, List<Category> categoryList) {
+    public BrandAdapter(Context context, List<Brand> brandList) {
         this.context = context;
-        this.categoryList = categoryList;
+        this.brandList = brandList;
     }
 
     @Override
     public int getCount() {
-        return categoryList.size();
+        return brandList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return categoryList.get(i);
+        return brandList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return categoryList.get(i).getId();
+        return brandList.get(i).getId();
     }
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
-        View categoryView;
+        View brandView;
         if (view == null) {
-            categoryView = View.inflate(viewGroup.getContext(), R.layout.category_item, null);
-        } else categoryView = view;
+            brandView = View.inflate(viewGroup.getContext(), R.layout.brand_item, null);
+        } else brandView = view;
 
         //Bind sữ liệu phần tử vào View
-        Category category = categoryList.get(position);
-        ((TextView) categoryView.findViewById(R.id.categoryId)).setText(String.format("Id: %s", category.getId()));
-        ((TextView) categoryView.findViewById(R.id.categoryName)).setText(String.format("Tên loại: %s", category.getName()));
-        ((TextView) categoryView.findViewById(R.id.categoryDescription)).setText(String.format("Mô tả: %s", category.getDescription()));
-        ImageView myView = categoryView.findViewById(R.id.categoryImage);
-        Picasso.get().load(category.getImage()).into(myView);
+        Brand brand = brandList.get(position);
+        ((TextView) brandView.findViewById(R.id.brandId)).setText(String.format("Id: %s", brand.getId()));
+        ((TextView) brandView.findViewById(R.id.brandName)).setText(String.format("Tên thương hiệu: %s", brand.getName()));
+        ImageView myView = brandView.findViewById(R.id.brandLogo);
+        Picasso.get().load(brand.getLogo()).into(myView);
 
 
-        Button btnEdit = categoryView.findViewById(R.id.btnEdit);
+        Button btnEdit = brandView.findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, CategoryDetailActivity.class);
-                intent.putExtra("category", category);
+                Intent intent = new Intent(context, BrandDetailActivity.class);
+                intent.putExtra("brand", brand);
                 context.startActivity(intent);
             }
         });
 
-        Button btnDelete = categoryView.findViewById(R.id.btnDelete);
+        Button btnDelete = brandView.findViewById(R.id.btnDelete);
         Dialog dialog = new Dialog(context);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,9 +93,9 @@ public class CategoryAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View view) {
 
-                        callApi(Math.toIntExact(category.getId()));
+                        callApi(brand.getId());
 
-                        Intent intent = new Intent(context, CategoryListActivity.class);
+                        Intent intent = new Intent(context, BrandListActivity.class);
                         context.startActivity(intent);
                     }
                 });
@@ -110,16 +111,16 @@ public class CategoryAdapter extends BaseAdapter {
                 dialog.show();
             }
         });
-        return categoryView;
+        return brandView;
     }
 
     private void callApi(Integer id) {
-        CategoryApiService categoryApiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
-        categoryApiService.deleteCategory(id).enqueue(new Callback<Void>() {
+        BrandApiService brandApiService = RetrofitClient.getRetrofitInstance().create(BrandApiService.class);
+        brandApiService.deleteBrand(id).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 400) {
-                    Toast.makeText(context, "Không thể xóa loại sản phẩm", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Không thể xóa thương hiệu", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_LONG).show();
 
@@ -128,7 +129,7 @@ public class CategoryAdapter extends BaseAdapter {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                System.out.println("Category call api delete failed!");
+                System.out.println("Brand call api delete failed!");
             }
         });
     }

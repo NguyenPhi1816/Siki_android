@@ -15,10 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siki.R;
-import com.example.siki.activities.AddressForm;
 import com.example.siki.activities.ListProductForCustomerActivity;
-import com.example.siki.activities.PaymentActivity;
-import com.example.siki.activities.fragment.CartFragment;
 import com.example.siki.activities.fragment.HomeFragment;
 import com.example.siki.model.Category;
 import com.squareup.picasso.Picasso;
@@ -51,7 +48,7 @@ public class CategoryForHomePageRecycleAdapter extends RecyclerView.Adapter<Cate
     public void onBindViewHolder(@NonNull CategoryHolder holder, @SuppressLint("RecyclerView") int position) {
         Category category = categoryList.get(position);
         holder.tv_home_category_name.setText(category.getName());
-        Picasso.get().load(category.getImagePath()).into(holder.iv_home_category);
+        Picasso.get().load(category.getImage()).into(holder.iv_home_category);
         // Todo : handle move to list product for customer
         holder.ln_home_category.setOnClickListener(new View.OnClickListener() {
             @Override

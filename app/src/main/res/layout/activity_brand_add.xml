@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Thêm loại sản phẩm"
+                android:text="Thêm thương hiệu"
                 android:paddingLeft="5dp"
                 android:textColor="@android:color/white"
                 android:textSize="28sp"
@@ -44,13 +44,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tên loại sản phẩm"
-                android:id="@+id/tenLoaiSp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Mô tả"
-                android:id="@+id/moTaLoaiSp"/>
+                android:hint="Tên thương hiệu"
+                android:id="@+id/tenTH"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,36 +61,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Chọn ảnh"
-                    android:id="@+id/btnAnhLoaiSP"/>
+                    android:id="@+id/btnLogoTH"/>
             </LinearLayout>
-
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:id="@+id/imgAnhLoaiSp"
+                android:id="@+id/imgLogoTH"
                 android:layout_gravity="center"
                 />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="Loại sản phẩm cha"
-                    android:paddingLeft="5dp"
-                    android:textSize="18dp"
-                    />
-                <Spinner
-                    android:id="@+id/spLoaiSpCha"
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    />
-            </LinearLayout>
 
 
         </LinearLayout>

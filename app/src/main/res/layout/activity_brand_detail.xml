@@ -28,11 +28,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Thêm loại sản phẩm"
-                android:paddingLeft="5dp"
+                android:text="Thông tin thương hiệu"
                 android:textColor="@android:color/white"
                 android:textSize="28sp"
                 android:layout_marginTop="4dp"
+                android:layout_marginLeft="-25dp"
                 />
 
         </LinearLayout>
@@ -41,16 +41,41 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-            <EditText
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tên loại sản phẩm"
-                android:id="@+id/tenLoaiSp"/>
-            <EditText
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mã thương hiệu:"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:textSize="18sp"/>
+                <EditText
+                    android:enabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mã thương hiệu"
+                    android:id="@+id/maTH"
+                    />
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Mô tả"
-                android:id="@+id/moTaLoaiSp"/>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên thương hiệu:"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:textSize="18sp"/>
+                <EditText
+                    android:id="@+id/tenTH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Tên thương hiệu" />
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,49 +91,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Chọn ảnh"
-                    android:id="@+id/btnAnhLoaiSP"/>
+                    android:id="@+id/btnLogoTH"/>
             </LinearLayout>
-
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:id="@+id/imgAnhLoaiSp"
+                android:id="@+id/imgLogoTH"
                 android:layout_gravity="center"
                 />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="Loại sản phẩm cha"
-                    android:paddingLeft="5dp"
-                    android:textSize="18dp"
-                    />
-                <Spinner
-                    android:id="@+id/spLoaiSpCha"
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    />
-            </LinearLayout>
-
-
         </LinearLayout>
-        <Button
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Thêm"
             android:layout_gravity="center"
-            android:background="@color/main_color"
-            android:textColor="@color/white"
-            android:id="@+id/btnThem"
-            />
+            >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Chỉnh sửa"
+                android:id="@+id/btnSua"
+                android:background="@color/main_color"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 

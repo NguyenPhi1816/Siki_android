@@ -7,8 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.siki.model.Category;
-import com.example.siki.model.Product;
-import com.example.siki.model.Store;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +28,7 @@ public class CategoryDatabase {
         dbHelper.close();
     }
 
+
     public List<Category> readDb() {
         String sql = "Select * from Category";
         List<Category> listCategory = new ArrayList<>();
@@ -40,7 +39,7 @@ public class CategoryDatabase {
                 category.setId(cursor.getInt(0));
                 category.setName(cursor.getString(1));
                 category.setDescription(cursor.getString(2));
-                category.setImagePath(cursor.getString(3));
+                category.setImage(cursor.getString(3));
                 listCategory.add(category);
             } while (cursor.moveToNext());
         }
@@ -54,7 +53,7 @@ public class CategoryDatabase {
                 category.setId(cursor.getInt(0));
                 category.setName(cursor.getString(1));
                 category.setDescription(cursor.getString(2));
-                category.setImagePath(cursor.getString(3));
+                category.setImage(cursor.getString(3));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,7 +94,7 @@ public class CategoryDatabase {
             ContentValues values = new ContentValues();
             values.put("Name", category.getName());
             values.put("Description", category.getDescription());
-            values.put("ImagePath", category.getImagePath());
+            values.put("ImagePath", category.getImage());
 
             id = db.insert("Category", null, values);
         } catch (Exception e) {
@@ -122,7 +121,7 @@ public class CategoryDatabase {
             ContentValues values = new ContentValues();
             values.put("Name", category.getName());
             values.put("Description", category.getDescription());
-            values.put("ImagePath", category.getImagePath());
+            values.put("ImagePath", category.getImage());
 
             rowsAffected = db.update("Category", values, "Id=?", new String[]{String.valueOf(category.getId())});
         } catch (Exception e) {

@@ -23,6 +23,7 @@ import com.example.siki.API.dto.CategoryDto;
 import com.example.siki.API.dto.MediaDto;
 import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
+import com.example.siki.variable.GlobalVariable;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -156,8 +157,9 @@ public class BrandAddActivity extends AppCompatActivity {
     }
 
     private void callApi(BrandDto brandDto) {
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
         BrandApiService brandApiService = RetrofitClient.getRetrofitInstance().create(BrandApiService.class);
-        brandApiService.saveBrand(brandDto).enqueue(new Callback<Void>() {
+        brandApiService.saveBrand(brandDto, globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Toast.makeText(BrandAddActivity.this, "Thêm thương hiệu thành công", Toast.LENGTH_LONG).show();

@@ -18,6 +18,7 @@ import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Brand;
 import com.example.siki.model.Category;
+import com.example.siki.variable.GlobalVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class BrandListActivity extends AppCompatActivity {
     private BrandAdapter brandAdapter;
     Button btnThem, btnBack;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +44,8 @@ public class BrandListActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        brandAdapter = new BrandAdapter(this, brandList);
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+        brandAdapter = new BrandAdapter(this, brandList, globalVariable);
         listViewBrand = findViewById(R.id.brand_lv);
         listViewBrand.setAdapter(brandAdapter);
         btnThem.setOnClickListener(new View.OnClickListener() {

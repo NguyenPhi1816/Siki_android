@@ -28,6 +28,7 @@ import com.example.siki.API.dto.CategoryGetDto;
 import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
 import com.example.siki.model.Category;
+import com.example.siki.variable.GlobalVariable;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -247,9 +248,10 @@ public class CategoryDetailActivity extends AppCompatActivity {
     }
 
     private void callApi(Integer id, CategoryDto categoryDto) {
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
         CategoryApiService categoryApiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
         categoryDto.getCategoryParentId();
-        categoryApiService.updateCategory(id, categoryDto).enqueue(new Callback<Void>() {
+        categoryApiService.updateCategory(id, categoryDto, globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Toast.makeText(CategoryDetailActivity.this, "Chỉnh sửa thành công", Toast.LENGTH_LONG).show();

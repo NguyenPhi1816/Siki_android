@@ -20,6 +20,7 @@ import com.example.siki.activities.CategoryDetailActivity;
 import com.example.siki.activities.CategoryListActivity;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Category;
+import com.example.siki.variable.GlobalVariable;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -32,9 +33,12 @@ public class CategoryAdapter extends BaseAdapter {
     private Context context;
     private List<Category> categoryList;
 
-    public CategoryAdapter(Context context, List<Category> categoryList) {
+    private GlobalVariable globalVariable;
+
+    public CategoryAdapter(Context context, List<Category> categoryList, GlobalVariable globalVariable) {
         this.context = context;
         this.categoryList = categoryList;
+        this.globalVariable = globalVariable;
     }
 
     @Override
@@ -114,8 +118,9 @@ public class CategoryAdapter extends BaseAdapter {
     }
 
     private void callApi(Integer id) {
+
         CategoryApiService categoryApiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
-        categoryApiService.deleteCategory(id).enqueue(new Callback<Void>() {
+        categoryApiService.deleteCategory(id, globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 400) {

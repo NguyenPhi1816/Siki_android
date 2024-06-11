@@ -1,5 +1,8 @@
 package com.example.siki.activities;
 
+import static com.example.siki.activities.BrandAddActivity.callImagePathApi;
+import static com.example.siki.activities.BrandAddActivity.getFileFromUri;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.siki.API.BrandApiService;
 import com.example.siki.API.CategoryApiService;
+import com.example.siki.API.MediaApiResponseListener;
 import com.example.siki.API.dto.CategoryDto;
 import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
@@ -23,6 +27,8 @@ import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Brand;
 import com.example.siki.model.Category;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +40,8 @@ public class BrandDetailActivity extends AppCompatActivity {
     EditText edtMaTH, edtTenTH;
     Button btnBack, btnSua, btnLogoTh;
     ImageView imgLogoTh;
+
+    Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +59,7 @@ public class BrandDetailActivity extends AppCompatActivity {
         // Xử lý kết quả trả về từ Android Image Picker
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             // Lấy URI của ảnh được chọn
-            Uri selectedImageUri = data.getData();
+            selectedImageUri = data.getData();
             getContentResolver().takePersistableUriPermission(selectedImageUri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             imagePath = selectedImageUri.toString();
@@ -117,9 +125,20 @@ public class BrandDetailActivity extends AppCompatActivity {
                             brand1.setName(edtTenTH.getText().toString());
                         }
 
-                        brand1.setLogo(imagePath);
+                        File file = getFileFromUri(BrandDetailActivity.this, selectedImageUri);
 
-                        callApi(Math.toIntExact(id), brand1);
+                        callImagePathApi(file, new MediaApiResponseListener() {
+                            @Override
+                            public void onUrlReceived(String imageUrl) {
+                                brand1.setLogo(imageUrl);
+                                callApi(Math.toIntExact(id), brand1);
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {
+
+                            }
+                        });
 
                         Intent intent = new Intent(BrandDetailActivity.this, BrandListActivity.class);
                         startActivity(intent);

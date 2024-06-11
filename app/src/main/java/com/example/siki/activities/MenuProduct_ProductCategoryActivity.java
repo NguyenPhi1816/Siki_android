@@ -10,7 +10,7 @@ import android.widget.Button;
 import com.example.siki.R;
 
 public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
-    Button homeBtn, productBtn, productTypeBtn, sellBtn, revenueBtn, promotionBtn, btn_order_management;
+    Button homeBtn, productBtn, productTypeBtn, sellBtn, revenueBtn, promotionBtn, btn_order_management, brandBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +73,14 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        brandBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, BrandListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setControl() {
@@ -83,5 +91,6 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
         sellBtn = findViewById(R.id.sell_btn);
         revenueBtn = findViewById(R.id.revenue_btn);
         promotionBtn = findViewById(R.id.promotion_btn);
+        brandBtn = findViewById(R.id.brand_btn);
     }
 }

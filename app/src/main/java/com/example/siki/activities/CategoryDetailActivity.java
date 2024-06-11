@@ -1,5 +1,8 @@
 package com.example.siki.activities;
 
+import static com.example.siki.activities.BrandAddActivity.callImagePathApi;
+import static com.example.siki.activities.BrandAddActivity.getFileFromUri;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,12 +18,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.siki.API.CategoryApiService;
+import com.example.siki.API.MediaApiResponseListener;
 import com.example.siki.API.dto.CategoryDto;
 import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Category;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +35,7 @@ import retrofit2.Response;
 public class CategoryDetailActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     String imagePath;
+    Uri selectedImageUri;
     EditText edtMaLoaiSp, edtTenLoaiSp, edtMoTaLoaiSp;
     Button btnBack, btnSua, btnAnhLoaiSp;
     ImageView imgAnhLoaiSp;
@@ -49,7 +56,7 @@ public class CategoryDetailActivity extends AppCompatActivity {
         // Xử lý kết quả trả về từ Android Image Picker
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             // Lấy URI của ảnh được chọn
-            Uri selectedImageUri = data.getData();
+            selectedImageUri = data.getData();
             getContentResolver().takePersistableUriPermission(selectedImageUri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             imagePath = selectedImageUri.toString();
@@ -125,9 +132,21 @@ public class CategoryDetailActivity extends AppCompatActivity {
                             categoryDto.setDescription(edtMoTaLoaiSp.getText().toString());
                         }
 
-                        categoryDto.setImage(imagePath);
+                        File file = getFileFromUri(CategoryDetailActivity.this, selectedImageUri);
 
-                        callApi(Math.toIntExact(id), categoryDto);
+                        callImagePathApi(file, new MediaApiResponseListener() {
+                            @Override
+                            public void onUrlReceived(String imageUrl) {
+                                categoryDto.setImage(imageUrl);
+                                callApi(Math.toIntExact(id), categoryDto);
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {
+
+                            }
+                        });
+
 
                         Intent intent = new Intent(CategoryDetailActivity.this, CategoryListActivity.class);
                         startActivity(intent);

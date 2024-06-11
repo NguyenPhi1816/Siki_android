@@ -60,6 +60,11 @@
             android:layout_height="wrap_content"
             android:text="Khuyến mãi"
             android:id="@+id/promotion_btn"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thương hiệu"
+            android:id="@+id/brand_btn"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

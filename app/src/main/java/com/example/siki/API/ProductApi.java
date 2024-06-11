@@ -29,4 +29,7 @@ public interface ProductApi {
     Call<List<ProductDto>> getByCategoryId(@Path("categoryId") Integer categoryId);
 
 
+    @GET("storefront/recommend-products")
+    Call<List<ProductDto>> getRecommendProducts();
+
 }

@@ -17,15 +17,18 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.siki.API.UserApi;
 import com.example.siki.Bcrypt.BcryptManager;
 import com.example.siki.FormValidator.FormValidator;
 import com.example.siki.R;
 import com.example.siki.database.AccountDataSource;
 import com.example.siki.database.UserDataSource;
+import com.example.siki.dto.user.UserProfile;
 import com.example.siki.enums.AccountStatus;
 import com.example.siki.enums.Role;
 import com.example.siki.model.Account;
 import com.example.siki.model.User;
+import com.saadahmedev.popupdialog.PopupDialog;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -36,11 +39,15 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SignUpActivity extends AppCompatActivity {
     private static final String EMAIL_REGEX =
             "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     private static final Pattern pattern = Pattern.compile(EMAIL_REGEX);
-    private static final String DATE_FORMAT = "dd-MM-yyyy";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
     private EditText firstNameEditText;
     private EditText lastNameEditText;
     private EditText addressEditText;
@@ -224,9 +231,11 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
+                        String month = String.format("%02d", monthOfYear + 1);
+                        String day = String.format("%02d", dayOfMonth);
                         // Display Selected date in textbox
-                        dateOfBirthEditText.setText(dayOfMonth + "-"
-                                + (monthOfYear + 1) + "-" + year);
+                        dateOfBirthEditText.setText(year + "-"
+                                + month + "-" + day);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -265,21 +274,31 @@ public class SignUpActivity extends AppCompatActivity {
                 newUser.setPhoneNumber(phoneNumber);
                 newUser.setGender(selectedGender);
                 newUser.setDateOfBirth(dateOfBirth);
-                newUser.setAvatar("https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png");
+                newUser.setAvatar("");
                 newUser.setEmail(email);
+                newUser.setPassword(password);
 
-                // Create a new Account
-                final String hashedPassword = BcryptManager.hashPassword(password);
-                Account newAccount = new Account();
-                newAccount.setPhoneNumber(phoneNumber);
-                newAccount.setPassword(hashedPassword);
-                newAccount.setRole(String.valueOf(Role.USER));
-                newAccount.setStatus(String.valueOf(AccountStatus.ACTIVE));
+                UserApi.userApi.signUp(newUser).enqueue(new Callback<UserProfile>() {
+                    @Override
+                    public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
+                        System.out.println(response.body());
+                        if (response.isSuccessful()) {
+                            showSuccessMessage();
 
-                Intent intent = new Intent(this, OtpActivity.class);
-                intent.putExtra("newUser", newUser);
-                intent.putExtra("newAccount", newAccount);
-                startActivity(intent);
+                        }else {
+                            Toast.makeText(getApplicationContext(), response.message().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserProfile> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+              /*  intent.putExtra("newUser", newUser);
+                intent.putExtra("newAccount", newAccount);*/
             } else {
                 confirmPasswordErrorMessage.setText("Mật khẩu nhập lại chưa chính xác.");
             }
@@ -287,6 +306,25 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin.", Toast.LENGTH_SHORT).show();
         }
     };
+
+    private void showSuccessMessage() {
+        PopupDialog.getInstance(this)
+                .statusDialogBuilder()
+                .createSuccessDialog()
+                .setHeading("Thành công")
+                .setDescription("Bạn đã tạo tài khoản thành công")
+                .setActionButtonText("Đăng nhập ngay")
+                .build(dialog -> {
+                    dialog.dismiss();
+                    navigateToLoginPage();
+                })
+                .show();
+    }
+
+    private void navigateToLoginPage() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+    }
 
     public static boolean isValidEmail(String email) {
         Matcher matcher = pattern.matcher(email);

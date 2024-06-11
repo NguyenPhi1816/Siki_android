@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,10 @@ import com.saadahmedev.popupdialog.PopupDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<ProductListForCustomerRecycleAdapter.ProductHolder> {
 
@@ -68,9 +73,19 @@ public class ProductListForCustomerRecycleAdapter extends RecyclerView.Adapter<P
             public void onClick(View v) {
                 // Todo: link activity
                if (globalVariable.getAuthUser() != null) {
-                   String userId = globalVariable.getAuthUser().getId();
-                   CartApi.cartApi.getCartByUserId(userId, globalVariable.getAccess_token());
-                   showSuccessMessage();
+                   CartApi.cartApi.addToCart(product.getId(), globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
+                       @Override
+                       public void onResponse(Call<Void> call, Response<Void> response) {
+                           System.out.println(response.body() + "");
+                           showSuccessMessage();
+                       }
+
+                       @Override
+                       public void onFailure(Call<Void> call, Throwable t) {
+                           Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
+                       }
+                   });
+
                } else {
                    Intent intent = new Intent(context, LoginActivity.class);
                    startActivity(context, intent, null);

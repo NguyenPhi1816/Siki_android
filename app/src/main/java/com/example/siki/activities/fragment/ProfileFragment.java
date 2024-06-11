@@ -76,7 +76,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        Picasso.get().load(authUser.getAvatar()).resize(200, 200).into(ivUserImage);
+        /*Picasso.get().load(authUser.getAvatar()).resize(200, 200).into(ivUserImage);*/
+        ivUserImage.setImageResource(R.drawable.samsung);
         tvHoVaTen.setText(authUser.getFirstName() + " " + authUser.getLastName());
         tvNgaySinh.setText(authUser.getDateOfBirth());
         tvGioiTinh.setText(authUser.getGender());

@@ -39,7 +39,6 @@ public class PaymentRecycleAdapter extends RecyclerView.Adapter<PaymentRecycleAd
     @Override
     public void onBindViewHolder(@NonNull PaymentHolder holder, int position) {
         Cart cart = cartList.get(position);
-
         Product product = cart.getProduct();
         Picasso.get().load(product.getImagePath()).into(holder.payment_product_image);
         double productPrice = cart.getProduct().getPrice();

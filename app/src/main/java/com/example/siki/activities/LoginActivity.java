@@ -47,6 +47,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button forgotPasswordBtn;
     private UserService userService;
 
+    private static final String CUSTOMER = "CUSTOMER";
+    private static final String ADMIN = "ADMIN";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,8 +170,8 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<LoginDto> call, Response<LoginDto> response) {
                     LoginDto loginDto = response.body();
                     System.out.println(loginDto.getAccess_token());
-
-                    String access_token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJMaHVxM0hRc0RiU01lUVZJR25Ub0Q3U0NGaEJQUS1LTDlramtGZHhZMFNFIn0.eyJleHAiOjE3MTc5NTA4OTcsImlhdCI6MTcxNzk0OTM5NywianRpIjoiNjVkMDcyODktM2JhZC00Yzc3LWJjNWItNzhmZWIzYTMwMzhlIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4ODgwL3JlYWxtcy9zaWtpIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjNlYjAzOWE5LTM5ZTUtNGZmNC1hNjE4LTRhZjM5MDY3Y2UyZCIsInR5cCI6IkJlYXJlciIsImF6cCI6InNpa2ktY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjQ2ZjY4MzgxLWM4ZjItNDZkYS05ZGI2LTFhMDVjMzI4ODYzZiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsIkNVU1RPTUVSIiwiZGVmYXVsdC1yb2xlcy1zaWtpIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im1pY3JvcHJvZmlsZS1qd3QgcHJvZmlsZSBlbWFpbCIsInNpZCI6IjQ2ZjY4MzgxLWM4ZjItNDZkYS05ZGI2LTFhMDVjMzI4ODYzZiIsInVwbiI6InRlc3QxMDBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoiYWEgYmIiLCJncm91cHMiOlsib2ZmbGluZV9hY2Nlc3MiLCJDVVNUT01FUiIsImRlZmF1bHQtcm9sZXMtc2lraSIsInVtYV9hdXRob3JpemF0aW9uIl0sInByZWZlcnJlZF91c2VybmFtZSI6InRlc3QxMDBAZ21haWwuY29tIiwiZ2l2ZW5fbmFtZSI6ImFhIiwiZmFtaWx5X25hbWUiOiJiYiIsImVtYWlsIjoidGVzdDEwMEBnbWFpbC5jb20ifQ.TANSroVvLxur3gPxuBV4h1jwpxt9zMEXns--Db-HSlIcbvEJdMwFz3cj4kuaE6ogz4TvGPtnACCc-XrLFcFZcD-CVZUwBCObt3WnxCqJAhBHerSDj8chFpKCvF4S69_8IOo71VYUrlwlIHhLpkd2C40qZJJMVuPm3uCrrdP9stQMmv56LJ16E6Ef23ugz7Aa75oCDJokTovnBA6n-nzUmaR_hUaqECxKWmc0LVvy2HB2VqRNNA1apamTjSmK_OFD6M6KeHTcmBS5R5TfszCCyXnuIwilLXHl2Br4BtwpvI3jJRshPu8DgrtbHUcJo7QQ1Vwv0ClCCkm_nDYrfPD3Vg";
+                    String access_token = loginDto.getAccess_token();
+//                    String access_token =  "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJMaHVxM0hRc0RiU01lUVZJR25Ub0Q3U0NGaEJQUS1LTDlramtGZHhZMFNFIn0.eyJleHAiOjE3MTgwNDE3MjQsImlhdCI6MTcxODA0MDIyNCwianRpIjoiOTZjNGU0YjYtOGY1Zi00ZWRkLTliZjUtMTc4YTRiZTc4YzE5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4ODgwL3JlYWxtcy9zaWtpIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjNlYjAzOWE5LTM5ZTUtNGZmNC1hNjE4LTRhZjM5MDY3Y2UyZCIsInR5cCI6IkJlYXJlciIsImF6cCI6InNpa2ktY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6ImNmYmRlNDAwLTRjNDQtNDQ0My04OWVjLWRkYzkyNjBmOTQzMiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJDVVNUT01FUiIsImRlZmF1bHQtcm9sZXMtc2lraSIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJtaWNyb3Byb2ZpbGUtand0IHByb2ZpbGUgZW1haWwiLCJzaWQiOiJjZmJkZTQwMC00YzQ0LTQ0NDMtODllYy1kZGM5MjYwZjk0MzIiLCJ1cG4iOiJ0ZXN0MTAwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiYWEgYmIiLCJncm91cHMiOlsib2ZmbGluZV9hY2Nlc3MiLCJDVVNUT01FUiIsImRlZmF1bHQtcm9sZXMtc2lraSIsInVtYV9hdXRob3JpemF0aW9uIl0sInByZWZlcnJlZF91c2VybmFtZSI6InRlc3QxMDBAZ21haWwuY29tIiwiZ2l2ZW5fbmFtZSI6ImFhIiwiZmFtaWx5X25hbWUiOiJiYiIsImVtYWlsIjoidGVzdDEwMEBnbWFpbC5jb20ifQ.mpyxYnJi_rjqNU4oFQojCkHdftHk8jzBPF3OZYImJubE2cQ7yVBaDMfHDKbZrI_yRJv9jYTdxTr5fdmmZfc3zySP4HuCv-afTWFwykcdB4numHTKJA3FeTpm_RFZj3A6bydkUMHcWTsSEqvn0taNzRi49-Yl8IKTdstNVJvGyr5mVpsuU04D6GsZ4YJqga3uvc2OsPt_dsFaTPwmHZJaZgK8jDDhhxlGxlXO95iupKba_6GJ1iZq8z1ZL6Exn58GgsI0-z_rSiH2rQdXUeN1T6pU0uz6n3q9yu9F48InC3RnU41F-GR0Vel5OpiTnjZ3k4wgqX2dCeVsG67HkkpQVg";
                     String authHeader = AuthHeader.convertAuthHeaderFromAccessToken(access_token);
                     System.out.println(authHeader);
                     UserApi.userApi.getUserProfile(authHeader).enqueue(new Callback<UserProfile>() {
@@ -179,13 +182,17 @@ public class LoginActivity extends AppCompatActivity {
                             GlobalVariable globalVariable = (GlobalVariable) getApplication();
                             globalVariable.setAuthenticationInfor(authUser, true, authHeader);
                             Toast.makeText(getApplicationContext(),  "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                            redirectToHomePage();
+                            if (userProfile.getRole().equals(CUSTOMER)) {
+                                redirectToHomePage();
+                            } else if (userProfile.getRole().equals(ADMIN)) {
+                                redirectAdminPage();
+                            }
                         }
 
                         @Override
                         public void onFailure(Call<UserProfile> call, Throwable t) {
                             Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT);
-                            Toast.makeText(getApplicationContext(), "Có lỗi xảy ra trong quá trình đăng ký", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Có lỗi xảy ra trong quá trình đăng nhap", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -212,6 +219,11 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this,  "Có lỗi xảy ra trong quá trình đăng nhập", Toast.LENGTH_SHORT).show();
             }*/
         }
+    }
+
+    private void redirectAdminPage() {
+        Intent activityChangeIntent = new Intent(this, MenuProduct_ProductCategoryActivity.class);
+        this.startActivity(activityChangeIntent);
     }
 
     private void redirectToHomePage() {

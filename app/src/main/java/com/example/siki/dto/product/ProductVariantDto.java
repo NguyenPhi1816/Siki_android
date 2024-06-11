@@ -1,5 +1,6 @@
 package com.example.siki.dto.product;
 
+import com.example.siki.dto.StoreDto;
 import com.example.siki.model.Store;
 
 import java.util.List;
@@ -11,9 +12,17 @@ public class ProductVariantDto {
     private String image;
     private int quantity;
     private Double price;
-    private Store store;
+    private StoreDto store;
 
     public ProductVariantDto() {
+    }
+
+    public StoreDto getStore() {
+        return store;
+    }
+
+    public void setStore(StoreDto store) {
+        this.store = store;
     }
 
     public Long getId() {
@@ -56,11 +65,5 @@ public class ProductVariantDto {
         this.price = price;
     }
 
-    public Store getStore() {
-        return store;
-    }
 
-    public void setStore(Store store) {
-        this.store = store;
-    }
 }

@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.siki.API.CategoryApi;
+import com.example.siki.API.OrderApi;
+import com.example.siki.API.ProductApi;
 import com.example.siki.Adapter.CategoryForHomePageRecycleAdapter;
 import com.example.siki.Adapter.GridListSPApdapter;
 import com.example.siki.Adapter.ListViewSearchApdapter;
@@ -29,7 +31,10 @@ import com.example.siki.customgridview.ExpandableHeightGridView;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.dto.category.CategoryDto;
+import com.example.siki.dto.product.ProductDto;
+import com.example.siki.dto.product.ProductVariantDto;
 import com.example.siki.model.Category;
+import com.example.siki.model.Order;
 import com.example.siki.model.Product;
 
 import java.util.ArrayList;
@@ -88,13 +93,13 @@ public class HomeFragment extends Fragment {
         viewlsp.setLayoutManager(mLayoutM);
         viewlsp.setItemAnimator(new DefaultItemAnimator());
         viewlsp.setAdapter(topSPAdapter);
-        gridlistviewsp = new GridListSPApdapter(context,R.layout.layout_gridcardsp,Topsp) ;
-        gridView.setAdapter(gridlistviewsp);
 
-        lvSearch_list_fillter = allProduct;
+        gridlistviewsp = new GridListSPApdapter(context,R.layout.layout_gridcardsp, allProduct) ;
+        gridView.setAdapter(gridlistviewsp);
         listViewSearchApdapter = new ListViewSearchApdapter(context, lvSearch_list_fillter);
         lvSearch.setAdapter(listViewSearchApdapter);
         lvSearch.setVisibility(View.GONE);
+
         return view;
     }
 
@@ -132,10 +137,26 @@ public class HomeFragment extends Fragment {
     }
 
     private void addTop10NewData() {
-        ProductDatabase db = new ProductDatabase(context);
-        db.open();
-        Topsp.addAll(db.readTop10New());
-        db.close();
+        OrderApi.orderApi.getTop10Products().enqueue(new Callback<List<ProductVariantDto>>() {
+            @Override
+            public void onResponse(Call<List<ProductVariantDto>> call, Response<List<ProductVariantDto>> response) {
+                Topsp.clear();
+                List<ProductVariantDto> productVariantDtos = response.body();
+                List<Product> products = productVariantDtos.stream().map(productVariantDto -> new Product(productVariantDto)).collect(Collectors.toList());
+                Topsp.addAll(products);
+                allProduct.addAll(products);
+                lvSearch_list_fillter.addAll(products);
+                topSPAdapter.notifyDataSetChanged();
+                gridlistviewsp.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ProductVariantDto>> call, Throwable t) {
+                Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
     private void setCategoryList() {
         CategoryApi.categoryApi.findAllParents().enqueue(new Callback<List<CategoryDto>>() {
@@ -163,16 +184,30 @@ public class HomeFragment extends Fragment {
     }
 
     private void addAllProduct(){
-        ProductDatabase db = new ProductDatabase(context);
-        db.open();
-        allProduct.addAll(db.readDb());
-        db.close();
+
+      /*  ProductApi.productApi.getRecommendProducts().enqueue(new Callback<List<ProductDto>>() {
+            @Override
+            public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> response) {
+                allProduct.clear();
+                List<ProductDto> productDtos = response.body();
+                List<Product> products = productDtos.stream().map(productDto -> new Product(productDto)).collect(Collectors.toList());
+
+                gridlistviewsp.notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ProductDto>> call, Throwable t) {
+                Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT);
+            }
+        });*/
     }
 
     private void addControl(View view) {
         rc_home_category = view.findViewById(R.id.rc_home_category);
         viewlsp = view.findViewById(R.id.viewtopsp) ;
-        gridView = (ExpandableHeightGridView) view.findViewById(R.id.gridlistsp) ;
+        gridView =  view.findViewById(R.id.gridlistsp) ;
         lvSearch = view.findViewById(R.id.listSearch);
         searchView = view.findViewById(R.id.search);
         scrollMain = view.findViewById(R.id.scrollMain);

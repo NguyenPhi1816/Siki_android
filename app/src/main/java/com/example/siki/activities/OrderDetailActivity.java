@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.siki.API.OrderApi;
 import com.example.siki.Adapter.OrderDetailRecycleAdapter;
 import com.example.siki.Adapter.PaymentRecycleAdapter;
 import com.example.siki.R;
@@ -19,13 +22,20 @@ import com.example.siki.database.OrderDataSource;
 import com.example.siki.database.OrderDetailDatasource;
 import com.example.siki.database.ProductDatabase;
 import com.example.siki.database.UserDataSource;
+import com.example.siki.dto.order.OrderDto;
 import com.example.siki.model.Order;
 import com.example.siki.model.OrderDetail;
 import com.example.siki.utils.DateFormatter;
 import com.example.siki.utils.PriceFormatter;
+import com.example.siki.variable.GlobalVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderDetailActivity extends AppCompatActivity {
 
@@ -47,6 +57,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     private ProductDatabase productDatabase;
     private UserDataSource userDataSource;
 
+    private List<OrderDetail> orderDetails = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +70,10 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private void setEvent() {
         if (order != null) {
-            if (!order.getOrderDetails().isEmpty()) {
-                List<OrderDetail> orderDetails = order.getOrderDetails();
-                orderDetailRecycleAdapter = new OrderDetailRecycleAdapter(orderDetails);
-                rc_order_detail.setAdapter(orderDetailRecycleAdapter);
-                rc_order_detail.setLayoutManager(new GridLayoutManager(this, 1));
-            }
+            orderDetails = order.getOrderDetails();
+            orderDetailRecycleAdapter = new OrderDetailRecycleAdapter(orderDetails);
+            rc_order_detail.setAdapter(orderDetailRecycleAdapter);
+            rc_order_detail.setLayoutManager(new GridLayoutManager(this, 1));
         }
 
         btn_back_to_order_management.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +95,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void readDb() {
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
         if (orderId != 0L) {
             userDataSource = new UserDataSource(this);
             userDataSource.open();
@@ -94,24 +105,35 @@ public class OrderDetailActivity extends AppCompatActivity {
             orderDataSource.open();
             orderDetailDatasource = new OrderDetailDatasource(this);
             orderDetailDatasource.open();
-            Optional<Order> newOrder = orderDataSource.findById(orderDetailDatasource, productDatabase, userDataSource, orderId);
-            if (newOrder.isPresent()) {
-                order = newOrder.get();
-                tv_orderDetail_order_id.setText(order.getId() + "");
-                tv_orderDetail_order_createdAt.setText(DateFormatter.formatLocalDateTimeToString(order.getCreatedAt()));
-                tv_orderDetail_order_status.setText(order.getStatus().toString());
-                tv_order_detail_receiverName.setText(order.getReceiverName());
-                tv_order_detail_receiverPhoneNumber.setText(order.getReceiverPhoneNumber());
-                tv_order_detail_receiverAddress.setText(order.getReceiverAddress());
-                tv_order_detail_order_note.setText(order.getNote());
-                Double totalPrice = getTotalPriceByOrder(order);
-                tv_order_detail_order_totalPrice.setText(PriceFormatter.formatDouble(totalPrice));
 
-                List<OrderDetail> orderDetails = order.getOrderDetails();
-                orderDetailRecycleAdapter = new OrderDetailRecycleAdapter(orderDetails);
-                rc_order_detail.setAdapter(orderDetailRecycleAdapter);
-                rc_order_detail.setLayoutManager(new GridLayoutManager(this, 1));
-            }
+            OrderApi.orderApi.getById(globalVariable.getAccess_token(), orderId).enqueue(new Callback<OrderDto>() {
+                @Override
+                public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                    OrderDto orderDto = response.body();
+                    Order newOrder = new Order(orderDto);
+                    order = newOrder;
+                    tv_orderDetail_order_id.setText(order.getId() + "");
+                    tv_orderDetail_order_createdAt.setText(DateFormatter.formatLocalDateTimeToString(order.getCreatedAt()));
+                    tv_orderDetail_order_status.setText(order.getStatus().toString());
+                    tv_order_detail_receiverName.setText(order.getReceiverName());
+                    tv_order_detail_receiverPhoneNumber.setText(order.getReceiverPhoneNumber());
+                    tv_order_detail_receiverAddress.setText(order.getReceiverAddress());
+                    tv_order_detail_order_note.setText(order.getNote());
+                    Double totalPrice = getTotalPriceByOrder(order);
+                    tv_order_detail_order_totalPrice.setText(PriceFormatter.formatDouble(totalPrice));
+                    orderDetails.clear();
+                    orderDetails.addAll(newOrder.getOrderDetails());
+                    orderDetailRecycleAdapter = new OrderDetailRecycleAdapter(orderDetails);
+                    rc_order_detail.setAdapter(orderDetailRecycleAdapter);
+                    rc_order_detail.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1));
+                }
+
+                @Override
+                public void onFailure(Call<OrderDto> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT);
+                }
+            });
+
         }
     }
 

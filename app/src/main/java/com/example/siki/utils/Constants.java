@@ -9,7 +9,8 @@ public class Constants {
 
         public static final String CART_SERVICE_BASE_URL = BASE_URL + "8090/api/carts/";
 
-        public static final String LOGIN_BASE_URL = "http://192.168.1.55:8880/";
+        public static final String ORDER_SERVICE_BASE_URL = BASE_URL + "8090/api/orders/";
+        public static final String LOGIN_BASE_URL = BASE_URL + "8880";
     }
 
 

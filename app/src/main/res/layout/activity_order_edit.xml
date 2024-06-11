@@ -70,7 +70,7 @@
         android:drawablePadding="10dp"
         android:layout_height="40dp"/>
     <EditText
-
+        android:enabled="false"
         android:id="@+id/ed_order_edit_receiverAddress"
         android:drawableLeft="@drawable/baseline_add_home_work_24"
         android:layout_width="300dp"

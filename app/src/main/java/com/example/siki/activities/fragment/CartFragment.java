@@ -68,7 +68,6 @@ public class CartFragment extends Fragment {
     private StoreRecycleAdapter storeAdapter;
     public CartFragment(Context context, List<Cart> cartList, Map<String, List<Cart>> storeProductMap, GlobalVariable globalVariable) {
         this.context = context;
-        this.cartList = cartList;
         this.storeProductMap = storeProductMap;
         this.globalVariable = globalVariable;
     }
@@ -97,7 +96,7 @@ public class CartFragment extends Fragment {
         cb_cart_total.setText(String.format(cartMessage, selectingCarts.size()));
         cb_cart_total.setChecked(isAllSelected(cartList));
         btn_cart_order.setText(String.format(btnOrderMessage, selectingCarts.size()));
-        storeAdapter = new StoreRecycleAdapter(storeProductMap, context, this);
+        storeAdapter = new StoreRecycleAdapter(storeProductMap, context, this, globalVariable);
         storeRecycle.setAdapter(storeAdapter);
         storeRecycle.setLayoutManager(new GridLayoutManager(context, 1));
         btn_cart_order.setEnabled(cartList.size() > 0);
@@ -107,9 +106,19 @@ public class CartFragment extends Fragment {
                 boolean isChecked = cb_cart_total.isChecked();
                 cb_cart_total.setChecked(isChecked);
                 if (globalVariable.getAuthUser() != null) {
-                    cartDatasource.updateSelectedCartByUser(globalVariable.getAuthUser().getId() , isChecked);
-                    readDb();
-                    storeAdapter.notifyDataSetChanged();
+                    CartApi.cartApi.updateCartSelectionByUser(isChecked, globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            readDb();
+                            storeAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT);
+                        }
+                    });
+
                 }
             }
         });
@@ -125,10 +134,21 @@ public class CartFragment extends Fragment {
                                 Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
                                 User user = globalVariable.getAuthUser();
                                 if (user != null) {
-                                    cartDatasource.removeByUserId(user.getId());
+                                    CartApi.cartApi.deleteAllCart(globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                            readDb();
+                                            storeAdapter.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+                                            Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT);
+
+                                        }
+                                    });
                                 }
-                                readDb();
-                                storeAdapter.notifyDataSetChanged();
+
                             }
                         })
                         .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -186,7 +206,6 @@ public class CartFragment extends Fragment {
                 @Override
                 public void onResponse(Call<List<CartDto>> call, Response<List<CartDto>> response) {
                     List<CartDto> cartDtos = response.body();
-
                     List<Cart> carts = cartDtos.stream().map(cartDto -> new Cart(cartDto)).collect(Collectors.toList());
                     cartList.addAll(carts);
                     storeProductMap = cartList.stream()
@@ -198,12 +217,13 @@ public class CartFragment extends Fragment {
                     cb_cart_total.setText(String.format(cartMessage, cartList.size()));
                     cb_cart_total.setChecked(isAllSelected(cartList));
                     btn_cart_order.setText(String.format(btnOrderMessage, selectingCart));
-                    storeAdapter = new StoreRecycleAdapter(storeProductMap, context, CartFragment.this);
+                    storeAdapter = new StoreRecycleAdapter(storeProductMap, context, CartFragment.this, globalVariable);
                     storeRecycle.setAdapter(storeAdapter);
                     storeAdapter.notifyDataSetChanged();
                 }
                 @Override
                 public void onFailure(Call<List<CartDto>> call, Throwable t) {
+                    Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT);
 
                 }
             });

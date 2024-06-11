@@ -68,12 +68,34 @@
                     android:hint="Chọn ảnh"
                     android:id="@+id/btnAnhLoaiSP"/>
             </LinearLayout>
+
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:id="@+id/imgAnhLoaiSp"
                 android:layout_gravity="center"
                 />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Loại sản phẩm cha"
+                    android:paddingLeft="5dp"
+                    android:textSize="18dp"
+                    />
+                <Spinner
+                    android:id="@+id/spLoaiSpCha"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    />
+            </LinearLayout>
 
 
         </LinearLayout>

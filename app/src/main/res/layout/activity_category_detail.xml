@@ -115,6 +115,34 @@
                 />
         </LinearLayout>
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Loại sản phẩm cha"
+                android:paddingLeft="5dp"
+                android:textSize="18dp"
+                />
+            <Spinner
+                android:id="@+id/spLoaiSpCha"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tvLoaiSpCha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:textSize="18dp"
+            android:text="Loại sản phẩm đã chọn:"/>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

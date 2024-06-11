@@ -1,6 +1,7 @@
 package com.example.siki.API;
 
 import com.example.siki.API.dto.CategoryDto;
+import com.example.siki.API.dto.CategoryGetDto;
 import com.example.siki.model.Category;
 
 import java.util.List;
@@ -17,6 +18,9 @@ public interface CategoryApiService {
 
     @GET("category/all")
     Call<List<Category>> getListCategory();
+
+    @GET("category/name/{id}")
+    Call<CategoryGetDto> getById(@Path("id") int id);
 
     @POST("backoffice/category")
     Call<Void> saveCategory(@Body CategoryDto categoryDto);

@@ -7,14 +7,24 @@ public class Category implements Serializable {
     private String name;
     private String description;
     private String image;
+    private Integer categoryParentId;
+
+    public Integer getCategoryParentId() {
+        return categoryParentId;
+    }
+
+    public void setCategoryParentId(Integer categoryParentId) {
+        this.categoryParentId = categoryParentId;
+    }
 
     public Category() {}
 
-    public Category(Integer id, String name, String description, String imagePath) {
+    public Category(Integer id, String name, String description, String imagePath, Integer categoryParentId) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.image = image;
+        this.image = imagePath;
+        this.categoryParentId = categoryParentId;
     }
 
     public Integer getId() {

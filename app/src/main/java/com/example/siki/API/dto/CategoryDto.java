@@ -4,6 +4,15 @@ public class CategoryDto {
     String name;
     String description;
     String image;
+    Integer categoryParentId;
+
+    public Integer getCategoryParentId() {
+        return categoryParentId;
+    }
+
+    public void setCategoryParentId(Integer categoryParentId) {
+        this.categoryParentId = categoryParentId;
+    }
 
     public String getName() {
         return name;

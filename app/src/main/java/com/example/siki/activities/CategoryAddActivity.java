@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 
@@ -23,12 +26,14 @@ import com.example.siki.API.MediaApiResponseListener;
 import com.example.siki.API.dto.CategoryDto;
 import com.example.siki.API.retrofit.RetrofitClient;
 import com.example.siki.R;
-import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Category;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +44,8 @@ public class CategoryAddActivity extends AppCompatActivity {
     EditText edtTenLoaiSp, edtMoTaLoaiSp;
     Button btnBack, btnThem, btnAnhLoaiSp;
     ImageView imgAnhLoaiSp;
+
+    Spinner spLoaiSpCha;
 
     Uri selectedImageUri;
 
@@ -69,9 +76,56 @@ public class CategoryAddActivity extends AppCompatActivity {
         }
     }
 
+    private void callGetListCategoryApi(Map<Integer, String> listCategoryIdName) {
+        CategoryApiService categoryApiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
+        categoryApiService.getListCategory().enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                List<Category> listCategoryGet = response.body();
+                if (listCategoryGet != null) {
+                    for (Category c : listCategoryGet) {
+                        listCategoryIdName.put(c.getId(), c.getName());
+                    }
+                    List<String> listLoaiSp = new ArrayList<>(listCategoryIdName.values()) ;
+                    listLoaiSp.add(0, "Chọn loại sản phẩm");
+                    ArrayAdapter<String> loaiSpAdapter = new ArrayAdapter<>(CategoryAddActivity.this,
+                            android.R.layout.simple_spinner_item, listLoaiSp);
+                    loaiSpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spLoaiSpCha.setAdapter(loaiSpAdapter);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                System.out.println("Category call api list failed!");
+            }
+        });
+    }
 
     private void setEvent() {
+        Map<Integer, String> listCategoryIdName = new HashMap<>();
+        callGetListCategoryApi(listCategoryIdName);
+        CategoryDto categoryDto = new CategoryDto();
+
+        spLoaiSpCha.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                for (Map.Entry<Integer, String> entry : listCategoryIdName.entrySet()) {
+                    if (entry.getValue().equals(selectedItem)) {
+                        categoryDto.setCategoryParentId(entry.getKey());
+                    }
+                }
+
+                if (selectedItem.equals("Chọn loại sản phẩm")) {
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         btnAnhLoaiSp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +159,6 @@ public class CategoryAddActivity extends AppCompatActivity {
                 btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        CategoryDto categoryDto = new CategoryDto();
                         if (edtTenLoaiSp.getText().toString().isEmpty()) {
                             edtTenLoaiSp.setError("Trường này là bắt buộc!");
                             edtTenLoaiSp.requestFocus();
@@ -183,5 +236,7 @@ public class CategoryAddActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
 
         imgAnhLoaiSp = findViewById(R.id.imgAnhLoaiSp);
+
+        spLoaiSpCha = findViewById(R.id.spLoaiSpCha);
     }
 }

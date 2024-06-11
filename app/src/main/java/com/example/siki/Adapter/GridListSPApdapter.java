@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.example.siki.R;
 import com.example.siki.model.Product;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -39,8 +40,7 @@ public class GridListSPApdapter extends ArrayAdapter<Product> {
         TextView textViewPrice = v.findViewById(R.id.gridtextgiasp) ;
 
         Product sp = lsp.get(position) ;
-
-        imageView.setImageResource(R.drawable.card);
+        Picasso.get().load(sp.getImagePath()).into(imageView);
         textViewname.setText(sp.getName());
         textViewSL.setText(String.valueOf(sp.getQuantity()));
         textViewPrice.setText(String.valueOf(sp.getPrice()));

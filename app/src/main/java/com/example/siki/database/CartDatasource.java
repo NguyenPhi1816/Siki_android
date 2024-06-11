@@ -70,27 +70,7 @@ public class CartDatasource {
         return null;
     }
 
-    public long addToCart (Long productId, String userId, UserDataSource userDataSource, ProductDatabase productDatabase) {
-        long id = -1;
-        Cart cart = findByProductAndUser(productId, userId, userDataSource, productDatabase );
-        if ( cart != null) {
-            updateCartQuantity(cart.getId(), cart.getQuantity() + 1);
-            return cart.getId();
-        }
-            try {
-                ContentValues values = new ContentValues();
-                values.put("user_id", userId);
-                values.put("product_id", productId);
-                values.put("quantity", 1);
-                values.put("is_selected", false);
-                id = db.insert("Cart", null, values);
-            } catch (Exception e) {
-                // Handle any exceptions
-                e.printStackTrace();
-            }
-            return id;
 
-    }
 
     public int updateCartQuantity (Long cartId, int quantity) {
         int rowsAffected = -1;

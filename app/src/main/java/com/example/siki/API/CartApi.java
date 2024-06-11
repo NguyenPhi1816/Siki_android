@@ -11,6 +11,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -30,13 +31,22 @@ public interface CartApi {
     @POST("storefront/add-to-cart/{productId}")
     Call<Void> addToCart(@Path("productId") Long productId, @Header("Authorization") String token);
 
-    @GET("storefront/{customerId}}")
+    @GET("storefront/{customerId}")
     Call<List<CartDto>> getCartByUserId(@Path("customerId") String customerId, @Header("Authorization") String token);
 
     @PUT("storefront/{cartId}/quantity/{quantity}")
     Call<Void> updateCartQuantity(@Path("cartId") Long cartId, @Path("quantity") int quantity,@Header("Authorization") String token);
 
-    @PUT("/storefront/selection/{cartId}")
-    Call<Void> updateCartSelection(@Path("cartId") Long cartId, @Header("Authorization") String token);
+    @PUT("storefront/{cartId}/selection/{selection}")
+    Call<Void> updateCartSelection(@Path("cartId") Long cartId, @Path("selection") boolean selection, @Header("Authorization") String token);
+
+    @PUT("storefront/selection/{selection}")
+    Call<Void> updateCartSelectionByUser(@Path("selection") boolean selection, @Header("Authorization") String token);
+
+    @DELETE("storefront")
+    Call<Void> deleteAllCart(@Header("Authorization") String token);
+
+    @DELETE("storefront/{cartId}")
+    Call<Void> deleteCartById(@Path("cartId") Long cartId, @Header("Authorization") String token);
 
 }

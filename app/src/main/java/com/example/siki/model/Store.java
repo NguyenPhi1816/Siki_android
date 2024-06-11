@@ -1,5 +1,7 @@
 package com.example.siki.model;
 
+import com.example.siki.dto.StoreDto;
+
 import java.io.Serializable;
 
 public class Store implements Serializable {
@@ -12,6 +14,11 @@ public class Store implements Serializable {
 	private boolean Status;
 
     public Store() {
+    }
+
+    public Store(StoreDto storeDto) {
+        Id = Long.parseLong(storeDto.getId() + "");
+        Name = storeDto.getName();
     }
 
     public Store(Long id, String name) {

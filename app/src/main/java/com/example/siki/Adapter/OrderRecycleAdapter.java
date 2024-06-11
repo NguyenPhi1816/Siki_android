@@ -27,6 +27,7 @@ import com.example.siki.enums.Role;
 import com.example.siki.model.Account;
 import com.example.siki.model.Order;
 import com.example.siki.model.OrderDetail;
+import com.example.siki.model.User;
 import com.example.siki.utils.DateFormatter;
 import com.example.siki.utils.PriceFormatter;
 import com.example.siki.variable.GlobalVariable;
@@ -38,15 +39,13 @@ import java.util.List;
 
 public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapter.OrderHolder> {
     private List<Order> orders = new ArrayList<>();
-
-
     private Context context ;
-    private Account account;
+    private GlobalVariable globalVariable;
 
-    public OrderRecycleAdapter(List<Order> orders, Context context, Account account) {
+    public OrderRecycleAdapter(List<Order> orders, Context context, GlobalVariable globalVariable) {
         this.orders = orders;
         this.context = context;
-        this.account = account;
+        this.globalVariable = globalVariable;
     }
 
     @NonNull
@@ -59,13 +58,14 @@ public class OrderRecycleAdapter extends RecyclerView.Adapter<OrderRecycleAdapte
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull OrderHolder holder, int position) {
-        if (account != null) {
-            if (account.getRole().equals(Role.USER.toString())) {
+        if (globalVariable != null) {
+            User currentUser = globalVariable.getAuthUser();
+            if (currentUser.getRole().equals("CUSTOMER")) {
                 holder.btn_order_edit.setVisibility(View.INVISIBLE);
                 holder.btn_order_delete.setVisibility(View.INVISIBLE);
             }else {
                 holder.btn_order_edit.setVisibility(View.VISIBLE);
-                holder.btn_order_delete.setVisibility(View.VISIBLE);
+                holder.btn_order_delete.setVisibility(View.INVISIBLE);
             }
         }
 

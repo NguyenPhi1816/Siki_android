@@ -72,7 +72,7 @@ public class PromotionDetailActivity extends AppCompatActivity {
                         String formattedDay = String.format("%02d", dayOfMonth); // Định dạng ngày để có hai chữ số
                         String formattedMonth = String.format("%02d", (monthOfYear + 1)); // Định dạng tháng để có hai chữ số
                         edtNgayBDKM.setError(null);
-                        edtNgayBDKM.setText(formattedDay + "-" + formattedMonth + "-" + year);
+                        edtNgayBDKM.setText(year+ "-" + formattedMonth + "-" + formattedDay);
 
                     }
                 }, mYear, mMonth, mDay);

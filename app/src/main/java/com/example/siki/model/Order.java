@@ -1,11 +1,19 @@
 package com.example.siki.model;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import com.example.siki.dto.order.OrderDto;
+import com.example.siki.dto.order.OrderStatusDto;
 import com.example.siki.enums.OrderStatus;
+import com.example.siki.utils.DateFormatter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Order implements Serializable {
     private Long id;
@@ -34,6 +42,32 @@ public class Order implements Serializable {
         this.status = status;
         this.user = user;
         this.orderDetails = orderDetails;
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Order(OrderDto orderDto) {
+        this.id = orderDto.getId();
+        this.receiverPhoneNumber = orderDto.getReceiverPhoneNumber();
+        this.receiverAddress = orderDto.getReceiverAddress();
+        this.receiverName = orderDto.getReceiverName();
+        this.note = orderDto.getNote();
+        this.createdAt = DateFormatter.formatStringToLocalDateTime(orderDto.getCreatedAt());
+        this.status = getByOrderDto(orderDto);
+        this.orderDetails =   orderDto.getOrderDetails().stream().map(orderDetailDto -> new OrderDetail(orderDetailDto)).collect(Collectors.toList());;
+    }
+
+    public OrderStatus getByOrderDto(OrderDto orderDto) {
+        if (orderDto.getStatus().equals(OrderStatusDto.PENDING.toString())) {
+            return OrderStatus.Pending;
+        }
+        if (orderDto.getStatus().equals(OrderStatusDto.SHIPPING.toString())) {
+            return OrderStatus.Shipping;
+        }
+        if (orderDto.getStatus().equals(OrderStatusDto.SUCCESS.toString())) {
+            return OrderStatus.Success;
+        }
+        return OrderStatus.Pending;
     }
 
     public User getUser() {

@@ -1,6 +1,10 @@
 package com.example.siki.model;
 
+import com.example.siki.dto.order.OrderDetailDto;
+
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderDetail implements Serializable {
     private Long id;
@@ -23,6 +27,19 @@ public class OrderDetail implements Serializable {
         this.price = price;
         this.quantity = quantity;
     }
+
+    public OrderDetail(OrderDetailDto orderDetailDto) {
+        this.id = orderDetailDto.getId();
+        this.product = new Product(orderDetailDto.getProductVariantDto());
+        this.price = orderDetailDto.getPrice();
+        this.quantity = orderDetailDto.getQuantity();
+    }
+
+    public List<OrderDetail> mapper(List<OrderDetailDto> orderDetailDtos) {
+       return orderDetailDtos.stream().map(orderDetailDto -> new OrderDetail(orderDetailDto)).collect(Collectors.toList());
+    }
+
+
 
     public Long getId() {
         return id;

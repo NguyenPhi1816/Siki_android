@@ -22,6 +22,7 @@ import com.example.siki.activities.CategoryListActivity;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Brand;
 import com.example.siki.model.Category;
+import com.example.siki.variable.GlobalVariable;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -34,9 +35,12 @@ public class BrandAdapter extends BaseAdapter {
     private Context context;
     private List<Brand> brandList;
 
-    public BrandAdapter(Context context, List<Brand> brandList) {
+    private GlobalVariable globalVariable;
+
+    public BrandAdapter(Context context, List<Brand> brandList, GlobalVariable globalVariable) {
         this.context = context;
         this.brandList = brandList;
+        this.globalVariable = globalVariable;
     }
 
     @Override
@@ -115,8 +119,10 @@ public class BrandAdapter extends BaseAdapter {
     }
 
     private void callApi(Integer id) {
+
+
         BrandApiService brandApiService = RetrofitClient.getRetrofitInstance().create(BrandApiService.class);
-        brandApiService.deleteBrand(id).enqueue(new Callback<Void>() {
+        brandApiService.deleteBrand(id, globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 400) {

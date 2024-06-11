@@ -35,13 +35,6 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-       /* productBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductListActivity.class);
-                startActivity(intent);
-            }
-        });*/
         productTypeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,30 +43,6 @@ public class MenuProduct_ProductCategoryActivity extends AppCompatActivity {
             }
         });
 
-       /* sellBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductSellChartActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
-    /*    revenueBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, ProductRevenueChartActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
-      /*  promotionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuProduct_ProductCategoryActivity.this, PromotionListActivity.class);
-                startActivity(intent);
-            }
-
-        });
 
         brandBtn.setOnClickListener(new View.OnClickListener() {
             @Override

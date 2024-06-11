@@ -14,6 +14,7 @@ import com.example.siki.Adapter.CategoryAdapter;
 import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Category;
+import com.example.siki.variable.GlobalVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private CategoryAdapter categoryAdapter;
     Button btnThem, btnBack;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,8 @@ public class CategoryListActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        categoryAdapter = new CategoryAdapter(this, categoryList);
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+        categoryAdapter = new CategoryAdapter(this, categoryList, globalVariable);
         listViewCategory = findViewById(R.id.category_lv);
         listViewCategory.setAdapter(categoryAdapter);
         btnThem.setOnClickListener(new View.OnClickListener() {

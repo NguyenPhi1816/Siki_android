@@ -26,6 +26,7 @@ import com.example.siki.R;
 import com.example.siki.database.CategoryDatabase;
 import com.example.siki.model.Brand;
 import com.example.siki.model.Category;
+import com.example.siki.variable.GlobalVariable;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -159,8 +160,10 @@ public class BrandDetailActivity extends AppCompatActivity {
     }
 
     private void callApi(Integer id, Brand brand) {
+        GlobalVariable globalVariable = (GlobalVariable) getApplication();
+
         BrandApiService brandApiService = RetrofitClient.getRetrofitInstance().create(BrandApiService.class);
-        brandApiService.updateBrand(id, brand).enqueue(new Callback<Void>() {
+        brandApiService.updateBrand(id, brand, globalVariable.getAccess_token()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Toast.makeText(BrandDetailActivity.this, "Chỉnh sửa thành công", Toast.LENGTH_LONG).show();
